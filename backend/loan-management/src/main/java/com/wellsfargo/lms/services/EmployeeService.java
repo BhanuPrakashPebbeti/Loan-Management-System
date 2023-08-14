@@ -21,20 +21,11 @@ public class EmployeeService {
 		try {
 			EmployeeMaster resp = employeeRepo.save(employee);
 			return ResponseEntity.ok().body(resp);
-		} catch(Exception e) {
-			Throwable t = e.getCause();
-			while ((t != null) && !(t instanceof ConstraintViolationException)) {
-				t = t.getCause();
-			}
-			if (t instanceof ConstraintViolationException) {
+		}  catch(Exception e) {
+			
 				return ResponseEntity.internalServerError()
-						.body(("Account already exists"));
-			}
-			else {
-				e.printStackTrace();
-				return ResponseEntity.internalServerError()
-						.body("Some weird error");
-			}
+						.body("Constraint violated");
+			
 
 
 		}
