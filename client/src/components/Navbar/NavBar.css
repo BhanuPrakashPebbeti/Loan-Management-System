@@ -1,0 +1,176 @@
+/* @import '~mdb-ui-kit/css/mdb.min.css'; */
+.navbar-collapse .navbar-brand {
+    display: none;
+    font-weight: 400;
+    align-items: center;
+}
+
+.title {
+    display: flex;
+}
+
+.navbar {
+    background-color: rgba(240, 240, 240, .6);
+    position: sticky !important;
+    top: 0 !important;
+    backdrop-filter: saturate(180%) blur(10px) !important;
+    z-index: 10000 !important;
+    border-bottom: solid 1px #fafafa;
+    padding: 3px 0 !important;
+    font-weight: 300;
+}
+
+.navbar-collapse {
+    transition: top 1s;
+}
+
+#navbarSupportedContent ul li a span:nth-child(2) {
+    position: relative;
+    top: 1px;
+}
+
+.navbar li NavLink:hover {
+    text-decoration: none;
+}
+
+.nav-link {
+    color: black !important;
+}
+
+ul {
+    margin-block-start: 0 !important;
+    margin-block-end: 0 !important;
+}
+
+.modal {
+    z-index: 10000;
+}
+
+.modal-dialog {
+    width: 100% !important;
+}
+
+.pe-cursor {
+    cursor: pointer;
+}
+
+.competesignup-container .form-outline input {
+    font-size: 16px;
+}
+
+.competesignup-container {
+    max-width: 550px !important;
+    text-align: center !important;
+}
+
+.navbar {
+    z-index: 1000 !important;
+}
+
+.close-navbar-toggler {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.close-navbar-toggler.collapsed {
+    z-index: -1;
+}
+
+.navbar-nav .nav-link {
+    font-size: 0.9rem !important;
+    align-items: center !important;
+}
+
+.navbar-nav .user-name {
+    font-size: 1rem !important;
+    font-weight: 400;
+}
+
+
+@media (min-width: 100px) {
+    .modal-dialog {
+        width: calc(100% - 15px) !important;
+    }
+}
+
+@media (min-width: 576px) {
+    .modal-dialog {
+        width: 70% !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .modal-dialog {
+        width: 60% !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .modal-dialog {
+        width: 50% !important;
+    }
+}
+
+@media (min-width: 1220px) {
+    .modal-dialog {
+        width: 40% !important;
+    }
+}
+
+@media (min-width: 1300px) {
+    .modal-dialog {
+        width: 30% !important;
+    }
+}
+
+/* .modal-dialog .modal-content{
+    padding: 10px;
+}
+
+.modal-dialog .modal-content .modal-header{
+    border-bottom: none;
+}
+
+.modal-dialog .modal-content .modal-header .btn-close{
+    padding: 10px 10px 0 0;
+}
+.modal-dialog .modal-content .modal-body{
+    padding: 0 40px 20px 40px;
+    text-align: center;
+} */
+
+
+@media (min-width: 992px) {
+    .container-fluid {
+        padding: 0 !important;
+        /* height: 40px; */
+    }
+
+    .navbar-collapse .navbar-brand {
+        display: flex;
+    }
+
+    .navbar-collapse {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .title {
+        display: none;
+    }
+
+    .navbar-nav {
+        justify-content: center;
+        float: left;
+        justify-content: space-between;
+    }
+
+    .navbar-nav li {
+        text-align: center;
+    }
+}

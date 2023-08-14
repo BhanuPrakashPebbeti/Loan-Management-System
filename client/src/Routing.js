@@ -1,18 +1,23 @@
 import { Route, Routes } from 'react-router-dom';
+import Error from './components/Error';
+import Items from './components/Items/Items';
+import Home from './components/Home/Home';
+import ContactUs from './components/ContactUs';
 
 const Routing = () => {
 
     return(
       <Routes>
         {/* Home */}
-        {/* <Route exact path='/' element={<Home />} /> */}
+        <Route exact path='/' element={<Home />} />
+        <Route exact path='/home' element={<Home />} />
 
-        {/* Projects */}
-        {/* <Route exact path='/items' element={<Items />} /> */}
-        {/* <Route exact path='/additem' element={<AddItem />} /> */}
+        {/* Items */}
+        <Route exact path='/items' element={<Items />} />
+        {/* <Route exact path='/additem' element={<AddItem />} />
 
         {/* Others */}
-        {/* <Route path='*' element={<Error />} /> */}
+        {/* <Route path='/contactus' element={<ContactUs />} /> */}
         
       </Routes>
     )

@@ -1,0 +1,30 @@
+.slides-home-container .carousel .carousel-inner .carousel-item {
+    position: relative;
+    height: calc(var(--module-height) - 6vh);
+    text-align: center;
+}
+
+.slides-home-container .carousel-caption{
+    position: relative;
+    left: 15%;
+    width: 70% !important;
+    top: calc(0rem - var(--module-height));
+    z-index: 10;
+    color: white;
+}
+
+.slides-home-container .carousel-caption a{
+    color: #efefef;
+}
+
+.slides-home-container .carousel-caption a:hover{
+    text-decoration: underline;
+}
+
+.text-shadow{
+    text-shadow: 0.5px 0.5px black;
+}
+
+html{
+    --module-height:calc( 25vw + 100px );
+}
