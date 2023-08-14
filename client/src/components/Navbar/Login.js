@@ -1,63 +1,165 @@
+import axios from "axios";
 import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
+import { SERVER_URL } from "../../EditableStuff/Config";
 
-const Login = () => {
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
-    const [reset, setReset] = useState(false);
-    const [signin, setsignin] = useState(false);
-    const [msg, setMsg] = useState();
-    const [showSpinner, setShowSpinner] = useState(false);
-    return (
-        <div className="Login">
-            <button type="button" className="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                Login
-            </button>
-            <div className="modal fade text-center" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="staticBackdropLabel">Login</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body">
-                            <div>
-                                <input
-                                    type="text"
-                                    name="username"
-                                    className="form-control py-2 px-4 rounded-pill"
-                                    id="username"
-                                    aria-describedby="username"
-                                    placeholder="Enter Username or EMail ID"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <input
-                                    type="password"
-                                    name="password"
-                                    className="form-control py-2 px-4 rounded-pill my-2"
-                                    id="password"
-                                    aria-describedby="password"
-                                    placeholder="Enter password"
-                                    required
-                                />
-                            </div>
-                            <button
-                                type="submit"
-                                className="btn btn-primary w-100 mb-4 py-2 px-4 my-2 rounded-pill"
+function Login(props) {
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
+  const [reset, setReset] = useState(false);
+  const [signin, setsignin] = useState(false);
+  const [msg, setMsg] = useState();
+  const [showSpinner, setShowSpinner] = useState(false);
 
-                            >
-                                Sign in
-                            </button>
-                        </div>
-                    </div>
+  const Login = async (e) => {
+    e.preventDefault();
+    setMsg("");
+    setsignin(true);
+    await axios
+      .post(
+        `${SERVER_URL}/login`,
+        {
+          username: username,
+          password: password,
+        },
+        { withCredentials: true }
+      ).then((res) => {
+        window.location.reload(true);
+      }).catch((err) => {
+        console.log(err);
+        setMsg(err.response.data.error);
+        setsignin(false);
+      });
+  };
+
+  const ResetPassword = async (e) => {
+    e.preventDefault();
+    setShowSpinner(true);
+    setMsg("Sending Reset Password Link...");
+    try {
+      await axios
+        .post(`${SERVER_URL}/forgot-password`, {
+          username: username,
+        })
+        .then((res) => {
+          if (res.status === 401) {
+            setMsg("User Not Found");
+          } else if (res.status === 200) {
+            setMsg("Reset Link sent your Mail (please also check the spam folder)");
+          }
+          setShowSpinner(false);
+        });
+    } catch (err) {
+      setMsg(err.response.data.err);
+    }
+  };
+  // console.log(reset);
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      {/* <Modal.Header closeButton></Modal.Header> */}
+      <Modal.Body className="text-center p-5">
+        <h3 className="pb-4">{reset ? <>Reset Password</> : <>Login</>}</h3>
+        {msg ? <div className="alert alert-danger">{msg}</div> : null}
+        {!reset ? (
+          <div className="login-container">
+            <form method="POST">
+              <div className="form-group mb-3 text-start">
+                <div>
+                  <input
+                    type="text"
+                    name="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="form-control py-2 px-4 rounded-pill"
+                    id="username"
+                    aria-describedby="username"
+                    placeholder="Enter Username or EMail ID"
+                    required
+                  />
                 </div>
-            </div>
-        </div>
-    );
+              </div>
+              <div className="form-group mb-3 text-start">
+                <div>
+                  <input
+                    type="password"
+                    name="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="form-control rounded-pill py-2 px-4 mb-4"
+                    id="password"
+                    aria-describedby="password"
+                    placeholder="Enter Password"
+                    required
+                  />
+                </div>
+              </div>
+              <button
+                type="submit"
+                className="btn btn-primary w-100 mb-4 py-2 px-4"
+                onClick={Login}
+                disabled={signin}
+              >
+                {signin?<>Signing in <i className="fa fa-spinner fa-spin"></i></>:<>Sign in</>}
+              </button>
+            </form>
+            <button
+              type="reset"
+              className="cust btn text-primary"
+              onClick={() => {
+                setReset(!reset);
+                setMsg("");
+              }}
+            >
+              Forget Password?
+            </button>
+          </div>
+        ) : (
+          <div className="login-container">
+            <form method="POST" onSubmit={ResetPassword}>
+              <div className="form-group mb-4 text-start">
+                <div>
+                  <input
+                    type="text"
+                    name="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="form-control rounded-pill py-2 px-4"
+                    id="username"
+                    aria-describedby="username"
+                    placeholder="Enter Username or EMail ID"
+                    required
+                  />
+                </div>
+              </div>
+              <button
+                type="submit"
+                className="cust btn btn-primary w-100 mb-4 py-2 px-4"
+              >
+                Reset Password {
+                  showSpinner && <i className="fa fa-spinner fa-spin"></i>
+                }
+              </button>
+            </form>
+            <button
+              type="reset"
+              className="cust btn mb-4"
+              onClick={() => {
+                setReset(!reset);
+                setMsg("");
+              }}
+            >
+              Back to Sign In
+            </button>
+          </div>
+        )}
+      </Modal.Body>
+    </Modal>
+  );
 }
 
 export default Login;
-
-

@@ -1,11 +1,11 @@
-import NavBarNew from './components/Navbar/NavBarNew';
+import NavBar from './components/Navbar/NavBar';
 import Routing from './Routing';
 import 'bootstrap/dist/css/bootstrap.css';
 
 function App() {
   return (
     <>
-      <NavBarNew />
+      <NavBar />
       <Routing />
     </>
   );
