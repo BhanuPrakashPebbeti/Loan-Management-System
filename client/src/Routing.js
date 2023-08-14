@@ -17,7 +17,7 @@ const Routing = () => {
         {/* <Route exact path='/additem' element={<AddItem />} />
 
         {/* Others */}
-        {/* <Route path='/contactus' element={<ContactUs />} /> */}
+        <Route path='/contactus' element={<ContactUs />} />
         
       </Routes>
     )

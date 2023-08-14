@@ -1,26 +1,4 @@
-#contactus{
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    margin: 5rem 5rem;
-}
-
-#contactcard{
-    display: flex;
-    flex: 1;
-    border: 1px solid rgb(212, 208, 208);
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    background: url(./../EditableStuff/contactus.jpg) no-repeat center center/cover;
-    border-radius: 20px;
-    margin: 2rem 2rem;
-    padding: 5rem 5rem;
-}
-
-#contactcard form h1{
+.contactform form h1{
     display:inline-block; 
     flex: 1;
     color: rgb(0, 0, 0);
@@ -29,13 +7,7 @@
     text-align: center;
 }
 
-#contactcard img{
-    width: 58%;
-    height: 50%;
-    border-radius: 20px;
-}
-
-#contactcard form{
+.contactform form{
     border-radius: 20px;
     padding: 20px 20px;
     margin: 30px 30px;
@@ -45,7 +17,7 @@
     justify-content: center;
 }
 
-#contactcard input{
+.contactform input{
     width: 75%;
     height: 3rem;
     padding: 4px;
@@ -58,11 +30,11 @@
     border-right: none;
 }    
 
-#contactcard input:focus{
+.contactform input:focus{
     outline: none;
 }
 
-#contactcard textarea{
+.contactform textarea{
     flex:1;
     width: 75%;
     max-width: 90%; 
@@ -78,11 +50,11 @@
     border-right: none;
 } 
 
-#contactcard textarea:focus{
+.contactform textarea:focus{
     outline: none;
 }
 
-#contactcard [type="button" i]{
+.contactform [type="button" i]{
     width: 75%;
     color: rgb(255, 255, 255);
     padding: 4px;
@@ -93,18 +65,18 @@
     cursor: pointer;
 } 
 
-#contactcard [type="button" i]:hover{
+.contactform [type="button" i]:hover{
     color: rgb(0, 0, 0);
     background-color: rgb(134, 134, 139);
     transition: all .5s ease;
 }
 
-#contactcard aside{
+.contactform aside{
     width: 500px;
     height: auto;
 }
 
-#contactcard:hover {
+.contactform:hover {
     transform: translate3D(0, -1px, 0) scale(1.03);
     transition: all .5s ease;
 }
