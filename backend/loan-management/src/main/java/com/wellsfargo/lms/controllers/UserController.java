@@ -26,8 +26,8 @@ public class UserController {
 	@PostMapping
 	public ResponseEntity<?> insertEmployee(@RequestBody EmployeeMaster employee){
 		try {
-			employeeService.createPerson(employee);
-			return ResponseEntity.ok("Employee created.");
+			return(employeeService.createPerson(employee));
+			// return ResponseEntity.ok("Employee created.");
 		}
 		catch(Exception e) {
 			return ResponseEntity.internalServerError().body("Some error");
