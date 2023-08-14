@@ -1,6 +1,6 @@
 package com.wellsfargo.lms.models;
 
-import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.*;
 
@@ -11,7 +11,7 @@ public class EmployeeMaster {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "employee_id")
-	private long id;
+	private String id;
 
 	@Column(name = "employee_name")
 	private String name;
@@ -44,6 +44,7 @@ public class EmployeeMaster {
 	public EmployeeMaster(String name, String designation, String department, String gender, String dob,
 			String doj, String password, int isAdmin) {
 		super();
+		this.id = UUID.randomUUID().toString();
 		this.name = name;
 		this.designation = designation;
 		this.department = department;
@@ -54,11 +55,11 @@ public class EmployeeMaster {
 		this.isAdmin = isAdmin;
 	}
 
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
