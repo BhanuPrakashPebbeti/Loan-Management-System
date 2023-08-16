@@ -16,7 +16,7 @@ const AddItem = () => {
     const [add, setAdd] = useState(false);
     const [item, setItem] = useState();
     const [load, setLoad] = useState(0);
-    let pt = {
+    let it = {
         name: "",
         valuation: "",
         category: "",
@@ -26,7 +26,7 @@ const AddItem = () => {
 
     useEffect(() => {
         if (logged_in === 1) {
-            setItem(pt);
+            setItem(it);
             setLoad(1);
         }
         else if (logged_in === -1) {

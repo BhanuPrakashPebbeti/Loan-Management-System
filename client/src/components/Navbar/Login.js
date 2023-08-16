@@ -61,7 +61,6 @@ function Login(props) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      {/* <Modal.Header closeButton></Modal.Header> */}
       <Modal.Body className="text-center p-5">
         <h3 className="pb-4">{reset ? <>Reset Password</> : <>Login</>}</h3>
         {msg ? <div className="alert alert-danger">{msg}</div> : null}

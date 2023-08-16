@@ -11,7 +11,7 @@ const LoanCard = () => {
                     <img src={loan} width="40" /></div>
                 <div className="d-flex justify-content-between card-details mt-3 mb-3 text-light">
                     <div className="d-flex flex-column">
-                        <span className="light">Loan Tenure</span><span>12 mon</span>
+                        <span className="light">Loan Tenure</span><span>12 mo</span>
                     </div>
                     <div className="d-flex flex-row">
                         <div className="d-flex flex-column mr-3"><span className="light">EMI</span><span>334/-</span></div>

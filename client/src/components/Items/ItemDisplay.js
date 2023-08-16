@@ -23,6 +23,7 @@ const ItemDisplay = () => {
     const user = true;
     const { showAlert } = useContext(alertContext);
     const [item, setItem] = useState(null);
+    const [loan, setLoan] = useState(null);
     const [edit, setedit] = useState(1);
     const [load, setLoad] = useState(0);
     const navigate = useNavigate();
@@ -110,6 +111,10 @@ const ItemDisplay = () => {
         }
     }
 
+    const handleInputs = (e) => {
+        setItem({ ...item, [e.target.name]: e.target.value });
+    };
+
     useEffect(() => {
         getItem(item_id);
     }, [item_id]);
@@ -123,6 +128,53 @@ const ItemDisplay = () => {
                     <div className="header align-center">
                         {edit && (
                             <div className="text-center fs-6 pb-3">
+                                <NavLink type="button" className="btn btn-success btn-sm mx-2" data-bs-toggle="modal" data-bs-target="#loanCardModal">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="20"
+                                        height="20"
+                                        fill="currentColor"
+                                        className="bi bi-plus-circle-fill"
+                                        viewBox="0 0 16 18"
+                                    >
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                                    </svg>{" "}
+                                    Add Loan Card
+                                </NavLink>
+
+                                <div className="modal fade" id="loanCardModal" tabindex="-1" aria-labelledby="loanCardModalLabel" aria-hidden="true">
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                            <div className="modal-header">
+                                                <h1 className="modal-title fs-5" id="loanCardModalLabel">Add Loan Card</h1>
+                                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div className="modal-body">
+                                                <div className="form-group my-3 row align-items-center">
+                                                    <label htmlFor="valuation" className="col-sm-6 text-end">
+                                                        Loan Tenure (in months) :
+                                                    </label>
+                                                    <div className="col-sm-6">
+                                                        <input
+                                                            type="text"
+                                                            name="loanDuration"
+                                                            // value={loan.loanDuration}
+                                                            onChange={handleInputs}
+                                                            className="form-control"
+                                                            id="loanDuration"
+                                                            aria-describedby="loanDuration"
+                                                            placeholder="Enter Loan Duration"
+                                                            required
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="modal-footer">
+                                                <button type="button" className="btn btn-primary">Save changes</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <NavLink
                                     to={`/items/${item.item_id}/edit`}
                                     className="btn btn-primary btn-sm mx-2"
