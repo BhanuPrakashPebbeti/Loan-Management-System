@@ -7,6 +7,7 @@ import { alertContext } from "../../../Context/Alert";
 import furniture from "../../../EditableStuff/furniture.jpg";
 import car from "../../../EditableStuff/car.jpg";
 import home from "../../../EditableStuff/home.jpg";
+import jewellery from "../../../EditableStuff/jewellery.jpg";
 import object from "../../../EditableStuff/object.jpeg";
 
 const ItemCard = ({ item }) => {
@@ -20,10 +21,10 @@ const ItemCard = ({ item }) => {
 
     return (
         <div className="my-3 itemcard-container">
-            <div className="card text-center">
+            <div className="card text-center box-shadow">
                 <img
                     onError={object}
-                    src={(item.item_category === "furniture") ? furniture : ((item.item_category === "car") ? car : (item.item_category === "home") ? home : object)}
+                    src={(item.item_category === "furniture") ? furniture : ((item.item_category === "car") ? car : (item.item_category === "home") ? home : (item.item_category === "jewellery") ? jewellery : object)}
                     alt="item"
                     className="card-img-top"
                 />

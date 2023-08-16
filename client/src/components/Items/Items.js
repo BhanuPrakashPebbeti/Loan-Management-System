@@ -9,7 +9,7 @@ import ItemCard from "./ItemCard/ItemCard";
 
 const Items = () => {
     const [load, setLoad] = useState(1);
-    const user = true;
+    const user = { "isadmin": true };
     const items = [{
         "item_id": 1,
         "item_name": "Chair",
@@ -28,19 +28,19 @@ const Items = () => {
     },
     {
         "item_id": 3,
-        "item_name": "Car",
-        "item_category": "car",
-        "item_make": "vehicle",
+        "item_name": "Bangles",
+        "item_category": "jewellery",
+        "item_make": "Gold",
         "item_description": "tyxucvabdnm'v;etg[frdv ",
-        "item_valuation": "250000"
+        "item_valuation": "250000000"
     },
     {
         "item_id": 4,
-        "item_name": "Table",
-        "item_category": "furniture",
-        "item_make": "wood",
+        "item_name": "Bangles",
+        "item_category": "jewellery",
+        "item_make": "Gold",
         "item_description": "tyxucvabdnm'v;etg[frdv ",
-        "item_valuation": "2500"
+        "item_valuation": "2500000"
     },
     {
         "item_id": 5,
@@ -96,6 +96,31 @@ const Items = () => {
                         <div className="row align-items-center py-4">
                             <div className="col-md-4 text-center text-md-start text-header">
                                 Items
+                            </div>
+                            <div className="col-md-8 text-center text-md-end">
+                                {user ? (
+                                    <>
+                                        {user.isadmin && (
+                                            <NavLink
+                                                type="button"
+                                                className="btn btn-sm btn-success"
+                                                to="/additem"
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="20"
+                                                    height="20"
+                                                    fill="currentColor"
+                                                    className="bi bi-plus-circle-fill"
+                                                    viewBox="0 0 16 18"
+                                                >
+                                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                                                </svg>{" "}
+                                                Add Item
+                                            </NavLink>
+                                        )}
+                                    </>
+                                ) : null}
                             </div>
                         </div>
                         <div className="text-center">
