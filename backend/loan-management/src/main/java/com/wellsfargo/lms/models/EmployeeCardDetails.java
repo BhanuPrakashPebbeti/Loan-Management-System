@@ -19,7 +19,7 @@ public class EmployeeCardDetails {
 
 	@Id
 	@Column(name="card_id")
-	private String card_id;
+	private String cardId;
 	
 	
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -28,29 +28,29 @@ public class EmployeeCardDetails {
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="loan_id")
-	private LoanCardMaster loan_id;
+	private LoanCardMaster loanId;
 	
 	@Column(name = "card_issue_date")
-	private String issue_date;
+	private String issueDate;
 	
 	
 	@Column(name = "item_id")
-	private String item_id;
+	private String itemId;
 	
 	@Column(name = "approval_status")
-	private int approval_status;
+	private int approvalStatus;
 
 
 
 	public EmployeeCardDetails(EmployeeMaster employee, LoanCardMaster loan_id, String issuse_date, String item_id,
 			int approval_status) {
 		super();
-		this.card_id = UUID.randomUUID().toString();
+		this.cardId = UUID.randomUUID().toString();
 		this.employee = employee;
-		this.loan_id = loan_id;
-		this.issue_date = issuse_date;
-		this.item_id = item_id;
-		this.approval_status = approval_status;
+		this.loanId = loan_id;
+		this.issueDate = issuse_date;
+		this.itemId = item_id;
+		this.approvalStatus = approval_status;
 	}
 
 	

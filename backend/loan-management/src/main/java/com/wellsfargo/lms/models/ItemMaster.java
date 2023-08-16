@@ -15,10 +15,10 @@ public class ItemMaster {
 	private String description;
 	
 	@Column(name = "issuse_status")
-	private String issuse_status;
+	private String issueStatus;
 	
 	@Column(name = "item_make")
-	private String item_make;
+	private String itemMake;
 	
 	@Column(name = "item_category")
 	private String category;
@@ -35,8 +35,8 @@ public class ItemMaster {
 		super();
 		this.id = UUID.randomUUID().toString();
 		this.description = description;
-		this.issuse_status = issuse_status;
-		this.item_make = item_make;
+		this.issueStatus = issuse_status;
+		this.itemMake = item_make;
 		this.category = category;
 		this.valuation = valuation;
 	}
@@ -58,19 +58,19 @@ public class ItemMaster {
 	}
 
 	public String getIssuse_status() {
-		return issuse_status;
+		return issueStatus;
 	}
 
 	public void setIssuse_status(String issuse_status) {
-		this.issuse_status = issuse_status;
+		this.issueStatus = issuse_status;
 	}
 
 	public String getItem_make() {
-		return item_make;
+		return itemMake;
 	}
 
 	public void setItem_make(String item_make) {
-		this.item_make = item_make;
+		this.itemMake = item_make;
 	}
 
 	public String getCategory() {

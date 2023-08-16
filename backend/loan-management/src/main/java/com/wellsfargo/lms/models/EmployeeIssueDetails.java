@@ -17,16 +17,16 @@ public class EmployeeIssueDetails {
 	private String id;
 	
 	@Column(name = "employee_id")
-	private String employee_id;
+	private String employeeId;
 	
 	@Column(name = "item_id")
-	private String item_id;
+	private String itemId;
 	
 	@Column(name = "issue_date")
-	private String issue_date;
+	private String issueDate;
 	
 	@Column(name = "return_date")
-	private String return_date;
+	private String returnDate;
 
 	public EmployeeIssueDetails() {
 		super();
@@ -36,10 +36,10 @@ public class EmployeeIssueDetails {
 	public EmployeeIssueDetails( String employee_id, String item_id, String issue_date, String return_date) {
 		super();
 		this.id = UUID.randomUUID().toString();
-		this.employee_id = employee_id;
-		this.item_id = item_id;
-		this.issue_date = issue_date;
-		this.return_date = return_date;
+		this.employeeId = employee_id;
+		this.itemId = item_id;
+		this.issueDate = issue_date;
+		this.returnDate = return_date;
 	}
 
 	

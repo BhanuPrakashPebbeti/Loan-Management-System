@@ -12,9 +12,9 @@ public class LoanCardMaster {
 	private String id;
 	
 	@Column(name = "loan_type")
-	private String loan_type;
+	private String loanType;
 	
-	@Column(name = "duration_in_years")
+	@Column(name = "duration_in_months")
 	private int duration;
 
 	public LoanCardMaster() {
@@ -25,7 +25,7 @@ public class LoanCardMaster {
 	public LoanCardMaster(String loan_type, int duration) {
 		super();
 		this.id = UUID.randomUUID().toString();
-		this.loan_type = loan_type;
+		this.loanType = loan_type;
 		this.duration = duration;
 	}
 
@@ -38,11 +38,11 @@ public class LoanCardMaster {
 	}
 
 	public String getLoan_type() {
-		return loan_type;
+		return loanType;
 	}
 
 	public void setLoan_type(String loan_type) {
-		this.loan_type = loan_type;
+		this.loanType = loan_type;
 	}
 
 	public int getDuration() {
