@@ -9,13 +9,13 @@ const ContactUs = () => {
                 &nbsp;
             </h1>
             <div className='contact-container adjust'>
-                <div class="card mb-4 box-shadow" style={{ "max-width": "800px" }}>
-                    <div class="row no-gutters">
-                        <div class="col-md-6">
-                            <img src={bg} class="card-img" alt="..." />
+                <div className="card mb-4 box-shadow" style={{ "maxWidth": "800px" }}>
+                    <div className="row no-gutters">
+                        <div className="col-md-6">
+                            <img src={bg} className="card-img" alt="..." />
                         </div>
-                        <div class="col-md-6">
-                            <div class="card-body">
+                        <div className="col-md-6">
+                            <div className="card-body">
                                 <form action="contact.php" className='contactform'>
                                     <h1>Contact Us</h1><br />
                                     <input type="text" id="name" name="name" placeholder="Full Name" /><br />
@@ -25,11 +25,34 @@ const ContactUs = () => {
                                 </form>
                             </div>
                             <div className="socialbtns">
-                                <a href="https://www.facebook.com/" className="fa fa-lg fa-facebook"></a>
-                                <a href="https://twitter.com/" className="fa fa-lg fa-twitter"></a>
-                                <a href="https://www.linkedin.com/" className="fa fa-lg fa-linkedin"></a>
-                                <a href="https://www.instagram.com/" className="fa fa-lg fa-instagram"></a>
-                                <a href="https://www.youtube.com/" className="fa fa-lg fa-youtube"></a>
+                                <a
+                                    className="fa fa-lg fa-facebook mx-2"
+                                    href="https://www.facebook.com/wellsfargo/"
+                                    target="_blank"
+                                ></a>
+                                <a className="fa fa-lg fa-twitter mx-2"
+                                    href="https://twitter.com/WellsFargo"
+                                    target="_blank"></a>
+                                <a
+                                    className="fa fa-lg fa-envelope mx-2"
+                                    href={`mailto:pebbetibhanu2017@gmail.com`}
+                                ></a>
+                                <a
+                                    className="fa fa-lg fa-linkedin mx-2"
+                                    href="https://www.linkedin.com/company/wellsfargo"
+                                    target="_blank"
+                                ></a>
+                                <a
+                                    className="fa fa-lg fa-instagram mx-2"
+                                    href="https://www.instagram.com/wellsfargo/"
+                                    target="_blank"
+                                ></a>
+
+                                <a
+                                    className="fa fa-lg fa-youtube mx-2"
+                                    href="https://www.youtube.com/user/wellsfargo/?themeRefresh=1"
+                                    target="_blank"
+                                ></a>
                             </div>
                         </div>
                     </div>

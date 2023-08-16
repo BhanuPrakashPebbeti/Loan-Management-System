@@ -2,18 +2,19 @@ import Carousel from 'react-bootstrap/Carousel';
 import './Slider.css';
 import React from 'react';
 import slider1 from "./Slider-1.jpg";
+import slider2 from "./../../../EditableStuff/slider-1.jpeg";
 
 function Slider() {
-    const slides = [slider1,slider1,slider1,slider1];
+    const slides = [slider2, slider1, slider2, slider1];
 
     return (
         <>
             <div className='slides-home-container'>
                 <Carousel>
                     {
-                        slides.map((slide) => {
+                        slides.map((slide, i) => {
                             return (
-                                <Carousel.Item interval={5000}>
+                                <Carousel.Item interval={5000} key={i}>
                                     <img
                                         className="d-block w-100"
                                         src={slide}

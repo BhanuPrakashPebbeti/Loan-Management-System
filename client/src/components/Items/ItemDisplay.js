@@ -14,16 +14,17 @@ import car from "../../EditableStuff/car.jpg";
 import home from "../../EditableStuff/home.jpg";
 import jewellery from "../../EditableStuff/jewellery.jpg";
 import object from "../../EditableStuff/object.jpeg";
+import LoanCard from "./LoanCard/LoanCard";
 
 const ItemDisplay = () => {
-    const params = new useParams();
+    const params = new useParams(LoanCard);
     const editor = useRef(null);
     const item_id = params.id;
     const user = true;
     const { showAlert } = useContext(alertContext);
-    // const [item, setItem] = useState(null);
+    const [item, setItem] = useState(null);
     const [edit, setedit] = useState(1);
-    const [load, setLoad] = useState(1);
+    const [load, setLoad] = useState(0);
     const navigate = useNavigate();
     const items = [{
         "item_id": 1,
@@ -97,18 +98,29 @@ const ItemDisplay = () => {
         "item_description": "tyxucvabdnm'v;etg[frdv ",
         "item_valuation": "250000"
     }]
-    const item = items.find((item) => item.item_id === item_id);
+
+    const getItem = (item_id) => {
+        const item_ = items.find((i) => i.item_id == item_id);
+        setItem(item_);
+        if (item_) {
+            setLoad(1);
+        }
+        else {
+            setLoad(-1);
+        }
+    }
+
     useEffect(() => {
-        console.log(item)
-    }, []);
+        getItem(item_id);
+    }, [item_id]);
 
     return (
         <>
             {load === 0 ? (
                 <Loading />
             ) : load === 1 ? (
-                <div className="container itemdisplay-container py-5">
-                    {item && <div className="header align-center">
+                <div div className="container itemdisplay-container py-5">
+                    <div className="header align-center">
                         {edit && (
                             <div className="text-center fs-6 pb-3">
                                 <NavLink
@@ -156,10 +168,24 @@ const ItemDisplay = () => {
                                         Item Valuation : {item.item_valuation}
                                     </p>
                                 </div>
+                                <div className="row">
+                                    <h4 className="text-center pb-1">Available Loan Cards</h4>
+                                    <div className="text-center">
+                                        <div className="row">
+                                            {items.map((item) => {
+                                                return (
+                                                    <div className="col-md-5 mb-5" key={item.item_id}>
+                                                        <LoanCard />
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>}
-                </div>
+                    </div>
+                </div >
             ) : (
                 <Error />
             )}

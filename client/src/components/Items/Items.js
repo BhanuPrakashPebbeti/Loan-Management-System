@@ -127,7 +127,7 @@ const Items = () => {
                             <div className="row">
                                 {items.map((item) => {
                                     return (
-                                        <div className="col-md-4 mb-4" key={item.item_category}>
+                                        <div className="col-md-4 mb-4" key={item.item_id}>
                                             <ItemCard
                                                 item={item}
                                             />

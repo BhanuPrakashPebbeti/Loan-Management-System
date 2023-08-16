@@ -14,6 +14,11 @@ const ItemCard = ({ item }) => {
     const { showAlert } = useContext(alertContext);
     const navigate = useNavigate();
 
+    const addDefaultSrc = (ev) => {
+        ev.target.src =
+            object;
+    };
+
     useEffect(() => {
         if (item) {
         }
@@ -23,7 +28,7 @@ const ItemCard = ({ item }) => {
         <div className="my-3 itemcard-container">
             <div className="card text-center box-shadow">
                 <img
-                    onError={object}
+                    onError={addDefaultSrc}
                     src={(item.item_category === "furniture") ? furniture : ((item.item_category === "car") ? car : (item.item_category === "home") ? home : (item.item_category === "jewellery") ? jewellery : object)}
                     alt="item"
                     className="card-img-top"

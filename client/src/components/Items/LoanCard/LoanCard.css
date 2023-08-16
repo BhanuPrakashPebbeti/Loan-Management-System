@@ -1,0 +1,17 @@
+.loancard-container .card {
+    position: relative;
+    display: flex;
+    width: 395px;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-image: linear-gradient(to right top, #280537, #56034c, #890058, #bc005b, #eb1254);
+    background-clip: border-box;
+    border: 1px solid #23406f;
+    border-radius: 7px;
+  }
+  
+  .light {
+    color: #c0bcbc;
+    font-size: 11px;
+  }

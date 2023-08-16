@@ -1,0 +1,16 @@
+.footer {
+    color: white;
+    padding: 30px 0 30px 0;
+    background-color: rgba(19, 17, 29, 0.8);
+    border-top: solid 1px #fafafa;
+}
+
+.footer a {
+    color: white;
+    text-decoration: none;
+}
+
+.footer p {
+    color: white;
+    text-decoration: none;
+}
