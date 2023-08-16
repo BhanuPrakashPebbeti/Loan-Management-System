@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Table(name = "loan_card_master")
 public class LoanCardMaster {
 	@Id
-	@Column(name = "load_id")
+	@Column(name = "loan_id")
 	private String id;
 	
 	@Column(name = "loan_type")

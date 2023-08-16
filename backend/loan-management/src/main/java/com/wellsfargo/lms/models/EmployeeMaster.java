@@ -19,7 +19,7 @@ public class EmployeeMaster {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "employee_id")
-	private long id;
+	private long employee_id;
 
 	@Column(name = "employee_name",unique = true)
 	@NotNull
