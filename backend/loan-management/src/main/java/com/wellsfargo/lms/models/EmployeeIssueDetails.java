@@ -17,16 +17,15 @@ public class EmployeeIssueDetails {
 	@Column(name = "issue_id")
 	private String id;
 	
-//	@Column(name = "employee_id")
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "employee_id")
 	@NotNull
-	private EmployeeMaster employeeId;
+	private EmployeeMaster employee;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="item_id")
 	@NotNull
-	private ItemMaster itemId;
+	private ItemMaster item;
 	
 	@Column(name = "issue_date")
 	@NotNull
@@ -41,11 +40,11 @@ public class EmployeeIssueDetails {
 		// TODO Auto-generated constructor stub
 	}
 
-	public EmployeeIssueDetails( EmployeeMaster employee_id, ItemMaster item_id, String issue_date, String return_date) {
+	public EmployeeIssueDetails( EmployeeMaster employee, ItemMaster item, String issue_date, String return_date) {
 		super();
 		this.id = UUID.randomUUID().toString();
-		this.employeeId = employee_id;
-		this.itemId = item_id;
+		this.employee = employee;
+		this.item = item;
 		this.issueDate = issue_date;
 		this.returnDate = return_date;
 	}

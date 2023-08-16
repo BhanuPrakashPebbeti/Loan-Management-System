@@ -74,4 +74,8 @@ public class EmployeeCardService {
 		return employeeCardRepo.findAll();
 	}
 	
+	public Optional<EmployeeCardDetails> getCardById(String id) {
+		return employeeCardRepo.findById(id);
+	}
+	
 }
