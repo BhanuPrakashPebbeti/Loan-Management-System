@@ -3,27 +3,34 @@ package com.wellsfargo.lms.models;
 import java.util.UUID;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "item_master")
 public class ItemMaster {
 	@Id
 	@Column(name = "item_id")
+	@NotNull
 	private String id;
 	
 	@Column(name = "item_description")
+	@NotNull
 	private String description;
 	
 	@Column(name = "issuse_status")
+	@NotNull
 	private String issueStatus;
 	
 	@Column(name = "item_make")
+	@NotNull
 	private String itemMake;
 	
 	@Column(name = "item_category")
+	@NotNull
 	private String category;
 	
 	@Column(name = "item_valuation")
+	@NotNull
 	private int valuation;
 
 	public ItemMaster() {

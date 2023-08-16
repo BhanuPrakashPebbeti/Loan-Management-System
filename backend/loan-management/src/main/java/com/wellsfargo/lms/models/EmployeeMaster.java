@@ -4,7 +4,9 @@ import java.util.Date;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.lang.NonNull;
 
 import lombok.Getter;
@@ -22,28 +24,36 @@ public class EmployeeMaster {
 	private long employeeId;
 
 	@Column(name = "employee_name",unique = true)
-	@NotNull
+	@NotNull(message = "Name cannot be blank")
+	@Size(min = 2,message = "Name too short")
 	private String name;
 
 	@Column(name = "designation")
+	@NotNull
 	private String designation;
 
 	@Column(name = "department")
+	@NotNull
 	private String department;
 	
 	@Column(name="gender")
+	@NotNull
 	private String gender;
 	
 	@Column(name="dob")
+	@NotNull
 	private String dob;
 	
 	@Column(name="doj")
+	@NotNull
 	private String doj;
 	
 	@Column(name="password")
+	@NotNull
 	private String password;
 	
 	@Column(name="isAdmin")
+	@ColumnDefault("0")
 	private int isAdmin;
 
 	public EmployeeMaster() {
