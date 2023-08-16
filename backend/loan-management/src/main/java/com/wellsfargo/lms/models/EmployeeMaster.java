@@ -1,13 +1,11 @@
 package com.wellsfargo.lms.models;
 
-import java.util.Date;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.lang.NonNull;
 
 import lombok.Getter;
 import lombok.Setter;

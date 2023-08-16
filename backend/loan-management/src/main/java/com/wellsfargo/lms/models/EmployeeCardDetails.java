@@ -1,5 +1,8 @@
 package com.wellsfargo.lms.models;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.*;
@@ -34,7 +37,7 @@ public class EmployeeCardDetails {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="loan_id")
 	@NotNull
-	private LoanCardMaster loanId;
+	private LoanCardMaster loan;
 	
 	@Column(name = "card_issue_date")
 	@NotNull
@@ -45,7 +48,7 @@ public class EmployeeCardDetails {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "item_id")
 	@NotNull
-	private ItemMaster itemId;
+	private ItemMaster item;
 	
 	@Column(name = "approval_status")
 	@NotNull
@@ -59,10 +62,31 @@ public class EmployeeCardDetails {
 		super();
 		this.cardId = UUID.randomUUID().toString();
 		this.employee = employee;
-		this.loanId = loan_id;
+		this.loan = loan_id;
 		this.issueDate = issuse_date;
-		this.itemId = item_id;
+		this.item = item_id;
 		this.approvalStatus = approval_status;
+	}
+
+
+
+	public EmployeeCardDetails(@NotNull EmployeeMaster employee, @NotNull LoanCardMaster loanId,
+			@NotNull ItemMaster itemId) {
+		super();
+		this.cardId = UUID.randomUUID().toString();
+		LocalDate currentDate = LocalDate.now();
+
+        // Define a formatter to format the date as a string
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // Format the date as a string
+        String dateString = currentDate.format(formatter);
+		this.issueDate = dateString;
+		this.employee = employee;
+		this.loan = loanId;
+		this.item = itemId;
+		this.approvalStatus = 0;
+		
 	}
 
 	

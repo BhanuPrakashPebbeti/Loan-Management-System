@@ -1,6 +1,7 @@
 package com.wellsfargo.lms.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,10 @@ public class ItemService {
 	
 	public List<ItemMaster> getAllItems(){
 		return itemMasterRepo.findAll();
+	}
+	
+	public Optional<ItemMaster> getItemById(String id) {
+		return itemMasterRepo.findById(id);
 	}
 	
 }

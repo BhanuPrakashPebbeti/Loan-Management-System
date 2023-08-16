@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.wellsfargo.lms.models.ItemMaster;
 import com.wellsfargo.lms.models.LoanCardMaster;
 import com.wellsfargo.lms.payloads.LoanPayload;
 import com.wellsfargo.lms.repositories.LoanCardRepo;
@@ -46,6 +47,10 @@ public class LoanServices {
 	
 	public List<LoanCardMaster> getAllLoans(){
 		return loanCardRepo.findAll();
+	}
+	
+	public Optional<LoanCardMaster> getLoanById(String id) {
+		return loanCardRepo.findById(id);
 	}
 	
 }
