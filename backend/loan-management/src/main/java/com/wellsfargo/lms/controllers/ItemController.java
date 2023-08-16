@@ -3,7 +3,6 @@ package com.wellsfargo.lms.controllers;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.web.ProjectedPayload;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,21 +10,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wellsfargo.lms.payloads.LoanPayload;
-import com.wellsfargo.lms.services.LoanServices;
+import com.wellsfargo.lms.payloads.ItemPayload;
+import com.wellsfargo.lms.services.ItemService;
 
 
 @RestController
-@RequestMapping("/loans")
-public class LoanController {
+@RequestMapping("/items")
+public class ItemController {
 	
 	@Autowired
-	private LoanServices loanServices;
+	private ItemService itemService;
 	
-	@PostMapping("createLoan")
-	public ResponseEntity<?> createLoan(@RequestBody @Valid LoanPayload loan){
+	@PostMapping("createItem")
+	public ResponseEntity<?> createItem(@RequestBody @Valid ItemPayload item){
 		try {
-			return(loanServices.createLoan(loan));
+			return(itemService.createItem(item));
 		}
 		catch(Exception e) {
 			return ResponseEntity.internalServerError().body("Some error");
@@ -34,7 +33,7 @@ public class LoanController {
 	
 	@GetMapping
 	public ResponseEntity<?> getAllLoans(){
-		return ResponseEntity.ok(loanServices.getAllLoans());
+		return ResponseEntity.ok(itemService.getAllItems());
 	}
 
 }

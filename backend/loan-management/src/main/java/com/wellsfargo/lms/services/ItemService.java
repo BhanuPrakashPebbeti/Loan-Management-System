@@ -1,30 +1,30 @@
 package com.wellsfargo.lms.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.wellsfargo.lms.models.LoanCardMaster;
-import com.wellsfargo.lms.payloads.LoanPayload;
-import com.wellsfargo.lms.repositories.LoanCardRepo;
+import com.wellsfargo.lms.models.ItemMaster;
+import com.wellsfargo.lms.payloads.ItemPayload;
+import com.wellsfargo.lms.repositories.ItemMasterRepo;
 
 @Service
-public class LoanServices {
+public class ItemService {
 
 	@Autowired
-	private LoanCardRepo loanCardRepo;
+	private ItemMasterRepo itemMasterRepo;
 	
 	
-	public ResponseEntity<?> createLoan(LoanPayload loanreq) {
+	public ResponseEntity<?> createItem(ItemPayload itemreq) {
 
-		LoanCardMaster loan = new LoanCardMaster(loanreq.getType(),loanreq.getDuration());
+		ItemMaster loan = new ItemMaster(itemreq.getDescription(),itemreq.getIssueStatus(),
+				itemreq.getItemMake(),itemreq.getCategory(),itemreq.getValuation());
 		
 		try {
-			LoanCardMaster resp = loanCardRepo.save(loan);
+			ItemMaster resp = itemMasterRepo.save(loan);
 			return ResponseEntity.ok().body(resp);
 		}  catch(Exception e) {
 			
@@ -34,7 +34,7 @@ public class LoanServices {
 			}
 			if (t instanceof ConstraintViolationException) {
 				return ResponseEntity.internalServerError()
-						.body("Loan Already exists");
+						.body("Item Already exists");
 			}
 			else {
 				e.printStackTrace();
@@ -44,8 +44,8 @@ public class LoanServices {
 		}
 		}
 	
-	public List<LoanCardMaster> getAllLoans(){
-		return loanCardRepo.findAll();
+	public List<ItemMaster> getAllItems(){
+		return itemMasterRepo.findAll();
 	}
 	
 }

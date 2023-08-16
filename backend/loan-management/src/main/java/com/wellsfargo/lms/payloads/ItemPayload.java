@@ -7,12 +7,19 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class LoanPayload {
+@NoArgsConstructor
+public class ItemPayload {
 
+
+	private String description;
+
+	private int issueStatus;
+
+	private String itemMake;
+
+	private String category;
+
+	private int valuation;
 	
-	private String type;
-	
-	private int duration;
 }
