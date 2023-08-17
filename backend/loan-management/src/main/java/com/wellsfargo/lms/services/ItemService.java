@@ -21,7 +21,7 @@ public class ItemService {
 	
 	public ResponseEntity<?> createItem(ItemPayload itemreq) {
 
-		ItemMaster loan = new ItemMaster(itemreq.getDescription(),itemreq.getIssueStatus(),
+		ItemMaster loan = new ItemMaster(itemreq.getItemName(),itemreq.getDescription(),itemreq.getIssueStatus(),
 				itemreq.getItemMake(),itemreq.getCategory(),itemreq.getValuation());
 		
 		try {

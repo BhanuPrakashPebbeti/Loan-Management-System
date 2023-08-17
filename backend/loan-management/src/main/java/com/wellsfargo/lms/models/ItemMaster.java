@@ -34,6 +34,10 @@ public class ItemMaster {
 	@NotNull
 	private String category;
 	
+	@Column(name="item_name")
+	@NotNull
+	private String itemName;
+	
 	@Column(name = "item_valuation")
 	@NotNull
 	private int valuation;
@@ -42,11 +46,12 @@ public class ItemMaster {
 		super();
 	}
 
-	public ItemMaster(String description, int issuse_status, String item_make, String category,
+	public ItemMaster(String itemName, String description, int issuse_status, String item_make, String category,
 			int valuation) {
 		super();
 		String[] str = UUID.randomUUID().toString().split("-");
 		this.id = str[0];
+		this.itemName = itemName;
 		this.description = description;
 		this.issueStatus = issuse_status;
 		this.itemMake = item_make;

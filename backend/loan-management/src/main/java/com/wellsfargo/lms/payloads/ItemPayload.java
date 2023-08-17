@@ -11,7 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ItemPayload {
 
-
+private String itemName;
+	
 	private String description;
 
 	private int issueStatus;
