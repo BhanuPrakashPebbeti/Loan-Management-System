@@ -47,6 +47,10 @@ public class EmployeeCardService {
 					+ "TODO: Add explicit exceptions.");
 		}
 		
+		if(item.get().getIssueStatus()!=0) {
+			return ResponseEntity.badRequest().body("Item already issued.");
+		}
+		
 		EmployeeCardDetails employeeCardDetails = new EmployeeCardDetails(employee.get(), loan.get(), item.get());
 		try {
 			EmployeeCardDetails resp = employeeCardRepo.save(employeeCardDetails);
