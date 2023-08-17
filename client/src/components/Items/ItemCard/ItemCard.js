@@ -29,22 +29,22 @@ const ItemCard = ({ item }) => {
             <div className="card text-center box-shadow">
                 <img
                     onError={addDefaultSrc}
-                    src={(item.item_category === "furniture") ? furniture : ((item.item_category === "car") ? car : (item.item_category === "home") ? home : (item.item_category === "jewellery") ? jewellery : object)}
+                    src={(item.category === "furniture") ? furniture : ((item.category === "car") ? car : (item.category === "home") ? home : (item.category === "jewellery") ? jewellery : object)}
                     alt="item"
                     className="card-img-top"
                 />
                 <div className="card-body">
-                    <h5 className="card-title">{item.item_name} </h5>
+                    <h5 className="card-title">{item.itemName} </h5>
                     <p className="card-text">
                         <small className="text-muted">
-                            Item Category : {item.item_category}
+                            Item Category : {item.category}
                             <br />
-                            Item Make : {item.item_make}
+                            Item Make : {item.itemMake}
                         </small>
                     </p>
                     <NavLink
                         rel="noreferrer"
-                        to={`/items/${item.item_id}`}
+                        to={`/items/${item.id}`}
                         className="btn btn-sm btn-dark"
                     >
                         View More

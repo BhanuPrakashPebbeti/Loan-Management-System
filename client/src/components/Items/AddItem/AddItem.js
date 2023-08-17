@@ -70,18 +70,18 @@ const AddItem = () => {
                             encType="multipart/form-data"
                         >
                             <div className="form-group my-3 row align-items-center">
-                                <label htmlFor="name" className="col-sm-2 text-end">
+                                <label htmlFor="itemName" className="col-sm-2 text-end">
                                     Item Name :
                                 </label>
                                 <div className="col-sm-10">
                                     <input
                                         type="text"
-                                        name="name"
+                                        name="itemName"
                                         value={item.name}
                                         onChange={handleInputs}
                                         className="form-control"
-                                        id="name"
-                                        aria-describedby="name"
+                                        id="itemName"
+                                        aria-describedby="itemName"
                                         placeholder="Enter Item Name"
                                         required
                                     />
@@ -128,16 +128,16 @@ const AddItem = () => {
                                 </div>
                             </div>
                             <div className="form-group align-items-center mt-3 row">
-                                <label htmlFor="category" className="col-sm-2 mt-3 text-end">
+                                <label htmlFor="itemMake" className="col-sm-2 mt-3 text-end">
                                     Make :
                                 </label>
                                 <div className="col col-9">
                                     <select
-                                        name="category"
-                                        value={item.make}
+                                        name="itemMake"
+                                        value={item.itemMake}
                                         onChange={handleInputs}
                                         className="form-select"
-                                        aria-label="category"
+                                        aria-label="itemMake"
                                     >
                                         <option value="">Select Item Make</option>
                                         <option value="Furniture">Wood</option>
@@ -155,7 +155,7 @@ const AddItem = () => {
                                 </label>
                                 <div className="col-sm-10"><textarea type="text"
                                     name="description"
-                                    value={item.title}
+                                    value={item.description}
                                     onChange={handleInputs}
                                     className="form-control"
                                     id="description"
