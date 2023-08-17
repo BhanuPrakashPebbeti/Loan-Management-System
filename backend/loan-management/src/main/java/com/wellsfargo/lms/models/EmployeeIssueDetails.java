@@ -42,7 +42,8 @@ public class EmployeeIssueDetails {
 
 	public EmployeeIssueDetails( EmployeeMaster employee, ItemMaster item, String issue_date, String return_date) {
 		super();
-		this.id = UUID.randomUUID().toString();
+		String[] str = UUID.randomUUID().toString().split("-");
+		this.id = str[0];
 		this.employee = employee;
 		this.item = item;
 		this.issueDate = issue_date;

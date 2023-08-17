@@ -31,7 +31,8 @@ public class LoanCardMaster {
 
 	public LoanCardMaster(String loan_type, int duration) {
 		super();
-		this.id = UUID.randomUUID().toString();
+		String[] str = UUID.randomUUID().toString().split("-");
+		this.id = str[0];
 		this.loanType = loan_type;
 		this.duration = duration;
 	}

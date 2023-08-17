@@ -73,7 +73,8 @@ public class EmployeeCardDetails {
 	public EmployeeCardDetails(@NotNull EmployeeMaster employee, @NotNull LoanCardMaster loanId,
 			@NotNull ItemMaster itemId) {
 		super();
-		this.cardId = UUID.randomUUID().toString();
+		String[] str = UUID.randomUUID().toString().split("-");
+		this.cardId = str[0];
 		LocalDate currentDate = LocalDate.now();
 
         // Define a formatter to format the date as a string

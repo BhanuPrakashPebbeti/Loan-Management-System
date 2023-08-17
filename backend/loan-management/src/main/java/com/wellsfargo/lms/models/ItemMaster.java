@@ -45,7 +45,8 @@ public class ItemMaster {
 	public ItemMaster(String description, int issuse_status, String item_make, String category,
 			int valuation) {
 		super();
-		this.id = UUID.randomUUID().toString();
+		String[] str = UUID.randomUUID().toString().split("-");
+		this.id = str[0];
 		this.description = description;
 		this.issueStatus = issuse_status;
 		this.itemMake = item_make;
