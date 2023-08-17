@@ -21,11 +21,11 @@ public class ItemService {
 	
 	public ResponseEntity<?> createItem(ItemPayload itemreq) {
 
-		ItemMaster loan = new ItemMaster(itemreq.getItemName(),itemreq.getDescription(),itemreq.getIssueStatus(),
+		ItemMaster ite = new ItemMaster(itemreq.getItemName(),itemreq.getDescription(),itemreq.getIssueStatus(),
 				itemreq.getItemMake(),itemreq.getCategory(),itemreq.getValuation());
 		
 		try {
-			ItemMaster resp = itemMasterRepo.save(loan);
+			ItemMaster resp = itemMasterRepo.save(ite);
 			return ResponseEntity.ok().body(resp);
 		}  catch(Exception e) {
 			
