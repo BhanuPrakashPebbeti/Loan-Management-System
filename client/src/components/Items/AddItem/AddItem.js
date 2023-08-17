@@ -16,17 +16,17 @@ const AddItem = () => {
     const [add, setAdd] = useState(false);
     const [item, setItem] = useState();
     const [load, setLoad] = useState(0);
-    let it = {
-        name: "",
-        valuation: "",
-        category: "",
-        make: "",
-        description: "",
-    };
 
     useEffect(() => {
         if (logged_in === 1) {
-            setItem(it);
+            setItem({
+                itemName: "",
+                valuation: "",
+                category: "",
+                itemMake: "",
+                description: "",
+                issueStatus: 0
+            });
             setLoad(1);
         }
         else if (logged_in === -1) {
@@ -40,7 +40,20 @@ const AddItem = () => {
 
     const PostItem = async (e) => {
         e.preventDefault();
-        setAdd(false);
+        try {
+            setAdd(true);
+            const itemData = await axios.post(`${SERVER_URL}/createItem`, item, {
+                //   withCredentials: true,
+                headers: { "Content-Type": "application/json" },
+            });
+            showAlert("Item Created Successfully!", "success");
+            navigate(`/items/${itemData.id}`);
+        }
+        catch (err) {
+            console.log(err);
+            showAlert(err.response.data.error, "danger");
+        }
+
     };
 
     return (
