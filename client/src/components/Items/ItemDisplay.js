@@ -224,13 +224,12 @@ const ItemDisplay = () => {
                                     <h4 className="text-center pb-1">Available Loan Cards</h4>
                                     <div className="text-center">
                                         <div className="row">
-                                            {items.map((item) => {
-                                                return (
-                                                    <div className="col-md-5 mb-5" key={item.item_id}>
-                                                        <LoanCard />
-                                                    </div>
-                                                );
-                                            })}
+                                            <div className="col-md-5 mb-5">
+                                                <LoanCard />
+                                            </div>
+                                            <div className="col-md-5 mb-5">
+                                                <LoanCard />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
