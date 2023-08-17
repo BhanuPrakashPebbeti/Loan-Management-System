@@ -37,7 +37,7 @@ public class ItemController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<?> getAllLoans(){
+	public ResponseEntity<?> getAllItems(){
 		return ResponseEntity.ok(itemService.getAllItems());
 	}
 	
