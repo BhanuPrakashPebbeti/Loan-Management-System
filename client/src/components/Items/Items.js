@@ -84,15 +84,16 @@ const Items = () => {
     //     "item_valuation": "250000"
     // }]
 
-    const getProjects = async () => {
+    const getItems = async () => {
         await axios.get(`${SERVER_URL}/items`).then((data) => {
-            setItems(data);
+            // console.log(data);
+            setItems(data?.data);
             setLoad(1);
         });
     };
 
     useEffect(() => {
-        getProjects();
+        getItems();
     }, []);
 
 
@@ -135,7 +136,7 @@ const Items = () => {
                         </div>
                         <div className="text-center">
                             <div className="row">
-                                {items.map((item) => {
+                                {items && items.map((item) => {
                                     return (
                                         <div className="col-md-4 mb-4" key={item.id}>
                                             <ItemCard
