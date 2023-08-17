@@ -1,11 +1,15 @@
 package com.wellsfargo.lms.models;
 
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.ColumnDefault;
+
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +23,7 @@ public class EmployeeMaster {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "employee_id")
-	private long employeeId;
+	private String id;
 
 	@Column(name = "employee_name",unique = true)
 	@NotNull(message = "Name cannot be blank")
@@ -53,6 +57,10 @@ public class EmployeeMaster {
 	@Column(name="isAdmin")
 	@ColumnDefault("0")
 	private int isAdmin;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Roles> roles = new HashSet<>();
 
 	public EmployeeMaster() {
 		super();
