@@ -19,7 +19,7 @@ import LoanCard from "./LoanCard/LoanCard";
 const ItemDisplay = () => {
     const params = new useParams(LoanCard);
     const editor = useRef(null);
-    const item_id = params.id;
+    const id = params.id;
     const user = true;
     const { showAlert } = useContext(alertContext);
     const [item, setItem] = useState(null);
@@ -27,87 +27,16 @@ const ItemDisplay = () => {
     const [edit, setedit] = useState(1);
     const [load, setLoad] = useState(0);
     const navigate = useNavigate();
-    const items = [{
-        "item_id": 1,
-        "item_name": "Chair",
-        "item_category": "furniture",
-        "item_make": "wood",
-        "item_description": "tyxucvabdnm'v;etg[frdv ",
-        "item_valuation": "4000"
-    },
-    {
-        "item_id": 2,
-        "item_name": "Car",
-        "item_category": "car",
-        "item_make": "vehicle",
-        "item_description": "tyxucvabdnm'v;etg[frdv ",
-        "item_valuation": "250000"
-    },
-    {
-        "item_id": 3,
-        "item_name": "Bangles",
-        "item_category": "jewellery",
-        "item_make": "Gold",
-        "item_description": "tyxucvabdnm'v;etg[frdv ",
-        "item_valuation": "250000000"
-    },
-    {
-        "item_id": 4,
-        "item_name": "Bangles",
-        "item_category": "jewellery",
-        "item_make": "Gold",
-        "item_description": "tyxucvabdnm'v;etg[frdv ",
-        "item_valuation": "2500000"
-    },
-    {
-        "item_id": 5,
-        "item_name": "Wardrope",
-        "item_category": "furniture",
-        "item_make": "wood",
-        "item_description": "tyxucvabdnm'v;etg[frdv ",
-        "item_valuation": "25000"
-    },
-    {
-        "item_id": 6,
-        "item_name": "Car",
-        "item_category": "car",
-        "item_make": "vehicle",
-        "item_description": "tyxucvabdnm'v;etg[frdv ",
-        "item_valuation": "250000"
-    },
-    {
-        "item_id": 7,
-        "item_name": "Home",
-        "item_category": "home",
-        "item_make": "home",
-        "item_description": "tyxucvabdnm'v;etg[frdv ",
-        "item_valuation": "2500000"
-    },
-    {
-        "item_id": 8,
-        "item_name": "Home",
-        "item_category": "home",
-        "item_make": "vehicle",
-        "item_description": "tyxucvabdnm'v;etg[frdv ",
-        "item_valuation": "250000"
-    },
-    {
-        "item_id": 9,
-        "item_name": "Car",
-        "item_category": "car",
-        "item_make": "vehicle",
-        "item_description": "tyxucvabdnm'v;etg[frdv ",
-        "item_valuation": "250000"
-    }]
 
-    const getItem = (item_id) => {
-        const item_ = items.find((i) => i.item_id == item_id);
-        setItem(item_);
-        if (item_) {
+    const getItem = async (id) => {
+        try {
+            const data = await axios.get(`${SERVER_URL}/item/${id}`);
+            setItem(data.data);
             setLoad(1);
-        }
-        else {
+        } catch (err) {
             setLoad(-1);
+            showAlert(`${err.response.data.error}`, "danger");
+            navigate('/error');
         }
     }
 
@@ -116,8 +45,8 @@ const ItemDisplay = () => {
     };
 
     useEffect(() => {
-        getItem(item_id);
-    }, [item_id]);
+        getItem(id);
+    }, [id]);
 
     return (
         <>
@@ -176,7 +105,7 @@ const ItemDisplay = () => {
                                     </div>
                                 </div>
                                 <NavLink
-                                    to={`/items/${item.item_id}/edit`}
+                                    to={`/items/${item.id}/edit`}
                                     className="btn btn-primary btn-sm mx-2"
                                 >
                                     Edit{" "}
@@ -194,7 +123,7 @@ const ItemDisplay = () => {
                         <div className="row">
                             <div className="col-lg-5 ">
                                 <img
-                                    src={(item.item_category === "furniture") ? furniture : ((item.item_category === "car") ? car : (item.item_category === "home") ? home : (item.item_category === "jewellery") ? jewellery : object)}
+                                    src={(item.category === "furniture") ? furniture : ((item.category === "car") ? car : (item.category === "home") ? home : (item.category === "jewellery") ? jewellery : object)}
                                     className="img-fluid rounded"
                                     alt="..."
                                     style={{ width: "30rem", objectFit: "contain" }}
@@ -203,21 +132,21 @@ const ItemDisplay = () => {
                             <div className="col-lg-7">
                                 <div className="row">
                                     <h3 className="text-center pt-4 pt-lg-1 pb-1">Description</h3>
-                                    <p dangerouslySetInnerHTML={{ __html: item.item_description }}></p>
+                                    <p dangerouslySetInnerHTML={{ __html: item.description }}></p>
                                 </div>
                                 <div className="row">
                                     <h4 className="text-center pb-1">Item Details</h4>
                                     <p className="mb-1">
-                                        Item Name : {item.item_name}
+                                        Item Name : {item.itemName}
                                     </p>
                                     <p className="mb-1">
-                                        Item Category : {item.item_category}
+                                        Item Category : {item.category}
                                     </p>
                                     <p className="mb-1">
-                                        Item Make : {item.item_make}
+                                        Item Make : {item.itemMake}
                                     </p>
                                     <p className="mb-1">
-                                        Item Valuation : {item.item_valuation}
+                                        Item Valuation : {item.valuation}
                                     </p>
                                 </div>
                                 <div className="row">
