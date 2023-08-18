@@ -31,7 +31,7 @@ const ItemDisplay = () => {
     const getItem = async (id) => {
         try {
             const data = await axios.get(`${SERVER_URL}/item/${id}`);
-            setItem(data.data);
+            setItem(data?.data);
             setLoad(1);
         } catch (err) {
             setLoad(-1);

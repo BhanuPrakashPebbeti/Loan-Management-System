@@ -82,7 +82,7 @@ const NavBar = () => {
             } id="navbarSupportedContent">
             <ul className="navbar-nav py-0 align-items-center adjust">
               <li>
-                <NavLink className="navbar-brand" to='/'><span><img src={Logo} arc="Logo" style={{ width: "30px", borderRadius: "5px" }} /></span></NavLink>
+                <NavLink className="navbar-brand" to='/'><span><img src={Logo} arc="Logo" style={{ width: "40px", borderRadius: "5px" }} /></span></NavLink>
               </li>
               {navs.map((nav) => {
                 if (nav.show) {
