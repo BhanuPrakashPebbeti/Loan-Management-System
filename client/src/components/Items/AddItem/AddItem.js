@@ -42,12 +42,13 @@ const AddItem = () => {
         e.preventDefault();
         try {
             setAdd(true);
-            const itemData = await axios.post(`${SERVER_URL}/createItem`, item, {
+            const itemData = await axios.post(`http://localhost:8080/items/createItem`, item, {
                 //   withCredentials: true,
                 headers: { "Content-Type": "application/json" },
             });
             showAlert("Item Created Successfully!", "success");
-            navigate(`/items/${itemData.id}`);
+            console.log(itemData);
+            navigate(`/items/${itemData.data.id}`);
         }
         catch (err) {
             console.log(err);
@@ -123,7 +124,7 @@ const AddItem = () => {
                                         <option value="Vehicle">Vehicle</option>
                                         <option value="Property">Property</option>
                                         <option value="Jewellery">Jewellery</option>
-                                        <option value="Property">Other</option>
+                                        <option value="Other">Other</option>
                                     </select>
                                 </div>
                             </div>
@@ -140,12 +141,12 @@ const AddItem = () => {
                                         aria-label="itemMake"
                                     >
                                         <option value="">Select Item Make</option>
-                                        <option value="Furniture">Wood</option>
-                                        <option value="Home">Steel</option>
-                                        <option value="Vehicle">Electronics</option>
-                                        <option value="Property">Plastic</option>
-                                        <option value="Property">Fabric</option>
-                                        <option value="Property">Other</option>
+                                        <option value="Wood">Wood</option>
+                                        <option value="Steel">Steel</option>
+                                        <option value="Electronics">Electronics</option>
+                                        <option value="Plastic">Plastic</option>
+                                        <option value="Fabric">Fabric</option>
+                                        <option value="Other">Other</option>
                                     </select>
                                 </div>
                             </div>
