@@ -29,7 +29,7 @@ const ItemCard = ({ item }) => {
             <div className="card text-center box-shadow">
                 <img
                     onError={addDefaultSrc}
-                    src={(item.category === "furniture") ? furniture : ((item.category === "car") ? car : (item.category === "home") ? home : (item.category === "jewellery") ? jewellery : object)}
+                    src={(item.category === "Furniture") ? furniture : ((item.category === "Vehicle") ? car : (item.category === "Home") ? home : (item.category === "Jewellery") ? jewellery : object)}
                     alt="item"
                     className="card-img-top"
                 />
