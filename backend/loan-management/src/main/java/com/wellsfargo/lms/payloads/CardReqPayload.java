@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CardReqPayload {
 	
-	private Long employee_id;
+	private String employee_id;
 	private String item_id;
 	private String loan_id;
 }

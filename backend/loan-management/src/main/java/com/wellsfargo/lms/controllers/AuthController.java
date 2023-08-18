@@ -31,7 +31,6 @@ import com.wellsfargo.lms.repositories.RoleRepository;
 import com.wellsfargo.lms.security.jwt.JwtUtils;
 import com.wellsfargo.lms.security.services.UserDetailsImpl;
 
-
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/auth")
@@ -64,8 +63,7 @@ public class AuthController {
 		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 
-		return ResponseEntity.ok(
-				new JwtResponse(jwt, userDetails.getId(), roles));
+		return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), roles));
 	}
 
 	@PostMapping("/signup")
@@ -82,10 +80,10 @@ public class AuthController {
 //		EmployeeMaster user = new EmployeeMaster(signUpRequest.getUsername(), signUpRequest.getEmail(),
 //				encoder.encode(signUpRequest.getPassword()));
 
-		EmployeeMaster employee = new EmployeeMaster(signUpRequest.getName(), signUpRequest.getDesignation(), signUpRequest.getDepartment(), 
-				signUpRequest.getGender(),signUpRequest.getDob(),
-				signUpRequest.getDoj(), signUpRequest.getPassword() , signUpRequest.getIsAdmin());
-		
+		EmployeeMaster employee = new EmployeeMaster(signUpRequest.getName(), signUpRequest.getDesignation(),
+				signUpRequest.getDepartment(), signUpRequest.getGender(), signUpRequest.getDob(),
+				signUpRequest.getDoj(), encoder.encode(signUpRequest.getPassword()), signUpRequest.getIsAdmin());
+
 		Set<String> strRoles = signUpRequest.getRole();
 		Set<Roles> roles = new HashSet<>();
 

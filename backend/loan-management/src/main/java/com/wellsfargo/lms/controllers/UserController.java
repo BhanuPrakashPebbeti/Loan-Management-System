@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wellsfargo.lms.models.EmployeeMaster;
@@ -43,8 +44,8 @@ public class UserController {
 		
 	}
 	
-	@GetMapping("/{id}")
-	public ResponseEntity<?> getEmployeeById(@PathVariable(value = "id") Long personId) {
+	@GetMapping("/id")
+	public ResponseEntity<?> getEmployeeById(@RequestParam(value = "id") String personId) {
 		
 		Optional<EmployeeMaster> employeeOptional = employeeService.findEmployeeById(personId);
 		
