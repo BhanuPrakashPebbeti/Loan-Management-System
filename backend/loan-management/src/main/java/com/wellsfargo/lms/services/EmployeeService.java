@@ -51,7 +51,7 @@ public class EmployeeService {
 		return employeeRepo.findAll();
 	}
 	
-	public Optional<EmployeeMaster> findEmployeeById(Long Id) {
+	public Optional<EmployeeMaster> findEmployeeById(String Id) {
 		Optional<EmployeeMaster> employee = employeeRepo.findById(Id);
 		
 		return employee;

@@ -32,7 +32,7 @@ public class EmployeeCardService {
 	@Autowired
 	private ItemMasterRepo itemMasterRepo;
 	
-	public ResponseEntity<?> createEmployeeCard(Long employee_id, String loan_id, String item_id) {
+	public ResponseEntity<?> createEmployeeCard(String employee_id, String loan_id, String item_id) {
 		
 		
 		Optional<EmployeeMaster> employee = employeeMasterRepo.findById(employee_id);
