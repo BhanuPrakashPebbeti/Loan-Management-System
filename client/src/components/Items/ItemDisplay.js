@@ -23,7 +23,7 @@ const ItemDisplay = () => {
     const user = true;
     const { showAlert } = useContext(alertContext);
     const [item, setItem] = useState(null);
-    const [loan, setLoan] = useState(null);
+    const [loans, setLoans] = useState(null);
     const [edit, setedit] = useState(1);
     const [load, setLoad] = useState(0);
     const navigate = useNavigate();
@@ -39,6 +39,17 @@ const ItemDisplay = () => {
             navigate('/error');
         }
     }
+    const getLoans = async (id) => {
+        try {
+            const data = await axios.get(`${SERVER_URL}/loans/${id}`);
+            setLoans(data?.data);
+            setLoad(1);
+        } catch (err) {
+            setLoad(1);
+            // showAlert(`${err.response.data.error}`, "danger");
+            // navigate('/error');
+        }
+    }
 
     const handleInputs = (e) => {
         setItem({ ...item, [e.target.name]: e.target.value });
@@ -46,6 +57,7 @@ const ItemDisplay = () => {
 
     useEffect(() => {
         getItem(id);
+        getLoans(id);
     }, [id]);
 
     return (
@@ -153,12 +165,16 @@ const ItemDisplay = () => {
                                     <h4 className="text-center pb-1">Available Loan Cards</h4>
                                     <div className="text-center">
                                         <div className="row">
-                                            <div className="col-md-5 mb-5">
-                                                <LoanCard />
-                                            </div>
-                                            <div className="col-md-5 mb-5">
-                                                <LoanCard />
-                                            </div>
+                                            {loans && loans.map((loan) => {
+                                                return (
+                                                    <div className="col-md-4 mb-4" key={item.id}>
+                                                        <LoanCard
+                                                            item={item}
+                                                            loan={loan}
+                                                        />
+                                                    </div>
+                                                );
+                                            })}
                                         </div>
                                     </div>
                                 </div>
