@@ -13,11 +13,15 @@ const Items = () => {
     const user = { "isadmin": true };
 
     const getItems = async () => {
-        await axios.get(`${SERVER_URL}/items`).then((data) => {
-            setItems(data?.data);
-            setLoad(1);
-        });
-    };
+        try {
+            await axios.get(`${SERVER_URL}/items`).then((data) => {
+                setItems(data?.data);
+                setLoad(1);
+            })
+        } catch (err) {
+            setLoad(-1);
+        };
+    }
 
     useEffect(() => {
         getItems();
