@@ -9,7 +9,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +23,8 @@ import lombok.Setter;
 public class EmployeeMaster {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
 	@Column(name = "employee_id")
 	private String id;
 
@@ -58,6 +61,7 @@ public class EmployeeMaster {
 	@ColumnDefault("0")
 	private int isAdmin;
 	
+	@JsonProperty
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Roles> roles = new HashSet<>();
