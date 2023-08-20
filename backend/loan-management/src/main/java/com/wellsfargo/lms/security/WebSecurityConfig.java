@@ -20,8 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.wellsfargo.lms.security.jwt.AuthEntryPointJwt;
 import com.wellsfargo.lms.security.jwt.AuthTokenFilter;
-import com.wellsfargo.lms.security.services.UserDetailsServiceImpl;
-import com.wellsfargo.lms.services.EmployeeService;
+
 
 
 
@@ -73,7 +72,8 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 				.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> auth.antMatchers("/auth/**").permitAll()
-						.antMatchers("/swagger-ui/**").permitAll().anyRequest().authenticated());
+						.antMatchers("/swagger-ui/**").permitAll()
+						.anyRequest().authenticated());
 
 		http.authenticationProvider(authenticationProvider());
 

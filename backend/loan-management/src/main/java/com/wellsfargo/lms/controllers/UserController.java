@@ -34,6 +34,7 @@ public class UserController {
 		return ResponseEntity.ok().body(employeeService.getAllUsers());
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<?> insertEmployee(@RequestBody @Valid EmployeeMaster employee){
 		try {
@@ -46,6 +47,7 @@ public class UserController {
 		
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/id")
 	public ResponseEntity<?> getEmployeeById(@RequestParam(value = "id") String personId) {
 		

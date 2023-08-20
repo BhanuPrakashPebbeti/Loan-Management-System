@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +29,7 @@ public class CardIssueController {
 	EmployeeCardService employeeCardService;
 	
 	@PostMapping
-	public ResponseEntity<?> createItem(@RequestBody @Valid CardReqPayload reqPayload){
+	public ResponseEntity<?> createCard(@RequestBody @Valid CardReqPayload reqPayload){
 		try {
 			return(employeeCardService.createEmployeeCard(reqPayload.getEmployee_id(),
 					reqPayload.getLoan_id(),reqPayload.getItem_id()));
@@ -38,13 +39,15 @@ public class CardIssueController {
 		}
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<?> getAllCards(){
 		return ResponseEntity.ok(employeeCardService.getAllCards());
 	}
 	
+	
 	@GetMapping("/id")
-	public ResponseEntity<?> getItemById(@RequestParam(value = "id") String id) {
+	public ResponseEntity<?> getCardById(@RequestParam(value = "id") String id) {
 		
 		Optional<EmployeeCardDetails> cards = employeeCardService.getCardById(id);
 		

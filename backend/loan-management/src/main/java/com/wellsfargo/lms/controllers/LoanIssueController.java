@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ public class LoanIssueController {
 	@Autowired
 	private EmployeeIssueService employeeIssueService;
 	
-	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("new")
 	public ResponseEntity<?> approveItem(@RequestBody @Valid IssuePayload reqPayload){
 		try {
@@ -33,6 +34,7 @@ public class LoanIssueController {
 		}
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("decline")
 	public ResponseEntity<?> declineItem(@RequestBody @Valid IssuePayload reqPayload){
 		try {
@@ -43,7 +45,7 @@ public class LoanIssueController {
 		}
 	}
 	
-	
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<?> getAllApprovals(){
 		return ResponseEntity.ok(employeeIssueService.getAllIssues());
