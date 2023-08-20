@@ -1,5 +1,6 @@
 package com.wellsfargo.lms.controllers;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -39,18 +40,35 @@ public class LoanController {
 		}
 	}
 	
+	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
 	@GetMapping
 	public ResponseEntity<?> getAllLoans(){
 		return ResponseEntity.ok(loanServices.getAllLoans());
 	}
 	
+	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
 	@GetMapping("/id")
 	public ResponseEntity<?> getItemById(@RequestParam(value = "id") String id) {
 		
 		Optional<LoanCardMaster> loans = loanServices.getLoanById(id);
 		
 		if(loans.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Employee does not exst with Id: "+id.toString());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Loan does not exst with Id: "+id.toString());
+			
+		}
+		else {
+			return ResponseEntity.ok(loans);
+		}
+	}
+	
+	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+	@GetMapping("/type")
+	public ResponseEntity<?> getLoanByType(@RequestParam(value = "type") String type) {
+		
+		List<LoanCardMaster> loans = loanServices.getLoanByType(type);
+		
+		if(loans.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Employee does not exst with type: "+type.toString());
 			
 		}
 		else {

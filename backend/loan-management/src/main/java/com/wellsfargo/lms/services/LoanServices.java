@@ -53,4 +53,8 @@ public class LoanServices {
 		return loanCardRepo.findById(id);
 	}
 	
+	public List<LoanCardMaster> getLoanByType(String type) {
+		return loanCardRepo.findByLoanType(type);
+	}
+	
 }

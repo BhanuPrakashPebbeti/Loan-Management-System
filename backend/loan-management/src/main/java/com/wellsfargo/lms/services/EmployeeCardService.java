@@ -82,4 +82,14 @@ public class EmployeeCardService {
 		return employeeCardRepo.findById(id);
 	}
 	
+	public ResponseEntity<?> getCardByEmployee(String employee_id) {
+		
+		Optional<EmployeeMaster> employee = employeeMasterRepo.findById(employee_id);
+		
+		if(employee.isEmpty()) {
+			return ResponseEntity.internalServerError().body("Employee id incorrect");
+		}
+		return ResponseEntity.ok(employeeCardRepo.findByEmployee(employee.get())) ;
+	}
+	
 }

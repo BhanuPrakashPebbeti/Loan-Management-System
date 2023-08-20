@@ -60,4 +60,11 @@ public class CardIssueController {
 		}
 	}
 	
+	@GetMapping("/emp")
+	public ResponseEntity<?> getCardByEmployee(@RequestParam(value = "eid") String eid) {
+		
+		return employeeCardService.getCardByEmployee(eid);
+	}
+	
+	
 }

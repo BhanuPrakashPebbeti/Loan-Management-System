@@ -1,5 +1,6 @@
 package com.wellsfargo.lms.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,5 @@ public interface EmployeeCardRepo extends JpaRepository<EmployeeCardDetails, Str
 	
 	Optional<EmployeeCardDetails> findById(String id);
 
+	List<EmployeeCardDetails> findByEmployee(EmployeeMaster employee);
 }

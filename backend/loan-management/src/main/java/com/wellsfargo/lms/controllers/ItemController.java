@@ -40,11 +40,13 @@ public class ItemController {
 		}
 	}
 	
+	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
 	@GetMapping
 	public ResponseEntity<?> getAllItems(){
 		return ResponseEntity.ok(itemService.getAllItems());
 	}
 	
+	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
 	@GetMapping("/id")
 	public ResponseEntity<?> getItemById(@RequestParam(value = "id") String id) {
 		
