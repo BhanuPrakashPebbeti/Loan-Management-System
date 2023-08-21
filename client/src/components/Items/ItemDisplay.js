@@ -36,7 +36,7 @@ const ItemDisplay = () => {
                     "Content-Type": "application/json"
                 }
             });
-            setItem(data?.data);
+            setItem(data.data);
             setLoad(1);
         } catch (err) {
             setLoad(-1);

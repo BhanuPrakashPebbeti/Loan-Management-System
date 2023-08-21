@@ -3,6 +3,9 @@
     padding: 30px 0 30px 0;
     background-color: rgba(19, 17, 29, 0.8);
     border-top: solid 1px #fafafa;
+    position: relative;
+    bottom: 0;
+    width: 100%;
 }
 
 .footer a {
