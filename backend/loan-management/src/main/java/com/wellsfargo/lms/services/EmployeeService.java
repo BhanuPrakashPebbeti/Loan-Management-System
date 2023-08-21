@@ -1,6 +1,7 @@
 package com.wellsfargo.lms.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.hibernate.exception.ConstraintViolationException;
@@ -88,6 +89,21 @@ public class EmployeeService {
 		}
 		
 		return ResponseEntity.ok(this.employeeRepo.save(employee));
+	}
+	
+	public ResponseEntity<?> deleteEmployee(String eId) {
+		Optional<EmployeeMaster> employeeopt = employeeRepo.findById(eId);
+		
+		if(employeeopt.isEmpty()) {
+			return ResponseEntity.badRequest().body("employee not found with id:"+eId);
+		}
+		
+		EmployeeMaster employee = employeeopt.get();
+				
+		this.employeeRepo.delete(employee);
+
+		return ResponseEntity.ok("Entry deleted successfully!");
+		
 	}
 	
 }

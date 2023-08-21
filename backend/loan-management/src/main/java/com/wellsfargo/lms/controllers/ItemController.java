@@ -9,8 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wellsfargo.lms.models.ItemMaster;
 import com.wellsfargo.lms.payloads.ItemPayload;
+import com.wellsfargo.lms.payloads.UserDetailsPayload;
 import com.wellsfargo.lms.services.ItemService;
 
 
@@ -59,6 +62,18 @@ public class ItemController {
 		else {
 			return ResponseEntity.ok(items);
 		}
+	}
+	
+	@PreAuthorize("hasRole('ADMIN')")
+	@PutMapping
+	public ResponseEntity<?> updateEmployee(@RequestBody ItemMaster itemDetails) {
+		return itemService.updateItem(itemDetails);
+	}
+	
+	@PreAuthorize("hasRole('ADMIN')")
+	@DeleteMapping
+	public ResponseEntity<?> deleteEmployee(@RequestParam(value = "id") String id) {
+		return itemService.deleteItem(id);
 	}
 
 }

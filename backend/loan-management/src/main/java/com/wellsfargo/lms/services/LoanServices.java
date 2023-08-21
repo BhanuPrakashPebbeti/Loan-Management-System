@@ -57,4 +57,41 @@ public class LoanServices {
 		return loanCardRepo.findByLoanType(type);
 	}
 	
+	public ResponseEntity<?> updateLoan(LoanCardMaster loanDetails) {
+
+		Optional<LoanCardMaster> loanopt= loanCardRepo.findById(loanDetails.getId());
+				
+		if(loanopt.isEmpty()) {
+			return ResponseEntity.badRequest().body("loan not found with id:"+loanDetails.getId());
+		}
+		
+		LoanCardMaster loan= loanopt.get();
+
+		if(loanDetails.getDuration()!= 0) {
+			loan.setDuration(loanDetails.getDuration());
+		}
+
+		if(loanDetails.getLoanType()!= null) {
+			loan.setLoanType(loanDetails.getLoanType());
+		}
+
+		
+		return ResponseEntity.ok(this.loanCardRepo.save(loan));
+	}
+	
+	public ResponseEntity<?> deleteItem(String id) {
+		Optional<LoanCardMaster> loanopt= loanCardRepo.findById(id);
+		
+		if(loanopt.isEmpty()) {
+			return ResponseEntity.badRequest().body("loan not found with id:"+id);
+		}
+		
+		LoanCardMaster loan = loanopt.get();
+				
+		this.loanCardRepo.delete(loan);
+
+		return ResponseEntity.ok("Entry deleted successfully!");
+		
+	}
+	
 }
