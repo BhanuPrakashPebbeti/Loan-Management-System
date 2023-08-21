@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import "./AddItem.css";
 import { Context } from "../../../Context/Context";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { CLIENT_URL, SERVER_URL } from "../../../EditableStuff/Config";
 import axios from "axios";
 import { alertContext } from "../../../Context/Alert";
@@ -9,48 +9,62 @@ import Loading from "../../Loading";
 import Error from "../../Error";
 import { Cookies } from 'react-cookie';
 
-const AddItem = () => {
+const EditItem = () => {
+    const { id } = useParams();
     const navigate = useNavigate();
     const { user, logged_in } = useContext(Context);
     const cookies = new Cookies();
     const { showAlert } = useContext(alertContext);
-    const [add, setAdd] = useState(false);
+    const [edit, setEdit] = useState(false);
     const [item, setItem] = useState();
     const [load, setLoad] = useState(0);
 
+    const getItem = async () => {
+        try {
+            const data = await axios.get(`${SERVER_URL}/items/id?id=${id}`, {
+                headers: {
+                    "Authorization": `Bearer ${cookies.get('token')}`,
+                    "Content-Type": "application/json"
+                }
+            });
+            setItem(data.data);
+            setLoad(1);
+        } catch (err) {
+            setLoad(-1);
+            showAlert(`${err.message}`, "danger");
+            navigate('/error');
+        }
+    };
     useEffect(() => {
         if (logged_in === 1) {
-            setItem({
-                itemName: "",
-                valuation: "",
-                category: "",
-                itemMake: "",
-                description: "",
-                issueStatus: 0
-            });
-            setLoad(1);
+            if (id) {
+                getItem();
+            }
+            else {
+                setLoad(-1);
+            }
         }
         else if (logged_in === -1) {
             setLoad(-1);
         }
-    }, [logged_in]);
+    }, [logged_in, id]);
 
     const handleInputs = (e) => {
         setItem({ ...item, [e.target.name]: e.target.value });
     };
 
-    const PostItem = async (e) => {
+    const UpdateItem = async (e) => {
         e.preventDefault();
         try {
-            setAdd(true);
-            const itemData = await axios.post(`${SERVER_URL}/items/createItem`, item, {
+            setEdit(true);
+            const itemData = await axios.put(`${SERVER_URL}/items`, item, {
                 headers: {
                     "Authorization": `Bearer ${cookies.get('token')}`,
                     "Content-Type": "application/json",
                 },
             });
-            showAlert("Item Created Successfully!", "success");
-            setAdd(false);
+            showAlert("Item edited Successfully!", "success");
+            setEdit(false);
             navigate(`/items/${itemData.data.id}`);
         }
         catch (err) {
@@ -67,10 +81,10 @@ const AddItem = () => {
             ) : load === 1 ?
                 <div className="container addItem-container text-center">
                     <div className="adjust">
-                        <h3 className="text-header m-4">Add Item</h3>
+                        <h3 className="text-header m-4">Edit Item</h3>
                         <form
                             method="POST"
-                            onSubmit={PostItem}
+                            onSubmit={UpdateItem}
                             encType="multipart/form-data"
                         >
                             <div className="form-group my-3 row align-items-center">
@@ -168,13 +182,13 @@ const AddItem = () => {
                                     required rows="3" /></div>
                             </div>
                             {
-                                add ?
+                                edit ?
                                     <button type="submit" name="submit" id="submit" className="btn btn-primary" disabled>
-                                        Adding <i className="fa fa-spinner fa-spin"></i>
+                                        Editing <i className="fa fa-spinner fa-spin"></i>
                                     </button>
                                     :
                                     <button type="submit" name="submit" id="submit" className="btn btn-primary">
-                                        Add
+                                        Edit
                                     </button>
                             }
                         </form>
@@ -188,4 +202,4 @@ const AddItem = () => {
     );
 }
 
-export default AddItem;
+export default EditItem;

@@ -36,8 +36,13 @@ const ItemDisplay = () => {
                     "Content-Type": "application/json"
                 }
             });
-            setItem(data?.data);
+            setItem(data.data);
             setLoad(1);
+            if (user && (user.role[0].name === "ROLE_ADMIN")) {
+                setedit(true);
+            } else {
+                setedit(false);
+            }
         } catch (err) {
             setLoad(-1);
             showAlert(`${err.message}`, "danger");
@@ -52,14 +57,31 @@ const ItemDisplay = () => {
                     "Content-Type": "application/json"
                 }
             });
-            setLoans(data?.data);
+            setLoans(data.data);
             setLoad(1);
+
         } catch (err) {
-            setLoad(1);
-            // showAlert(`${err.response.message}`, "danger");
-            // navigate('/error');
+            setLoad(-1);
         }
     }
+
+    const deleteItem = async (status) => {
+        if (status) {
+            try {
+                const res = await axios.delete(`${SERVER_URL}/items/?id=${item.id}`, {
+                    headers: {
+                        "Authorization": `Bearer ${cookies.get('token')}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+                showAlert("Item deleted successfully", "success");
+                navigate("/items");
+            } catch (error) {
+                console.log(error);
+                showAlert("Item Deletion failed", "danger");
+            }
+        }
+    };
 
     const handleInputs = (e) => {
         setItem({ ...item, [e.target.name]: e.target.value });
@@ -68,7 +90,7 @@ const ItemDisplay = () => {
     useEffect(() => {
         getItem(id);
         getLoans(id);
-    }, [id]);
+    }, [logged_in, id]);
 
     return (
         <>
@@ -134,12 +156,28 @@ const ItemDisplay = () => {
                                 </NavLink>
                                 <NavLink
                                     rel="noreferrer"
-                                    // onClick={deleteItem}
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#delete"
                                     className="btn btn-danger btn-sm mx-2"
                                 >
                                     {" "}
                                     Delete
                                 </NavLink>
+                                <div className="modal fade" id="delete" tabIndex="-1" aria-labelledby="deleteLabel" aria-hidden="true">
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                            <div className="modal-header">
+                                                <h6 className="modal-title fs-5" id="deleteLabel">
+                                                    Are you sure to delete the item {item.itemName}?
+                                                </h6>
+                                            </div>
+                                            <div className="modal-footer">
+                                                <button type="button" className="btn btn-sm" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="button" className="btn btn-danger btn-sm" data-bs-dismiss="modal" onClick={() => { deleteItem(true); }}>Confirm</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         )}
                         <div className="row">

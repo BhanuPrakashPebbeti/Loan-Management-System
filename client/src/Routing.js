@@ -5,6 +5,7 @@ import AddItem from './components/Items/AddItem/AddItem';
 import Home from './components/Home/Home';
 import ContactUs from './components/ContactUs';
 import ItemDisplay from './components/Items/ItemDisplay';
+import EditItem from './components/Items/AddItem/EditItem';
 import AddUser from './components/Users/AddUser/AddUser';
 
 const Routing = () => {
@@ -19,6 +20,7 @@ const Routing = () => {
         <Route exact path='/items' element={<Items />} />
         <Route exact path='/additem' element={<AddItem />} />
         <Route exact path='/items/:id' element={<ItemDisplay />} />
+        <Route exact path='/items/:id/edit' element={<EditItem />} />
 
         {/* Users */}
         {/* <Route exact path='/users' element={<Users />} /> */}
