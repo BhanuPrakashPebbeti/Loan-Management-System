@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -81,13 +82,17 @@ public class UserController {
 	}
 	
 
-	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping
-	public ResponseEntity<?> updatePerson(@RequestBody UserDetailsPayload empDetails) {
+	public ResponseEntity<?> updateEmployee(@RequestBody UserDetailsPayload empDetails) {
 		return employeeService.updateEmployee(empDetails);
 	}
 	
-	
+	@PreAuthorize("hasRole('ADMIN')")
+	@DeleteMapping
+	public ResponseEntity<?> deleteEmployee(@RequestParam(value = "id") String eId) {
+		return employeeService.deleteEmployee(eId);
+	}
 	
 	
 	
