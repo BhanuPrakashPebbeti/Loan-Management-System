@@ -18,8 +18,7 @@ const ContextProvider = ({ children }) => {
         axios.get(`${SERVER_URL}/employees/userdetails?id=${cookies.get('id')}`, {
             headers: {
                 "Authorization": `Bearer ${cookies.get('token')}`,
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
+                "Content-Type": "application/json"
             }
         })
             .then(res => {

@@ -7,11 +7,12 @@ import Login from "./Login";
 import axios from "axios";
 import Logo from '../../EditableStuff/lms.jpg';
 import "./NavBar.css";
+import { useCookies } from 'react-cookie';
 
 const NavBar = () => {
   const { user, logged_in } = useContext(Context);
-  console.log(user);
     const [modalShow, setModalShow] = useState(false);
+    const [cookies, setCookie, removeCookie] = useCookies(['token', 'id'])
     const Logout = async () => {
         // try {
         //     const res = await axios.get(`${SERVER_URL}/logout`, {
@@ -20,7 +21,8 @@ const NavBar = () => {
         // } catch (err) {
         //     console.log("Unable to logout..");
         // }
-        document.cookie = null;
+        removeCookie("token");
+        removeCookie("id");
         window.location.reload(true);
     };
 

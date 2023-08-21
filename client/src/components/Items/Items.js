@@ -12,8 +12,7 @@ import { Cookies, CookiesProvider } from "react-cookie";
 const Items = () => {
     const [load, setLoad] = useState(1);
     const [items, setItems] = useState([]);
-    const user = { "isadmin": true };
-    const { user_, logged_in } = useContext(Context);
+    const { user, logged_in } = useContext(Context);
     const cookies = new Cookies();
 
     const getItems = async () => {
@@ -31,26 +30,6 @@ const Items = () => {
         getItems();
     }, []);
 
-    const foo = ()=>{
-        let config = {
-            method: 'get',
-            maxBodyLength: Infinity,
-            url: 'http://localhost:8080/employees/userdetails?id=8c7bfe9a-9862-44c6-888d-807a48cc4c54',
-            headers: { 
-              'Authorization': `Bearer ${cookies.get("token")}`
-            }
-          };
-          
-          axios.request(config)
-          .then((response) => {
-            console.log(JSON.stringify(response.data));
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-          
-    }
-
     return (
         <>
             {load === 0 ? (
@@ -62,7 +41,6 @@ const Items = () => {
                             <div className="col-md-4 text-center text-md-start text-header">
                                 Items
                             </div>
-                            <button onClick={foo}>click me</button>
                             <div className="col-md-8 text-center text-md-end">
                                 {user ? (
                                     <>
