@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useReducer } from 'react';
 import axios from 'axios';
 import Reducer from './Reducer';
 import { SERVER_URL } from '../EditableStuff/Config';
+import { Cookies } from 'react-cookie';
 
 const INIT_STATE = {
     user: null,
@@ -12,9 +13,15 @@ export const Context = createContext(INIT_STATE);
 
 const ContextProvider = ({ children }) => {
     let [state, dispatch] = useReducer(Reducer, INIT_STATE);
+    const cookies = new Cookies();
+    console.log(cookies.get('token'));
+    console.log(cookies.get('id'));
     const newState = async () => {
-        axios.get(`${SERVER_URL}/employees/userdetails?id=${document.cookie.id}`,
-            { Authorization: `Bearer ${document.cookie.token}` })
+        axios.get(`${SERVER_URL}/employees/userdetails?id=${cookies.get('id')}`,
+            {
+                "Authorization": `Bearer ${cookies.get('token')}`,
+                "Access-Control-Allow-Origin": "*"
+            })
             .then(res => {
                 dispatch({
                     type: "LOGGED_IN",
@@ -23,6 +30,7 @@ const ContextProvider = ({ children }) => {
                         logged_in: 1
                     }
                 });
+                console.log(res);
             }).catch(err => {
                 dispatch({
                     type: "LOGOUT",

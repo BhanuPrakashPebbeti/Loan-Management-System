@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { SERVER_URL } from "../../EditableStuff/Config";
+import { useCookies } from 'react-cookie';
 
 function Login(props) {
   const [username, setUsername] = useState();
@@ -10,6 +11,7 @@ function Login(props) {
   const [signin, setsignin] = useState(false);
   const [msg, setMsg] = useState();
   const [showSpinner, setShowSpinner] = useState(false);
+  const [cookies, setCookie] = useCookies(['token', 'id'])
 
   const Login = async (e) => {
     e.preventDefault();
@@ -23,11 +25,8 @@ function Login(props) {
           password: password,
         },
       ).then((res) => {
-        document.cookie = {
-          token: res.data.token,
-          id: res.data.id
-        }
-        console.log(document.cookie);
+        setCookie('token',  res.data.token);
+        setCookie('id',  res.data.id);
         window.location.reload(true);
       }).catch((err) => {
         console.log(err);

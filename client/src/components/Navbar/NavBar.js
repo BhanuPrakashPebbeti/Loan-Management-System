@@ -6,7 +6,7 @@ import { Context } from "../../Context/Context";
 import Login from "./Login";
 import axios from "axios";
 import Logo from '../../EditableStuff/lms.jpg';
-import "./NavBar.css"
+import "./NavBar.css";
 
 const NavBar = () => {
   const { user, logged_in } = useContext(Context);

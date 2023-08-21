@@ -6,16 +6,22 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import ScrollToTop from "./ScrollToTop";
 import Alert from "./Context/Alert"
+import { CookiesProvider } from 'react-cookie';
+import ContextProvider from "./Context/Context";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-        <Alert>
-          <ScrollToTop />
-          <App />
-        </Alert>
-    </BrowserRouter>
+    <CookiesProvider defaultSetCookies={{ path: '/' }}>
+      <BrowserRouter>
+        <ContextProvider>
+          <Alert>
+            <ScrollToTop />
+            <App />
+          </Alert>
+        </ContextProvider>
+      </BrowserRouter>
+    </CookiesProvider>
   </React.StrictMode>
 );
 
