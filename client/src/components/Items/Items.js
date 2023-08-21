@@ -27,13 +27,7 @@ const Items = () => {
     }
 
     useEffect(() => {
-        if (logged_in === 1) {
-            getItems();
-        }
-        else if (logged_in === -1) {
-            setLoad(-1);
-        }
-
+        getItems();
     }, [logged_in]);
 
     return (
@@ -81,6 +75,7 @@ const Items = () => {
                                         <div className="col-md-4 mb-4" key={item.id}>
                                             <ItemCard
                                                 item={item}
+                                                logged_in={logged_in}
                                             />
                                         </div>
                                     );
