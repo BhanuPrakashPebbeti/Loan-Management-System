@@ -40,7 +40,7 @@ public class ItemController {
 		}
 	}
 	
-	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+	@PreAuthorize("permitAll()")
 	@GetMapping
 	public ResponseEntity<?> getAllItems(){
 		return ResponseEntity.ok(itemService.getAllItems());
