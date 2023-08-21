@@ -51,6 +51,10 @@ public class EmployeeCardService {
 			return ResponseEntity.badRequest().body("Item already issued.");
 		}
 		
+		if(!item.get().getCategory().equalsIgnoreCase(loan.get().getLoanType())) {
+			return ResponseEntity.badRequest().body("The loan is not available for this item.");
+		}
+		
 		EmployeeCardDetails employeeCardDetails = new EmployeeCardDetails(employee.get(), loan.get(), item.get());
 		try {
 			EmployeeCardDetails resp = employeeCardRepo.save(employeeCardDetails);

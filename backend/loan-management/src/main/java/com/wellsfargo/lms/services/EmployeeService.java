@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.wellsfargo.lms.models.EmployeeMaster;
+import com.wellsfargo.lms.payloads.UserDetailsPayload;
 import com.wellsfargo.lms.repositories.EmployeeMasterRepo;
 
 @Service
@@ -57,4 +58,36 @@ public class EmployeeService {
 		return employee;
 		
 		}
+	
+	public ResponseEntity<?> updateEmployee(UserDetailsPayload EmpDetails) {
+
+		Optional<EmployeeMaster> employeeopt= employeeRepo.findById(EmpDetails.getId());
+				
+		if(employeeopt.isEmpty()) {
+			return ResponseEntity.badRequest().body("employee not found with id:"+EmpDetails.getId());
+		}
+		
+		EmployeeMaster employee = employeeopt.get();
+
+		if(EmpDetails.getDepartment()!= null) {
+			employee.setDepartment(EmpDetails.getDepartment());
+		}
+
+		if(EmpDetails.getDesignation()!= null) {
+			employee.setDesignation(EmpDetails.getDesignation());
+		}
+
+		if(EmpDetails.getGender()!= null) {
+			employee.setGender(EmpDetails.getGender());
+		}
+		if(EmpDetails.getDob()!= null) {
+			employee.setDob(EmpDetails.getDob());
+		}
+		if(EmpDetails.getDoj()!= null) {
+			employee.setDoj(EmpDetails.getDoj());
+		}
+		
+		return ResponseEntity.ok(this.employeeRepo.save(employee));
+	}
+	
 }
