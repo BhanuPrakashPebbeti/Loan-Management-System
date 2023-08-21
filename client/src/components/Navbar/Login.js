@@ -17,17 +17,21 @@ function Login(props) {
     setsignin(true);
     await axios
       .post(
-        `${SERVER_URL}/login`,
+        `${SERVER_URL}/auth/signin`,
         {
-          username: username,
+          userId: username,
           password: password,
         },
-        { withCredentials: true }
       ).then((res) => {
+        document.cookie = {
+          token: res.data.token,
+          id: res.data.id
+        }
+        console.log(document.cookie);
         window.location.reload(true);
       }).catch((err) => {
         console.log(err);
-        setMsg(err.response.data.error);
+        setMsg(err.message);
         setsignin(false);
       });
   };
@@ -39,7 +43,7 @@ function Login(props) {
     try {
       await axios
         .post(`${SERVER_URL}/forgot-password`, {
-          username: username,
+          userId: username,
         })
         .then((res) => {
           if (res.status === 401) {
@@ -103,7 +107,7 @@ function Login(props) {
                 onClick={Login}
                 disabled={signin}
               >
-                {signin?<>Signing in <i className="fa fa-spinner fa-spin"></i></>:<>Sign in</>}
+                {signin ? <>Signing in <i className="fa fa-spinner fa-spin"></i></> : <>Sign in</>}
               </button>
             </form>
             <button

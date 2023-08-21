@@ -1,24 +1,25 @@
 import React, { useContext, useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import { SERVER_URL } from "../../EditableStuff/Config";
+import { Context } from "../../Context/Context";
 import Login from "./Login";
 import axios from "axios";
 import Logo from '../../EditableStuff/lms.jpg';
 import "./NavBar.css"
 
 const NavBar = () => {
-    const [compete, setCompete] = useState([]);
-    const user = false;
-    const [modalShow, setModalShow] = React.useState(false);
+  const { user, logged_in } = useContext(Context);
+    const [modalShow, setModalShow] = useState(false);
     const Logout = async () => {
-        try {
-            const res = await axios.get(`${SERVER_URL}/logout`, {
-                withCredentials: true,
-            });
-        } catch (err) {
-            console.log("Unable to logout..");
-        }
+        // try {
+        //     const res = await axios.get(`${SERVER_URL}/logout`, {
+        //         withCredentials: true,
+        //     });
+        // } catch (err) {
+        //     console.log("Unable to logout..");
+        // }
+        document.cookie = null;
         window.location.reload(true);
     };
 
@@ -108,7 +109,7 @@ const NavBar = () => {
                       aria-haspopup="true"
                       aria-expanded="false"
                     >
-                      Hello {user.firstname}
+                      Hello {user.name}
                     </NavLink>
                     <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                       <NavLink className="dropdown-item" to="/profile" onClick={closeNavFunc} aria-current="page">

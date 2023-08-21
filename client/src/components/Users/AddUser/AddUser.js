@@ -22,9 +22,10 @@ const AddUser = () => {
     useEffect(() => {
         if (logged_in === 1) {
             setEmployee({
-                employeeName: "",
+                name: "",
                 designation: "",
                 gender: "",
+                department: "",
                 dob: new Date(),
                 doj: new Date(),
                 password: ""
@@ -98,7 +99,7 @@ const AddUser = () => {
                                     <input
                                         type="text"
                                         name="employeeName"
-                                        value={employee.employeeName}
+                                        value={employee.name}
                                         onChange={handleInputs}
                                         className="form-control"
                                         id="employeeName"
@@ -141,6 +142,29 @@ const AddUser = () => {
                                         <option value="">Select gender</option>
                                         <option value="M">Male</option>
                                         <option value="F">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="form-group align-items-center mt-3 row">
+                                <label htmlFor="department" className="col-sm-2 mt-3 text-end">
+                                Department :
+                                </label>
+                                <div className="col col-9">
+                                    <select
+                                        name="department"
+                                        value={employee.department}
+                                        onChange={handleInputs}
+                                        className="form-select"
+                                        aria-label="department"
+                                    >
+                                        <option value="">Select department</option>
+                                        <option value="CT">CT</option>
+                                        <option value="CCIBT">CCIBTR</option>
+                                        <option value="CTO">CTO</option>
+                                        <option value="COO">COO</option>
+                                        <option value="DTI">DTI</option>
+                                        <option value="EFT">EFT</option>
                                         <option value="Other">Other</option>
                                     </select>
                                 </div>
