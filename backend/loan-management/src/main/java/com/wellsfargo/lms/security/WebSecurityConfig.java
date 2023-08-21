@@ -72,7 +72,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.cors(cors->cors.disable())
+		http.cors(cors->cors.and())
 		.csrf(csrf -> csrf.disable())
 				.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
