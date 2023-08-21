@@ -7,11 +7,13 @@ import axios from "axios";
 import { alertContext } from "../../../Context/Alert";
 import Loading from "../../Loading";
 import Error from "../../Error";
+import { Cookies } from 'react-cookie';
 
 const AddItem = () => {
     const navigate = useNavigate();
     const user = true;
     const logged_in = 1;
+    const cookies = new Cookies();
     const { showAlert } = useContext(alertContext);
     const [add, setAdd] = useState(false);
     const [item, setItem] = useState();
@@ -43,12 +45,14 @@ const AddItem = () => {
         try {
             setAdd(true);
             const itemData = await axios.post(`http://localhost:8080/items/createItem`, item, {
-                //   withCredentials: true,
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Authorization": `Bearer ${cookies.get('token')}`,
+                    "Content-Type": "application/json",
+                },
             });
             showAlert("Item Created Successfully!", "success");
             console.log(itemData);
-            navigate(`/items/${itemData.data.id}`);
+            // navigate(`/items/${itemData.data.id}`);
         }
         catch (err) {
             console.log(err);

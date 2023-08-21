@@ -38,7 +38,10 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private AuthEntryPointJwt unauthorizedHandler;
-
+//
+//	@Override
+//	protected void configure(HttpS)
+	
     @Bean
     AuthTokenFilter authenticationJwtTokenFilter() {
 		return new AuthTokenFilter();
@@ -69,12 +72,14 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable())
+		http.cors(cors->cors.disable())
+		.csrf(csrf -> csrf.disable())
 				.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> auth.antMatchers("/auth/**").permitAll()
 						.antMatchers("/swagger-ui/**").permitAll()
 						.antMatchers(HttpMethod.GET,"/items").permitAll()
+						.antMatchers(HttpMethod.GET,"/employees/**").permitAll()
 						.antMatchers("/v3/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**","/swagger-resources/configuration/ui","/swagger-ui.html").permitAll()
 						.anyRequest().authenticated());
 

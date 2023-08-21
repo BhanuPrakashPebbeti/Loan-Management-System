@@ -14,14 +14,14 @@ export const Context = createContext(INIT_STATE);
 const ContextProvider = ({ children }) => {
     let [state, dispatch] = useReducer(Reducer, INIT_STATE);
     const cookies = new Cookies();
-    console.log(cookies.get('token'));
-    console.log(cookies.get('id'));
     const newState = async () => {
-        axios.get(`${SERVER_URL}/employees/userdetails?id=${cookies.get('id')}`,
-            {
+        axios.get(`${SERVER_URL}/employees/userdetails?id=${cookies.get('id')}`, {
+            headers: {
                 "Authorization": `Bearer ${cookies.get('token')}`,
+                "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*"
-            })
+            }
+        })
             .then(res => {
                 dispatch({
                     type: "LOGGED_IN",

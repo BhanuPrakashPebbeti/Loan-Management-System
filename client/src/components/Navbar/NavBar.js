@@ -10,6 +10,7 @@ import "./NavBar.css";
 
 const NavBar = () => {
   const { user, logged_in } = useContext(Context);
+  console.log(user);
     const [modalShow, setModalShow] = useState(false);
     const Logout = async () => {
         // try {

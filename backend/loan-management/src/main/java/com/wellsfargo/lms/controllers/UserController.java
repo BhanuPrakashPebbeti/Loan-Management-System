@@ -23,7 +23,7 @@ import com.wellsfargo.lms.models.EmployeeMaster;
 import com.wellsfargo.lms.payloads.UserDetailsPayload;
 import com.wellsfargo.lms.services.EmployeeService;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 @RestController
 @RequestMapping("employees")
 public class UserController {
@@ -65,7 +65,7 @@ public class UserController {
 		}
 	}
 	
-	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+//	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
 	@GetMapping("/userdetails")
 	public ResponseEntity<?> getUserDetails(@RequestParam(value = "id") String personId) {
 		
