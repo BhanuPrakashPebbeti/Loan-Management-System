@@ -13,13 +13,12 @@ const Items = () => {
     const [load, setLoad] = useState(1);
     const [items, setItems] = useState([]);
     const { user, logged_in } = useContext(Context);
-    console.log(user.role[0].name);
     const cookies = new Cookies();
 
     const getItems = async () => {
         try {
             await axios.get(`${SERVER_URL}/items`).then((data) => {
-                setItems(data?.data);
+                setItems(data.data);
                 setLoad(1);
             })
         } catch (err) {
@@ -28,8 +27,14 @@ const Items = () => {
     }
 
     useEffect(() => {
-        getItems();
-    }, []);
+        if (logged_in === 1) {
+            getItems();
+        }
+        else if (logged_in === -1) {
+            setLoad(-1);
+        }
+
+    }, [logged_in]);
 
     return (
         <>
@@ -58,8 +63,8 @@ const Items = () => {
                                                     fill="currentColor"
                                                     className="bi bi-plus-circle-fill"
                                                     viewBox="0 0 16 18"
-                                    
-                                    >
+
+                                                >
                                                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
                                                 </svg>{" "}
                                                 Add Item
