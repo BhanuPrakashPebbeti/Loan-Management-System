@@ -61,7 +61,7 @@ const ItemDisplay = () => {
             setLoad(1);
 
         } catch (err) {
-            setLoad(-1);
+            setLoad(1);
         }
     }
 

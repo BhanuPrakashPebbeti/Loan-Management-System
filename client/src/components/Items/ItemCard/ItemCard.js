@@ -9,20 +9,17 @@ import car from "../../../EditableStuff/car.jpg";
 import home from "../../../EditableStuff/home.jpg";
 import jewellery from "../../../EditableStuff/jewellery.jpg";
 import object from "../../../EditableStuff/object.jpeg";
+import Login from "../../Navbar/Login";
 
-const ItemCard = ({ item }) => {
+const ItemCard = ({ item, logged_in }) => {
     const { showAlert } = useContext(alertContext);
     const navigate = useNavigate();
+    const [modalShow, setModalShow] = useState(false);
 
     const addDefaultSrc = (ev) => {
         ev.target.src =
             object;
     };
-
-    useEffect(() => {
-        if (item) {
-        }
-    }, [item]);
 
     return (
         <div className="my-3 itemcard-container">
@@ -42,6 +39,16 @@ const ItemCard = ({ item }) => {
                             Item Make : {item.itemMake}
                         </small>
                     </p>
+                    {/* {logged_in ? <NavLink
+                        rel="noreferrer"
+                        to={`/items/${item.id}`}
+                        className="btn btn-sm btn-dark"
+                    >
+                        View More
+                    </NavLink> : <NavLink className="nav-link" variant="primary" onClick={() => setModalShow(true)}>
+                        View More
+                    </NavLink>}
+                    <Login show={modalShow} onHide={() => setModalShow(false)} /> */}
                     <NavLink
                         rel="noreferrer"
                         to={`/items/${item.id}`}
