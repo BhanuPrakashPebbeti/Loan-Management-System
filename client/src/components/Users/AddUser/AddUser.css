@@ -1,0 +1,4 @@
+.form-control {
+    background-color: #b6b9b8b0;
+    border: var(--bs-border-width) solid #c3c8cd;
+}
