@@ -52,7 +52,7 @@ const AddItem = () => {
             });
             showAlert("Item Created Successfully!", "success");
             console.log(itemData);
-            // navigate(`/items/${itemData.data.id}`);
+            navigate(`/items/${itemData.data.id}`);
         }
         catch (err) {
             console.log(err);

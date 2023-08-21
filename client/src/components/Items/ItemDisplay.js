@@ -1,11 +1,10 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
-// import "./ItemDisplay.css";
 import axios from "axios";
 import Loading from "../Loading";
 import { SERVER_URL } from "../../EditableStuff/Config";
-// import { Context } from "../../Context/Context";
+import { Context } from "../../Context/Context";
 import { alertContext } from "../../Context/Alert";
 import { NavLink } from "react-router-dom";
 import Error from "../Error";
@@ -15,38 +14,49 @@ import home from "../../EditableStuff/home.jpg";
 import jewellery from "../../EditableStuff/jewellery.jpg";
 import object from "../../EditableStuff/object.jpeg";
 import LoanCard from "./LoanCard/LoanCard";
+import { Cookies } from 'react-cookie';
 
 const ItemDisplay = () => {
     const params = new useParams(LoanCard);
-    const editor = useRef(null);
     const id = params.id;
-    const user = true;
+    const { user, logged_in } = useContext(Context);
     const { showAlert } = useContext(alertContext);
     const [item, setItem] = useState(null);
     const [loans, setLoans] = useState(null);
     const [edit, setedit] = useState(1);
     const [load, setLoad] = useState(0);
     const navigate = useNavigate();
+    const cookies = new Cookies();
 
     const getItem = async (id) => {
         try {
-            const data = await axios.get(`${SERVER_URL}/items/id?id=${id}`);
+            const data = await axios.get(`${SERVER_URL}/items/id?id=${id}`, {
+                headers: {
+                    "Authorization": `Bearer ${cookies.get('token')}`,
+                    "Content-Type": "application/json"
+                }
+            });
             setItem(data?.data);
             setLoad(1);
         } catch (err) {
             setLoad(-1);
-            showAlert(`${err.response.data.error}`, "danger");
+            showAlert(`${err.message}`, "danger");
             navigate('/error');
         }
     }
     const getLoans = async (id) => {
         try {
-            const data = await axios.get(`${SERVER_URL}/loans/${id}`);
+            const data = await axios.get(`${SERVER_URL}/loans/${id}`, {
+                headers: {
+                    "Authorization": `Bearer ${cookies.get('token')}`,
+                    "Content-Type": "application/json"
+                }
+            });
             setLoans(data?.data);
             setLoad(1);
         } catch (err) {
             setLoad(1);
-            // showAlert(`${err.response.data.error}`, "danger");
+            // showAlert(`${err.response.message}`, "danger");
             // navigate('/error');
         }
     }
@@ -83,7 +93,7 @@ const ItemDisplay = () => {
                                     Add Loan Card
                                 </NavLink>
 
-                                <div className="modal fade" id="loanCardModal" tabindex="-1" aria-labelledby="loanCardModalLabel" aria-hidden="true">
+                                <div className="modal fade" id="loanCardModal" tabIndex="-1" aria-labelledby="loanCardModalLabel" aria-hidden="true">
                                     <div className="modal-dialog">
                                         <div className="modal-content">
                                             <div className="modal-header">

@@ -27,6 +27,9 @@ const Routing = () => {
 
         {/* Others */}
         <Route path='/contactus' element={<ContactUs />} />
+
+         {/* Others */}
+         <Route path='*' element={<Error />} />
         
       </Routes>
     )

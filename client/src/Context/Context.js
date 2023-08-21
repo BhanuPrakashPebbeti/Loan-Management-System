@@ -29,7 +29,6 @@ const ContextProvider = ({ children }) => {
                         logged_in: 1
                     }
                 });
-                console.log(res);
             }).catch(err => {
                 dispatch({
                     type: "LOGOUT",

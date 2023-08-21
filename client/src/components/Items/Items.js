@@ -13,6 +13,7 @@ const Items = () => {
     const [load, setLoad] = useState(1);
     const [items, setItems] = useState([]);
     const { user, logged_in } = useContext(Context);
+    console.log(user.role[0].name);
     const cookies = new Cookies();
 
     const getItems = async () => {
@@ -44,7 +45,7 @@ const Items = () => {
                             <div className="col-md-8 text-center text-md-end">
                                 {user ? (
                                     <>
-                                        {user.isadmin && (
+                                        {(user.role[0].name == "ROLE_ADMIN") && (
                                             <NavLink
                                                 type="button"
                                                 className="btn btn-sm btn-success"
