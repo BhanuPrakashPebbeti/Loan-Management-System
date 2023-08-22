@@ -84,7 +84,7 @@ const Users = () => {
                                                 className='rounded-circle'
                                             />
                                             <div className='ms-3'>
-                                                <p className='fw-bold mb-1'>{userDetails.name}</p>
+                                                <p className='fw-bold mb-1'>{userDetails.name.toUpperCase()}</p>
                                                 {/* <p className='text-muted mb-0'>john.doe@gmail.com</p> */}
                                             </div>
                                         </div>
@@ -101,9 +101,15 @@ const Users = () => {
                                     <td>{ddmmyy(userDetails.dob)}</td>
                                     <td>{ddmmyy(userDetails.doj)}</td>
                                     <td>
-                                        <MDBBtn color='primary' rounded size='sm'>
-                                            <i class="fas fa-edit"></i>
-                                        </MDBBtn>
+                                        <NavLink
+                                            to={`/user/${userDetails.id}/edit`}
+                                            className="btn btn-primary btn-sm mx-2"
+                                        >
+                                            <MDBBtn color='primary' rounded size='sm'>
+                                                <i class="fas fa-edit"></i>
+                                            </MDBBtn>
+                                        </NavLink>
+                                        
                                         <NavLink
                                             rel="noreferrer"
                                             data-bs-toggle="modal"

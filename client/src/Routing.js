@@ -9,6 +9,7 @@ import EditItem from './components/Items/AddItem/EditItem';
 import AddUser from './components/Users/AddUser/AddUser';
 import Users from './components/Users/Users';
 import About from './components/About';
+import EditUser from './components/Users/AddUser/EditUser';
 
 
 const Routing = () => {
@@ -28,6 +29,7 @@ const Routing = () => {
       {/* Users */}
       {/* <Route exact path='/users' element={<Users />} /> */}
       <Route exact path='/addemployee' element={<AddUser />} />
+      <Route exact path='/user/:id/edit' element={<EditUser />} />
       <Route exact path='/users' element={<Users />} />
       {/* <Route exact path='/users/:id' element={<UserDisplay />} /> */}
 
