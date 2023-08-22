@@ -73,7 +73,9 @@ const AddUser = () => {
             });
             showAlert("Employee Created Successfully!", "success");
             setAdd(false);
-            navigate(`/users/${employeeData.data.id}`);
+            // navigate(`/users/${employeeData.data.id}`);
+            
+            navigate(`/users`);
         }
         catch (err) {
             console.log(err);
