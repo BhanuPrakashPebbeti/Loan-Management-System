@@ -1,0 +1,15 @@
+.about-us{
+    /* display: flex; */
+    background-color: rgb(221, 218, 214);
+    text-align: center;
+    margin: 5%;
+    padding: 3%;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    border: 5px;
+    border-color: black;
+    border-radius: 5px;
+}
+
+.about-us p{
+    margin: 5%;
+}
