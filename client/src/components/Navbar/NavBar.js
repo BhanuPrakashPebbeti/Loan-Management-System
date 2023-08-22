@@ -11,56 +11,66 @@ import { useCookies } from 'react-cookie';
 
 const NavBar = () => {
   const { user, logged_in } = useContext(Context);
-    const [modalShow, setModalShow] = useState(false);
-    const [cookies, setCookie, removeCookie] = useCookies(['token', 'id'])
-    const Logout = async () => {
-        // try {
-        //     const res = await axios.get(`${SERVER_URL}/logout`, {
-        //         withCredentials: true,
-        //     });
-        // } catch (err) {
-        //     console.log("Unable to logout..");
-        // }
-        removeCookie("token");
-        removeCookie("id");
-        window.location.reload(true);
-    };
+  const [modalShow, setModalShow] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(['token', 'id'])
+  const role = (user ? user.role[0].name == "ROLE_ADMIN" : false);
+  const Logout = async () => {
+    // try {
+    //     const res = await axios.get(`${SERVER_URL}/logout`, {
+    //         withCredentials: true,
+    //     });
+    // } catch (err) {
+    //     console.log("Unable to logout..");
+    // }
+    removeCookie("token");
+    removeCookie("id");
+    window.location.reload();
+  };
 
-    const navs = [
-        {
-            show: true,
-            link: "/home",
-            name: "Home",
-        },
-        {
-            show: true,
-            link: "/items",
-            name: "Items",
-        },
-        {
-            show: true,
-            link: "/about",
-            name: "About",
-        },
-        {
-            show: true,
-            link: "/contactus",
-            name: "Contact us",
-        },
-    ];
+  useEffect(() => {
 
-    const [navOpen, setNavOpen] = useState(false);
-    const openNavFunc = () => {
-        setNavOpen(true);
-    }
+}, [logged_in, user]);
 
-    const closeNavFunc = () => {
-        setNavOpen(false);
-    }
+  const navs = [
+    {
+      show: true,
+      link: "/home",
+      name: "Home",
+    },
+    {
+      show: true,
+      link: "/items",
+      name: "Items",
+    },
+    {
+      show: true && role,
+      link: "/users",
+      name: "Users",
+    },
+    {
+      show: true,
+      link: "/about",
+      name: "About",
+    },
+    {
+      show: true,
+      link: "/contactus",
+      name: "Contact us",
+    },
+  ];
 
-    return (
-        <>
-      <NavLink className={navOpen?"close-navbar-toggler":"close-navbar-toggler collapsed"} onClick={closeNavFunc}></NavLink>
+  const [navOpen, setNavOpen] = useState(false);
+  const openNavFunc = () => {
+    setNavOpen(true);
+  }
+
+  const closeNavFunc = () => {
+    setNavOpen(false);
+  }
+
+  return (
+    <>
+      <NavLink className={navOpen ? "close-navbar-toggler" : "close-navbar-toggler collapsed"} onClick={closeNavFunc}></NavLink>
       <nav variant="primary" className="navbar navbar-expand-lg align-items-center">
         <div className="container-fluid">
           <NavLink className="navbar-brand title" to='/' onClick={closeNavFunc} aria-current="page"><span><img src={Logo} arc="Logo" style={{ width: "30px", borderRadius: "5px" }} /></span></NavLink>
@@ -149,7 +159,7 @@ const NavBar = () => {
       </nav>
     </>
 
-    );
+  );
 };
 
 export default NavBar;

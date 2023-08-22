@@ -65,7 +65,7 @@ function Login(props) {
       centered
     >
       <Modal.Body className="text-center p-5">
-        <h3 className="pb-4">{reset ? <>Reset Password</> : <>Login</>}</h3>
+        <h3 className="pb-4">{reset ? <>Reset Password</> : <>Login into your account</>}</h3>
         {msg ? <div className="alert alert-danger">{msg}</div> : null}
         {!reset ? (
           <div className="login-container">
