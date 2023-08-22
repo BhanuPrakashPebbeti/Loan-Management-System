@@ -53,6 +53,10 @@ public class EmployeeService {
 		return employeeRepo.findAll();
 	}
 	
+	public List<EmployeeMaster> getAllEmployees(){
+		return employeeRepo.findByRoleName("ROLE_EMPLOYEE");
+	}
+	
 	public Optional<EmployeeMaster> findEmployeeById(String Id) {
 		Optional<EmployeeMaster> employee = employeeRepo.findById(Id);
 		

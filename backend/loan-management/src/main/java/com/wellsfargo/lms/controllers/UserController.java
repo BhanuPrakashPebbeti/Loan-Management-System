@@ -32,9 +32,15 @@ public class UserController {
 	private EmployeeService employeeService;
 	
 	@PreAuthorize("hasRole('ADMIN')")
-	@GetMapping
+	@GetMapping("/all")
 	public ResponseEntity<?> getAllEmployees(){
 		return ResponseEntity.ok().body(employeeService.getAllUsers());
+	}
+	
+	@PreAuthorize("hasRole('ADMIN')")
+	@GetMapping
+	public ResponseEntity<?> getEmployees(){
+		return ResponseEntity.ok().body(employeeService.getAllEmployees());
 	}
 	
 	@PreAuthorize("hasRole('ADMIN')")

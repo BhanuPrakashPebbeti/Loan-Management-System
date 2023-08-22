@@ -79,7 +79,7 @@ public class LoanServices {
 		return ResponseEntity.ok(this.loanCardRepo.save(loan));
 	}
 	
-	public ResponseEntity<?> deleteItem(String id) {
+	public ResponseEntity<?> deleteLoan(String id) {
 		Optional<LoanCardMaster> loanopt= loanCardRepo.findById(id);
 		
 		if(loanopt.isEmpty()) {

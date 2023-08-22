@@ -66,13 +66,13 @@ public class ItemController {
 	
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping
-	public ResponseEntity<?> updateEmployee(@RequestBody ItemMaster itemDetails) {
+	public ResponseEntity<?> updateItem(@RequestBody ItemMaster itemDetails) {
 		return itemService.updateItem(itemDetails);
 	}
 	
 	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping
-	public ResponseEntity<?> deleteEmployee(@RequestParam(value = "id") String id) {
+	public ResponseEntity<?> deleteItem(@RequestParam(value = "id") String id) {
 		return itemService.deleteItem(id);
 	}
 
