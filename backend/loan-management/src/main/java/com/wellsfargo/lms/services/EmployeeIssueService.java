@@ -17,6 +17,7 @@ import com.wellsfargo.lms.models.ItemMaster;
 import com.wellsfargo.lms.models.LoanCardMaster;
 import com.wellsfargo.lms.repositories.EmployeeCardRepo;
 import com.wellsfargo.lms.repositories.EmployeeIssueRepo;
+import com.wellsfargo.lms.repositories.EmployeeMasterRepo;
 import com.wellsfargo.lms.repositories.ItemMasterRepo;
 
 @Service
@@ -30,6 +31,9 @@ public class EmployeeIssueService {
 	
 	@Autowired
 	private ItemMasterRepo itemMasterRepo;
+	
+	@Autowired
+	private EmployeeMasterRepo employeeMasterRepo;
 	
 	
 	public ResponseEntity<?> approveLoan(String cardId){
@@ -153,5 +157,15 @@ public ResponseEntity<?> declineLoan(String cardId){
 			}
 		}
 	}
+
+public ResponseEntity<?> getIsuuesByEmployee(String employee_id) {
+	
+	Optional<EmployeeMaster> employee = employeeMasterRepo.findById(employee_id);
+	
+	if(employee.isEmpty()) {
+		return ResponseEntity.internalServerError().body("Employee id incorrect");
+	}
+	return ResponseEntity.ok(employeeCardRepo.findByEmployee(employee.get())) ;
+}
 	
 }
