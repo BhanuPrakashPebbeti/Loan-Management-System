@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -19,12 +19,15 @@ import { Cookies } from 'react-cookie';
 const ItemDisplay = () => {
     const params = new useParams(LoanCard);
     const id = params.id;
+    const modalRef = useRef(null);
     const { user, logged_in } = useContext(Context);
     const { showAlert } = useContext(alertContext);
     const [item, setItem] = useState(null);
     const [loans, setLoans] = useState(null);
     const [edit, setedit] = useState(1);
     const [load, setLoad] = useState(0);
+    const [add, setAdd] = useState(false);
+    const [duration, setDuration] = useState(0);
     const navigate = useNavigate();
     const cookies = new Cookies();
 
@@ -37,6 +40,7 @@ const ItemDisplay = () => {
                 }
             });
             setItem(data.data);
+            getLoans(data.data);
             setLoad(1);
             if (user && (user.role[0].name === "ROLE_ADMIN")) {
                 setedit(true);
@@ -49,14 +53,15 @@ const ItemDisplay = () => {
             navigate('/error');
         }
     }
-    const getLoans = async (id) => {
+    const getLoans = async (obj) => {
         try {
-            const data = await axios.get(`${SERVER_URL}/loans/${id}`, {
+            const data = await axios.get(`${SERVER_URL}/loans/?type=${obj.category}`, {
                 headers: {
                     "Authorization": `Bearer ${cookies.get('token')}`,
                     "Content-Type": "application/json"
                 }
             });
+            console.log(data.data);
             setLoans(data.data);
             setLoad(1);
 
@@ -68,7 +73,7 @@ const ItemDisplay = () => {
     const deleteItem = async (status) => {
         if (status) {
             try {
-                const res = await axios.delete(`${SERVER_URL}/items/?id=${item.id}`, {
+                const res = await axios.delete(`${SERVER_URL}/items/?id=${id}`, {
                     headers: {
                         "Authorization": `Bearer ${cookies.get('token')}`,
                         "Content-Type": "application/json"
@@ -83,13 +88,40 @@ const ItemDisplay = () => {
         }
     };
 
-    const handleInputs = (e) => {
-        setItem({ ...item, [e.target.name]: e.target.value });
+    const PostLoanCard = async (e) => {
+        e.preventDefault();
+        try {
+            setAdd(true);
+            const loanData = await axios.post(`${SERVER_URL}/loans/createLoan`,
+                {
+                    "duration": duration,
+                    "type": item.category
+                }, {
+                headers: {
+                    "Authorization": `Bearer ${cookies.get('token')}`,
+                    "Content-Type": "application/json",
+                },
+            });
+            showAlert("Loan Created Successfully!", "success");
+            getLoans(item);
+            setAdd(false);
+            if (modalRef.current) {
+                const modal = modalRef.current;
+                modal.classList.remove('show');
+                modal.style.display = 'none';
+            }
+        }
+        catch (err) {
+            console.log(err);
+            showAlert(err.response.data.error, "danger");
+        }
+
     };
 
     useEffect(() => {
-        getItem(id);
-        getLoans(id);
+        if (logged_in !== 0 && id) {
+            getItem(id);
+        }
     }, [logged_in, id]);
 
     return (
@@ -97,7 +129,7 @@ const ItemDisplay = () => {
             {load === 0 ? (
                 <Loading />
             ) : load === 1 ? (
-                <div div className="container itemdisplay-container py-5">
+                <div className="container itemdisplay-container py-5">
                     <div className="header align-center">
                         {edit && (
                             <div className="text-center fs-6 pb-3">
@@ -115,41 +147,57 @@ const ItemDisplay = () => {
                                     Add Loan Card
                                 </NavLink>
 
-                                <div className="modal fade" id="loanCardModal" tabIndex="-1" aria-labelledby="loanCardModalLabel" aria-hidden="true">
+                                <div className="modal fade" id="loanCardModal" tabIndex="-1" aria-labelledby="loanCardModalLabel" aria-hidden="true" ref={modalRef}>
                                     <div className="modal-dialog">
                                         <div className="modal-content">
-                                            <div className="modal-header">
-                                                <h1 className="modal-title fs-5" id="loanCardModalLabel">Add Loan Card</h1>
-                                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div className="modal-body">
-                                                <div className="form-group my-3 row align-items-center">
-                                                    <label htmlFor="valuation" className="col-sm-6 text-end">
-                                                        Loan Tenure (in months) :
-                                                    </label>
-                                                    <div className="col-sm-6">
-                                                        <input
-                                                            type="text"
-                                                            name="loanDuration"
-                                                            // value={loan.loanDuration}
-                                                            onChange={handleInputs}
-                                                            className="form-control"
-                                                            id="loanDuration"
-                                                            aria-describedby="loanDuration"
-                                                            placeholder="Enter Loan Duration"
-                                                            required
-                                                        />
+                                            <form
+                                                method="POST"
+                                                onSubmit={PostLoanCard}
+                                                encType="multipart/form-data"
+                                            >
+                                                <div className="modal-header">
+                                                    <h1 className="modal-title fs-5" id="loanCardModalLabel">Add Loan Card</h1>
+                                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div className="modal-body">
+
+                                                    <div className="form-group my-3 row align-items-center">
+                                                        <label htmlFor="valuation" className="col-sm-6 text-end">
+                                                            Loan Tenure (in months) :
+                                                        </label>
+                                                        <div className="col-sm-6">
+                                                            <input
+                                                                type="text"
+                                                                name="duration"
+                                                                value={duration}
+                                                                onChange={(e) => { setDuration(e.target.value) }}
+                                                                className="form-control"
+                                                                id="duration"
+                                                                aria-describedby="duration"
+                                                                placeholder="Enter Loan Duration"
+                                                                required
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div className="modal-footer">
-                                                <button type="button" className="btn btn-primary">Save changes</button>
-                                            </div>
+                                                <div className="modal-footer">
+                                                    {
+                                                        add ?
+                                                            <button type="submit" name="submit" id="submit" className="btn btn-primary" disabled>
+                                                                Adding <i className="fa fa-spinner fa-spin"></i>
+                                                            </button>
+                                                            :
+                                                            <button type="submit" name="submit" id="submit" className="btn btn-primary" >
+                                                                Add
+                                                            </button>
+                                                    }
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
                                 <NavLink
-                                    to={`/items/${item.id}/edit`}
+                                    to={`/items/${id}/edit`}
                                     className="btn btn-primary btn-sm mx-2"
                                 >
                                     Edit{" "}
@@ -215,7 +263,7 @@ const ItemDisplay = () => {
                                         <div className="row">
                                             {loans && loans.map((loan) => {
                                                 return (
-                                                    <div className="col-md-4 mb-4" key={item.id}>
+                                                    <div className="col-md-6 mb-6" key={loan.id}>
                                                         <LoanCard
                                                             item={item}
                                                             loan={loan}

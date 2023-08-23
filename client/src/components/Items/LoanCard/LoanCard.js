@@ -5,7 +5,8 @@ import loanImg from "./../../../EditableStuff/loan.png";
 const LoanCard = ({ item, loan }) => {
     const calcEmi = (p, t) => {
         const r = 0.006;
-        return (p * r * ((1 + r) ** t)) / (((1 + r) ** t) - 1)
+        const emi = (p * r * ((1 + r) ** t)) / (((1 + r) ** t) - 1);
+        return emi.toFixed(2)
     }
     return (
         <div className="loancard-container d-flex justify-content-center container text-white mt-5">
