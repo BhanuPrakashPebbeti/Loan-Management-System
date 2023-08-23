@@ -105,11 +105,9 @@ const Users = () => {
                                             to={`/user/${userDetails.id}/edit`}
                                             className="btn btn-primary btn-sm mx-2"
                                         >
-                                            <MDBBtn color='primary' rounded size='sm'>
-                                                <i class="fas fa-edit"></i>
-                                            </MDBBtn>
+                                            <i class="fas fa-edit"></i>
                                         </NavLink>
-                                        
+
                                         <NavLink
                                             rel="noreferrer"
                                             data-bs-toggle="modal"

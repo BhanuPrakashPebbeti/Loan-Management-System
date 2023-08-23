@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import "./AddUser.css";
 import { Context } from "../../../Context/Context";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { CLIENT_URL, SERVER_URL } from "../../../EditableStuff/Config";
 import axios from "axios";
 import { alertContext } from "../../../Context/Alert";
@@ -17,6 +17,11 @@ const AddUser = () => {
     const { showAlert } = useContext(alertContext);
     const [add, setAdd] = useState(false);
     const cookies = new Cookies();
+    const { id } = useParams();
+    const [edit, setEdit] = useState(false);
+    const [usr, setUsr] = useState();
+    const [load, setLoad] = useState(0);
+
     const [employee, setEmployee] = useState({
         name: "",
         designation: "",
@@ -28,24 +33,11 @@ const AddUser = () => {
         isadmin: 0,
         role: ["employee"]
     });
-    const [load, setLoad] = useState(0);
 
-    useEffect(() => {
-        if (logged_in === 1) {
-            if (user.role[0].name == "ROLE_ADMIN") {
-                setLoad(1);
-            }
-            else {
-                setLoad(-1)
-            }
-        }
-        else if (logged_in === -1) {
-            setLoad(-1);
-        }
-    }, [logged_in]);
+   
 
     const handleInputs = (e) => {
-        setEmployee({ ...employee, [e.target.name]: e.target.value });
+        setUsr({ ...usr, [e.target.name]: e.target.value });
     };
 
     const setDOB = (date) => {
@@ -61,20 +53,52 @@ const AddUser = () => {
         return date;
     }
 
-    const PostEmployee = async (e) => {
-        e.preventDefault();
+    const getUser = async () => {
         try {
-            setAdd(true);
-            const employeeData = await axios.post(`${SERVER_URL}/auth/signup`, employee, {
+            const data = await axios.get(`${SERVER_URL}/employees/id?id=${id}`, {
                 headers: {
                     "Authorization": `Bearer ${cookies.get('token')}`,
                     "Content-Type": "application/json"
                 }
             });
-            showAlert("Employee Created Successfully!", "success");
-            setAdd(false);
-            // navigate(`/users/${employeeData.data.id}`);
-            
+            setUsr(data.data);
+            console.log(data.data);
+            setLoad(1);
+        } catch (err) {
+            setLoad(-1);
+            showAlert(`${err.message}`, "danger");
+            navigate('/error');
+        }
+    };
+    useEffect(() => {
+        if (logged_in === 1) {
+            if (id) {
+                getUser();
+            }
+            else {
+                setLoad(-1);
+            }
+        }
+        else if (logged_in === -1) {
+            setLoad(-1);
+        }
+    }, [logged_in, id]);
+
+
+    const UpdateEmployee = async (e) => {
+        e.preventDefault();
+        try {
+            setEdit(true);
+            console.log("Final",usr);
+            const itemData = await axios.put(`${SERVER_URL}/employees`, usr, {
+                headers: {
+                    "Authorization": `Bearer ${cookies.get('token')}`,
+                    "Content-Type": "application/json",
+                },
+            });
+            console.log(usr);
+            showAlert("User edited Successfully!", "success");
+            setEdit(false);
             navigate(`/users`);
         }
         catch (err) {
@@ -83,6 +107,7 @@ const AddUser = () => {
         }
 
     };
+ 
 
     return (
         <>
@@ -91,10 +116,10 @@ const AddUser = () => {
             ) : load === 1 ?
                 <div className="container addItem-container text-center">
                     <div className="adjust">
-                        <h3 className="text-header m-4">Add Employee</h3>
+                        <h3 className="text-header m-4">Edit Employee</h3>
                         <form
                             method="POST"
-                            onSubmit={PostEmployee}
+                            onSubmit={UpdateEmployee}
                             encType="multipart/form-data"
                         >
                             <div className="form-group my-3 row align-items-center">
@@ -105,7 +130,7 @@ const AddUser = () => {
                                     <input
                                         type="text"
                                         name="name"
-                                        value={employee.name}
+                                        value={usr.name}
                                         onChange={handleInputs}
                                         className="form-control"
                                         id="name"
@@ -123,7 +148,7 @@ const AddUser = () => {
                                     <input
                                         type="text"
                                         name="designation"
-                                        value={employee.designation}
+                                        value={usr.designation}
                                         onChange={handleInputs}
                                         className="form-control"
                                         id="designation"
@@ -140,7 +165,7 @@ const AddUser = () => {
                                 <div className="col col-9">
                                     <select
                                         name="gender"
-                                        value={employee.gender}
+                                        value={usr.gender}
                                         onChange={handleInputs}
                                         className="form-select"
                                         aria-label="gender"
@@ -159,7 +184,7 @@ const AddUser = () => {
                                 <div className="col col-9">
                                     <select
                                         name="department"
-                                        value={employee.department}
+                                        value={usr.department}
                                         onChange={handleInputs}
                                         className="form-select"
                                         aria-label="department"
@@ -170,19 +195,21 @@ const AddUser = () => {
                                         <option value="CTO">CTO</option>
                                         <option value="COO">COO</option>
                                         <option value="DTI">DTI</option>
+                                        <option value="IT">EFT</option>
                                         <option value="EFT">EFT</option>
                                         <option value="Other">Other</option>
                                     </select>
                                 </div>
                             </div>
-                            <div className="form-group mt-3 row align-items-center">
+                            {/* <div className="form-group mt-3 row align-items-center">
                                 <label htmlFor="dob" className="col-sm-2 text-end">
                                     DOB :
                                 </label>
                                 <div className="col-sm-10">
                                     <DatePicker
+                                        name = "dob"
                                         className="form-control"
-                                        selected={new Date(employee.dob)}
+                                        selected={new Date(usr.dob)}
                                         onChange={(date) => setDOB(date)}
                                         minDate={subtractYears(new Date(), 70)}
                                         dateFormat="MMMM d, yyyy"
@@ -199,8 +226,9 @@ const AddUser = () => {
                                 </label>
                                 <div className="col-sm-10">
                                     <DatePicker
+                                        name  = "doj"
                                         className="form-control"
-                                        selected={new Date(employee.doj)}
+                                        selected={new Date(usr.doj)}
                                         onChange={(date) => setDOJ(date)}
                                         minDate={subtractYears(new Date(), 40)}
                                         dateFormat="MMMM d, yyyy"
@@ -218,14 +246,14 @@ const AddUser = () => {
                                 <div className="col-sm-10">
                                     <input type="password"
                                         name="password"
-                                        value={employee.password}
+                                        value={usr.password}
                                         onChange={handleInputs}
                                         className="form-control"
                                         id="password"
                                         aria-describedby="password"
                                         placeholder="Enter password"
                                         required /></div>
-                            </div>
+                            </div> */}
                             {
                                 add ?
                                     <button type="submit" name="submit" id="submit" className="btn btn-primary" disabled>
@@ -233,7 +261,7 @@ const AddUser = () => {
                                     </button>
                                     :
                                     <button type="submit" name="submit" id="submit" className="btn btn-primary">
-                                        Add
+                                        Edit
                                     </button>
                             }
                         </form>
