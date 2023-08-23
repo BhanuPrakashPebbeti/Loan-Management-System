@@ -74,6 +74,11 @@ public class EmployeeService {
 		
 		EmployeeMaster employee = employeeopt.get();
 
+		
+		if(EmpDetails.getName()!= null) {
+			employee.setName(EmpDetails.getName());
+		}
+		
 		if(EmpDetails.getDepartment()!= null) {
 			employee.setDepartment(EmpDetails.getDepartment());
 		}
