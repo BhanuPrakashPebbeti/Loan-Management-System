@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.apache.logging.log4j.util.StringBuilderFormattable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.weaving.DefaultContextLoadTimeWeaver;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -47,7 +45,8 @@ public class ForgotPasswordService {
 		
 		String body = "Hi, Your OTP for logging into LMS app is: "
         		+ otp
-        		+ "\n DO NOT SHARE THIS WITH ANYONE!";
+        		+ "\n DO NOT SHARE THIS WITH ANYONE! "
+        		+ "The password will expire in 15mins.";
 		
 		boolean sent =  emailService.sendEmail(employee.getEmail(), "Your otp for LMS", body);
 		
