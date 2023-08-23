@@ -3,6 +3,7 @@ package com.wellsfargo.lms.models;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -25,8 +26,11 @@ import lombok.ToString;
 public class EmployeeMaster {
 	
 	@Id
-	@GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
+	/*
+	 * @GeneratedValue(generator = "uuid")
+	 * 
+	 * @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
+	 */
 	@Column(name = "employee_id")
 	private String id;
 
@@ -34,6 +38,11 @@ public class EmployeeMaster {
 	@NotNull(message = "Name cannot be blank")
 	@Size(min = 2,message = "Name too short")
 	private String name;
+	
+	@Column(name="email",unique = true)
+	@NotNull(message = "email cannot be blank")
+	@Size(min = 2,message = "email too short")
+	private String email;
 
 	@Column(name = "designation")
 	@NotNull
@@ -74,10 +83,12 @@ public class EmployeeMaster {
 	
 	
 
-	public EmployeeMaster(String name, String designation, String department, String gender, String dob,
+	public EmployeeMaster(String name, String email, String designation, String department, String gender, String dob,
 			String doj, String password, int isAdmin) {
 		super();
+		this.id = UUID.randomUUID().toString().substring(0,6);
 		this.name = name;
+		this.email = email;
 		this.designation = designation;
 		this.department = department;
 		this.gender = gender;
