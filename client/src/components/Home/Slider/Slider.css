@@ -1,6 +1,6 @@
 .slides-home-container .carousel .carousel-inner .carousel-item {
     position: relative;
-    height: calc(var(--module-height) - 6vh);
+    height: calc(var(--module-height) + 3vh);
     text-align: center;
 }
 

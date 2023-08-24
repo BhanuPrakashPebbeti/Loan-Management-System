@@ -2,8 +2,8 @@ import Carousel from 'react-bootstrap/Carousel';
 import './Slider.css';
 import React from 'react';
 import slider1 from "./../../../EditableStuff/slider-1.jpeg";
-import slider2 from "./../../../EditableStuff/slider-2.jpg";
-import slider3 from "./../../../EditableStuff/slider-3.jpg";
+import slider2 from "./../../../EditableStuff/slider-2.PNG";
+import slider3 from "./../../../EditableStuff/slider-3.PNG";
 
 function Slider() {
     const slides = [slider1, slider2, slider3];
