@@ -1,6 +1,7 @@
 package com.wellsfargo.lms.security.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,15 +20,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
   @Override
   @Transactional
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    List<EmployeeMaster> users = userRepository.findByName(username);
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    Optional<EmployeeMaster> users = userRepository.findByEmail(email);
 //    System.out.println(users);
     if(users.isEmpty()) {
-    	throw new UsernameNotFoundException("User Not Found with username: " + username);
+    	throw new UsernameNotFoundException("User Not Found with username: " + email);
     }
     else {
-    	EmployeeMaster user = users.get(0);
-    	System.out.println(user);
+    	EmployeeMaster user = users.get();
+//    	System.out.println(user);
     	return UserDetailsImpl.build(user);
     }
     

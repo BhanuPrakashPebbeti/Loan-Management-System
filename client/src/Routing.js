@@ -11,6 +11,7 @@ import Users from './components/Users/Users';
 import About from './components/About';
 import EditUser from './components/Users/AddUser/EditUser';
 import LoanIssue from './components/Loans/LoanIssue';
+import Profile from './components/Profile/profile';
 
 
 const Routing = () => {
@@ -25,7 +26,7 @@ const Routing = () => {
       <Route exact path='/items' element={<Items />} />
       <Route exact path='/additem' element={<AddItem />} />
       <Route exact path='/items/:id' element={<ItemDisplay />} />
-      <Route exact path='/items/:id/edit' element={<EditItem />} />
+      <Route exact path='/items/:id/edit' element={<EditItem />} /> 
 
       {/* Users */}
       {/* <Route exact path='/users' element={<Users />} /> */}
@@ -33,6 +34,7 @@ const Routing = () => {
       <Route exact path='/user/:id/edit' element={<EditUser />} />
       <Route exact path='/users' element={<Users />} />
       <Route exact path='/loanissue' element={<LoanIssue />} />
+      <Route exact path='/profile' element={<Profile />} />
       {/* <Route exact path='/users/:id' element={<UserDisplay />} /> */}
 
       {/* AboutUs */}

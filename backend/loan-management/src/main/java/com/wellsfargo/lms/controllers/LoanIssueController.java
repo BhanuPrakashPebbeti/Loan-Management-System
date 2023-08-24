@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wellsfargo.lms.payloads.IssuePayload;
@@ -22,6 +23,12 @@ public class LoanIssueController {
 
 	@Autowired
 	private EmployeeIssueService employeeIssueService;
+	
+	@GetMapping("/emp")
+public ResponseEntity<?> getCardByEmployee(@RequestParam(value = "eid") String eid) {
+		
+		return employeeIssueService.getIsuuesByEmployee(eid);
+	}
 	
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("new")

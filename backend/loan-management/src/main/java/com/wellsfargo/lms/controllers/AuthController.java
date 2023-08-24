@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wellsfargo.lms.models.ERole;
@@ -30,6 +31,7 @@ import com.wellsfargo.lms.repositories.EmployeeMasterRepo;
 import com.wellsfargo.lms.repositories.RoleRepository;
 import com.wellsfargo.lms.security.jwt.JwtUtils;
 import com.wellsfargo.lms.security.services.UserDetailsImpl;
+import com.wellsfargo.lms.services.ForgotPasswordService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -43,6 +45,9 @@ public class AuthController {
 
 	@Autowired
 	RoleRepository roleRepository;
+	
+	@Autowired
+	ForgotPasswordService forgotPasswordService;
 
 	@Autowired
 	PasswordEncoder encoder;
@@ -54,7 +59,7 @@ public class AuthController {
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
 		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUserId(), loginRequest.getPassword()));
+				new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
@@ -80,7 +85,7 @@ public class AuthController {
 //		EmployeeMaster user = new EmployeeMaster(signUpRequest.getUsername(), signUpRequest.getEmail(),
 //				encoder.encode(signUpRequest.getPassword()));
 
-		EmployeeMaster employee = new EmployeeMaster(signUpRequest.getName(), signUpRequest.getDesignation(),
+		EmployeeMaster employee = new EmployeeMaster(signUpRequest.getName(),signUpRequest.getEmail() , signUpRequest.getDesignation(),
 				signUpRequest.getDepartment(), signUpRequest.getGender(), signUpRequest.getDob(),
 				signUpRequest.getDoj(), encoder.encode(signUpRequest.getPassword()), signUpRequest.getIsAdmin());
 
@@ -114,4 +119,20 @@ public class AuthController {
 
 		return ResponseEntity.ok(("User registered successfully!"));
 	}
+	
+	@PostMapping("/forgot")
+	public ResponseEntity<?> forGotPassword(@RequestParam(value = "email") String email) {
+		return forgotPasswordService.forgotPassword(email);
+	}
+	
+	@PostMapping("/verify")
+	public ResponseEntity<?> verifyOTP(@RequestParam(value = "email") String email,
+			@RequestParam(value = "otp") String otp, @RequestParam(value = "pass") String pass) {
+		return forgotPasswordService.changePassOTP(otp, email, pass);
+		
+		
+	}
+	
+	
+	
 }

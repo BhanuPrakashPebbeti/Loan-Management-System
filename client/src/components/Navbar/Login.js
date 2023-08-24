@@ -5,7 +5,7 @@ import { SERVER_URL } from "../../EditableStuff/Config";
 import { useCookies } from 'react-cookie';
 
 function Login(props) {
-  const [username, setUsername] = useState();
+  const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [reset, setReset] = useState(false);
   const [signin, setsignin] = useState(false);
@@ -21,7 +21,7 @@ function Login(props) {
       .post(
         `${SERVER_URL}/auth/signin`,
         {
-          userId: username,
+          email: email,
           password: password,
         },
       ).then((res) => {
@@ -42,7 +42,7 @@ function Login(props) {
     try {
       await axios
         .post(`${SERVER_URL}/forgot-password`, {
-          userId: username,
+          email: email,
         })
         .then((res) => {
           if (res.status === 401) {
@@ -74,13 +74,13 @@ function Login(props) {
                 <div>
                   <input
                     type="text"
-                    name="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="form-control py-2 px-4 rounded-pill"
-                    id="username"
-                    aria-describedby="username"
-                    placeholder="Enter Username or EMail ID"
+                    id="email"
+                    aria-describedby="email"
+                    placeholder="Enter EMail ID"
                     required
                   />
                 </div>
@@ -127,13 +127,13 @@ function Login(props) {
                 <div>
                   <input
                     type="text"
-                    name="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="form-control rounded-pill py-2 px-4"
-                    id="username"
-                    aria-describedby="username"
-                    placeholder="Enter Username or EMail ID"
+                    id="email"
+                    aria-describedby="email"
+                    placeholder="Enter EMail ID"
                     required
                   />
                 </div>
