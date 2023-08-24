@@ -13,22 +13,26 @@ import car from "../../EditableStuff/car.jpg";
 import home from "../../EditableStuff/home.jpg";
 import jewellery from "../../EditableStuff/jewellery.jpg";
 import object from "../../EditableStuff/object.jpeg";
-import LoanCard from "./LoanCard/LoanCard";
 import { Cookies } from 'react-cookie';
 import Modal from "react-bootstrap/Modal";
+import "./LoanCard.css";
+import loanImg from "./../../EditableStuff/loan.png";
 
-const ItemDisplay2 = () => {
-    const params = new useParams(LoanCard);
+const ItemDisplay = () => {
+    const params = new useParams();
     const id = params.id;
     const { user, logged_in } = useContext(Context);
     const { showAlert } = useContext(alertContext);
     const [item, setItem] = useState(null);
     const [loans, setLoans] = useState(null);
-    const [edit, setedit] = useState(1);
+    const [edit, setEdit] = useState(1);
     const [load, setLoad] = useState(0);
     const [modalShow, setModalShow] = useState(false);
+    const [modalShow2, setModalShow2] = useState(false);
+    const [modalShow3, setModalShow3] = useState(false);
     const [add, setAdd] = useState(false);
     const [duration, setDuration] = useState(0);
+    const [editLoan, setEditLoan] = useState(0);
     const navigate = useNavigate();
     const cookies = new Cookies();
 
@@ -44,9 +48,9 @@ const ItemDisplay2 = () => {
             getLoans(data.data);
             setLoad(1);
             if (user && (user.role[0].name === "ROLE_ADMIN")) {
-                setedit(true);
+                setEdit(true);
             } else {
-                setedit(false);
+                setEdit(false);
             }
         } catch (err) {
             setLoad(-1);
@@ -96,7 +100,7 @@ const ItemDisplay2 = () => {
             const loanData = await axios.post(`${SERVER_URL}/loans/createLoan`,
                 {
                     "duration": duration,
-                    "type": item.category
+                    "loanType": item.category
                 }, {
                 headers: {
                     "Authorization": `Bearer ${cookies.get('token')}`,
@@ -114,6 +118,61 @@ const ItemDisplay2 = () => {
         }
 
     };
+
+
+    const EditLoanCard = async (e) => {
+        e.preventDefault();
+        try {
+            setAdd(true);
+            console.log(editLoan);
+            const itemData = await axios.put(`${SERVER_URL}/loans`, editLoan, {
+                headers: {
+                    "Authorization": `Bearer ${cookies.get('token')}`,
+                    "Content-Type": "application/json",
+                },
+            });
+            showAlert("Loan Card edited Successfully!", "success");
+            getItem(id);
+            setAdd(false);
+            setModalShow2(false);
+            navigate(`/items/${id}`);
+        }
+        catch (err) {
+            console.log(err);
+            showAlert(err.response.data.error, "danger");
+        }
+
+    };
+
+    const deleteLoanCard = async () => {
+        try {
+            setAdd(true);
+            const res = await axios.delete(`${SERVER_URL}/loans/?id=${editLoan.id}`, {
+                headers: {
+                    "Authorization": `Bearer ${cookies.get('token')}`,
+                    "Content-Type": "application/json"
+                }
+            });
+            // const updatedLoanCards = loans.filter(loan => loan.id !== id);
+            // setLoans(updatedLoanCards);
+            // getLoans(item);
+            showAlert("Loan Card deleted successfully", "success");
+            getItem(id);
+            setAdd(false);
+            setModalShow3(false);
+            navigate(`/items/${id}`);
+        } catch (error) {
+            console.log(error);
+            showAlert("Loan Card Deletion failed", "danger");
+        }
+    };
+
+
+    const calcEmi = (p, t) => {
+        const r = 0.006;
+        const emi = (p * r * ((1 + r) ** t)) / (((1 + r) ** t) - 1);
+        return emi.toFixed(2)
+    }
 
     useEffect(() => {
         if (logged_in !== 0 && id) {
@@ -256,17 +315,128 @@ const ItemDisplay2 = () => {
                                         <div className="row">
                                             {loans && loans.map((loan) => {
                                                 return (
-                                                    <div className="col-md-6 mb-6" key={loan.id}>
-                                                        <LoanCard
-                                                            item={item}
-                                                            loan={loan}
-                                                        />
+                                                    loan && <div className="col-md-6 mb-6" key={loan.id}>
+                                                        <div className="loancard-container d-flex justify-content-center container text-white mt-3">
+                                                            <div className="card p-2 px-3 py-3">
+                                                                <div className="d-flex justify-content-between align-items-center">
+                                                                    {/* <img src="https://i.imgur.com/8ANWXql.png" width="20" height="20" /> */}
+                                                                    <div>
+                                                                        <NavLink
+                                                                            onClick={() => {
+                                                                                setModalShow2(true);
+                                                                                setEditLoan(loan);
+                                                                            }}
+                                                                            className="btn btn-primary btn-sm mx-2"
+                                                                        >
+                                                                            <i class="fas fa-edit"></i>
+                                                                        </NavLink>
+
+                                                                        <NavLink
+                                                                            className="btn btn-danger btn-sm mx-2"
+                                                                            onClick={() => {
+                                                                                setModalShow3(true);
+                                                                                setEditLoan(loan);
+                                                                            }}
+                                                                        >
+                                                                            <i class="fas fa-trash"></i>
+                                                                        </NavLink>
+                                                                    </div>
+                                                                    <img src={loanImg} width="40" /></div>
+                                                                <div className="d-flex justify-content-between card-details mt-1 mb-1 text-light">
+                                                                    <div className="d-flex flex-column">
+                                                                        <span className="light">Loan Tenure</span><span>{loan.duration} mon</span>
+                                                                    </div>
+                                                                    <div className="d-flex flex-row">
+                                                                        <div className="d-flex flex-column mr-3"><span className="light">EMI</span><span>{calcEmi(item.valuation, loan.duration)}/-</span></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 );
                                             })}
                                         </div>
                                     </div>
                                 </div>
+                                <Modal
+                                    show={modalShow2}
+                                    onHide={() => setModalShow2(false)}
+                                    size="lg"
+                                    aria-labelledby="contained-modal-title-vcenter"
+                                    centered
+                                >
+                                    <Modal.Body className="text-center p-5">
+                                        <form
+                                            method="PUT"
+                                            onSubmit={EditLoanCard}
+                                            encType="multipart/form-data"
+                                        >
+
+                                            <div className="modal-body">
+                                                <h3 className="pb-4">Edit Loan Card</h3>
+                                                <div className="form-group mb-3 text-start">
+                                                    <div>
+                                                        <input
+                                                            type="text"
+                                                            name="duration"
+                                                            value={editLoan.duration}
+                                                            onChange={(e) => {
+                                                                setEditLoan({ ...editLoan, [e.target.name]: e.target.value });
+                                                            }}
+                                                            className="form-control"
+                                                            id="duration"
+                                                            aria-describedby="duration"
+                                                            placeholder="Loan Tenure (in months)"
+                                                            required
+                                                        />
+                                                    </div>
+                                                </div>
+                                                {
+                                                    add ?
+                                                        <button type="submit" name="submit" id="submit" className="btn btn-primary w-100 mb-4 py-2 px-4" disabled>
+                                                            Editing <i className="fa fa-spinner fa-spin"></i>
+                                                        </button>
+                                                        :
+                                                        <button type="submit" name="submit" id="submit" className="btn btn-primary w-100 mb-4 py-2 px-4" >
+                                                            Edit
+                                                        </button>
+                                                }
+                                            </div>
+
+                                        </form>
+                                    </Modal.Body>
+                                </Modal>
+                                <Modal
+                                    show={modalShow3}
+                                    onHide={() => setModalShow3(false)}
+                                    size="lg"
+                                    aria-labelledby="contained-modal-title-vcenter"
+                                    centered
+                                >
+                                    <Modal.Body className="text-center p-5">
+                                        <form
+                                            method="DELETE"
+                                            onSubmit={deleteLoanCard}
+                                            encType="multipart/form-data"
+                                        >
+
+                                            <div className="modal-body">
+                                                <h5 className="pb-4">Are you sure to delete Loan Card</h5>
+                                                {
+                                                    add ?
+                                                        <button type="submit" name="submit" id="submit" className="btn btn-primary w-100 mb-4 py-2 px-4" disabled>
+                                                            Deleting <i className="fa fa-spinner fa-spin"></i>
+                                                        </button>
+                                                        :
+                                                        <button type="submit" name="submit" id="submit" className="btn btn-primary w-100 mb-4 py-2 px-4" >
+                                                            Delete
+                                                        </button>
+                                                }
+                                            </div>
+
+                                        </form>
+                                    </Modal.Body>
+                                </Modal>
                             </div>
                         </div>
                     </div>
@@ -278,4 +448,4 @@ const ItemDisplay2 = () => {
     );
 };
 
-export default ItemDisplay2;
+export default ItemDisplay;

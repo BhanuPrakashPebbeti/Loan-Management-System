@@ -22,7 +22,7 @@ public class LoanServices {
 	
 	public ResponseEntity<?> createLoan(LoanPayload loanreq) {
 
-		LoanCardMaster loan = new LoanCardMaster(loanreq.getType(),loanreq.getDuration());
+		LoanCardMaster loan = new LoanCardMaster(loanreq.getLoanType(),loanreq.getDuration());
 		
 		try {
 			LoanCardMaster resp = loanCardRepo.save(loan);

@@ -12,7 +12,7 @@ import lombok.Setter;
 public class LoanPayload {
 
 	
-	private String type;
+	private String loanType;
 	
 	private int duration;
 }
