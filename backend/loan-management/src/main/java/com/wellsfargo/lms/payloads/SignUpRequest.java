@@ -22,6 +22,7 @@ public class SignUpRequest {
 	String dob;
 	String doj;
 	String password;
+	String email;
 	int isAdmin;
 	Set<String> role;
 	
