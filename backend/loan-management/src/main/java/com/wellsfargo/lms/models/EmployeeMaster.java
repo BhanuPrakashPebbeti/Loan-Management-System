@@ -34,7 +34,7 @@ public class EmployeeMaster {
 	@Column(name = "employee_id")
 	private String id;
 
-	@Column(name = "employee_name",unique = true)
+	@Column(name = "employee_name")
 	@NotNull(message = "Name cannot be blank")
 	@Size(min = 2,message = "Name too short")
 	private String name;

@@ -30,8 +30,6 @@ public ResponseEntity<?> getCardByEmployee(@RequestParam(value = "eid") String e
 		return employeeIssueService.getIsuuesByEmployee(eid);
 	}
 	
-	
-	
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("new")
 	public ResponseEntity<?> approveItem(@RequestBody @Valid IssuePayload reqPayload){
