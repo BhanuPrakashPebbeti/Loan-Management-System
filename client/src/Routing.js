@@ -34,7 +34,7 @@ const Routing = () => {
       <Route exact path='/user/:id/edit' element={<EditUser />} />
       <Route exact path='/users' element={<Users />} />
       <Route exact path='/loanissue' element={<LoanIssue />} />
-      <Route exact path='/profile' element={<Profile />} />
+      <Route exact path='/profile/:id' element={<Profile />} />
       {/* <Route exact path='/users/:id' element={<UserDisplay />} /> */}
 
       {/* AboutUs */}

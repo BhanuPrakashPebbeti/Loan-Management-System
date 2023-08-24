@@ -125,7 +125,7 @@ const NavBar = () => {
                       Hello {user.name}
                     </NavLink>
                     <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                      <NavLink className="dropdown-item" to="/profile" onClick={closeNavFunc} aria-current="page">
+                      <NavLink className="dropdown-item" to={`/profile/${user.id}`} onClick={closeNavFunc} aria-current="page">
                         My Profile
                       </NavLink>
                       <hr />

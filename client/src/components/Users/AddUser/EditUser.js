@@ -21,20 +21,6 @@ const AddUser = () => {
     const [edit, setEdit] = useState(false);
     const [usr, setUsr] = useState();
     const [load, setLoad] = useState(0);
-
-    const [employee, setEmployee] = useState({
-        name: "",
-        email: "",
-        designation: "",
-        gender: "",
-        department: "",
-        dob: new Date(),
-        doj: new Date(),
-        password: "",
-        isadmin: 0,
-        role: ["employee"]
-    });
-
    
 
     const handleInputs = (e) => {
@@ -42,11 +28,11 @@ const AddUser = () => {
     };
 
     const setDOB = (date) => {
-        setEmployee({ ...employee, dob: date });
+        setUsr({ ...usr, dob: date });
     };
 
     const setDOJ = (date) => {
-        setEmployee({ ...employee, doj: date });
+        setUsr({ ...usr, doj: date });
     };
 
     const subtractYears = (date, years) => {
@@ -220,7 +206,7 @@ const AddUser = () => {
                                     </select>
                                 </div>
                             </div>
-                            {/* <div className="form-group mt-3 row align-items-center">
+                            <div className="form-group mt-3 row align-items-center">
                                 <label htmlFor="dob" className="col-sm-2 text-end">
                                     DOB :
                                 </label>
@@ -258,28 +244,13 @@ const AddUser = () => {
                                     />
                                 </div>
                             </div>
-                            <div className="form-group my-3 row align-items-center">
-                                <label htmlFor="password" className="col-sm-2 text-end">
-                                    Password :
-                                </label>
-                                <div className="col-sm-10">
-                                    <input type="password"
-                                        name="password"
-                                        value={usr.password}
-                                        onChange={handleInputs}
-                                        className="form-control"
-                                        id="password"
-                                        aria-describedby="password"
-                                        placeholder="Enter password"
-                                        required /></div>
-                            </div> */}
                             {
                                 add ?
                                     <button type="submit" name="submit" id="submit" className="btn btn-primary" disabled>
                                         Adding <i className="fa fa-spinner fa-spin"></i>
                                     </button>
                                     :
-                                    <button type="submit" name="submit" id="submit" className="btn btn-primary">
+                                    <button type="submit" name="submit" id="submit" className="btn btn-primary my-3">
                                         Edit
                                     </button>
                             }
