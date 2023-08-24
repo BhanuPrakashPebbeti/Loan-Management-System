@@ -42,7 +42,6 @@ const Users = () => {
     };
 
     const getUsers = async () => {
-        const cookies = new Cookies();
 
         try {
             const data = await axios.get(`${SERVER_URL}/employees`, {

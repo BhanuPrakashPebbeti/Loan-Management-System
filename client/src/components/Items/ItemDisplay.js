@@ -30,6 +30,7 @@ const ItemDisplay = () => {
     const [modalShow, setModalShow] = useState(false);
     const [modalShow2, setModalShow2] = useState(false);
     const [modalShow3, setModalShow3] = useState(false);
+    const [selLoanCard, setSelLoanCard] = useState(null);
     const [add, setAdd] = useState(false);
     const [duration, setDuration] = useState(0);
     const [editLoan, setEditLoan] = useState(0);
@@ -153,9 +154,6 @@ const ItemDisplay = () => {
                     "Content-Type": "application/json"
                 }
             });
-            // const updatedLoanCards = loans.filter(loan => loan.id !== id);
-            // setLoans(updatedLoanCards);
-            // getLoans(item);
             showAlert("Loan Card deleted successfully", "success");
             getItem(id);
             setAdd(false);
@@ -317,29 +315,36 @@ const ItemDisplay = () => {
                                                 return (
                                                     loan && <div className="col-md-6 mb-6" key={loan.id}>
                                                         <div className="loancard-container d-flex justify-content-center container text-white mt-3">
-                                                            <div className="card p-2 px-3 py-3">
+                                                            <NavLink className="card p-2 px-3 py-3" onClick={() => {
+                                                                if (selLoanCard === null) {
+                                                                    setSelLoanCard(loan.id);
+                                                                } else {
+                                                                    setSelLoanCard(null);
+                                                                }
+                                                            }} style={{ textDecoration: 'none' }}>
                                                                 <div className="d-flex justify-content-between align-items-center">
-                                                                    {/* <img src="https://i.imgur.com/8ANWXql.png" width="20" height="20" /> */}
+                                                                    {(!edit)&&((loan.id === selLoanCard) ? <img src="https://i.imgur.com/8ANWXql.png" width="20" height="20" /> : null)}
                                                                     <div>
-                                                                        <NavLink
-                                                                            onClick={() => {
-                                                                                setModalShow2(true);
-                                                                                setEditLoan(loan);
-                                                                            }}
-                                                                            className="btn btn-primary btn-sm mx-2"
-                                                                        >
-                                                                            <i class="fas fa-edit"></i>
-                                                                        </NavLink>
+                                                                        {edit && <>
+                                                                            <NavLink
+                                                                                onClick={() => {
+                                                                                    setModalShow2(true);
+                                                                                    setEditLoan(loan);
+                                                                                }}
+                                                                                className="btn btn-primary btn-sm mx-2"
+                                                                            >
+                                                                                <i class="fas fa-edit"></i>
+                                                                            </NavLink>
 
-                                                                        <NavLink
-                                                                            className="btn btn-danger btn-sm mx-2"
-                                                                            onClick={() => {
-                                                                                setModalShow3(true);
-                                                                                setEditLoan(loan);
-                                                                            }}
-                                                                        >
-                                                                            <i class="fas fa-trash"></i>
-                                                                        </NavLink>
+                                                                            <NavLink
+                                                                                className="btn btn-danger btn-sm mx-2"
+                                                                                onClick={() => {
+                                                                                    setModalShow3(true);
+                                                                                    setEditLoan(loan);
+                                                                                }}
+                                                                            >
+                                                                                <i class="fas fa-trash"></i>
+                                                                            </NavLink></>}
                                                                     </div>
                                                                     <img src={loanImg} width="40" /></div>
                                                                 <div className="d-flex justify-content-between card-details mt-1 mb-1 text-light">
@@ -350,7 +355,7 @@ const ItemDisplay = () => {
                                                                         <div className="d-flex flex-column mr-3"><span className="light">EMI</span><span>{calcEmi(item.valuation, loan.duration)}/-</span></div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                            </NavLink>
                                                         </div>
                                                     </div>
                                                 );
