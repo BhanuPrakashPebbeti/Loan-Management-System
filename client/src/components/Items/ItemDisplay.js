@@ -30,7 +30,8 @@ const ItemDisplay = () => {
     const [modalShow, setModalShow] = useState(false);
     const [modalShow2, setModalShow2] = useState(false);
     const [modalShow3, setModalShow3] = useState(false);
-    const [selLoanCard, setSelLoanCard] = useState(null);
+    const [modalShow4, setModalShow4] = useState(false);
+    const [selLoanCard, setSelLoanCard] = useState(0);
     const [add, setAdd] = useState(false);
     const [duration, setDuration] = useState(0);
     const [editLoan, setEditLoan] = useState(0);
@@ -120,6 +121,32 @@ const ItemDisplay = () => {
 
     };
 
+    const PostIssueCard = async (e) => {
+        e.preventDefault();
+        try {
+            setAdd(true);
+            const issuecard = await axios.post(`${SERVER_URL}/getcard`,
+                {
+                    "employee_id": user.id,
+                    "item_id": item.id,
+                    "loan_id": selLoanCard.id
+                }, {
+                headers: {
+                    "Authorization": `Bearer ${cookies.get('token')}`,
+                    "Content-Type": "application/json",
+                },
+            });
+            showAlert("Loan Application Submitted Successfully!", "success");
+            getLoans(item);
+            setAdd(false);
+            setModalShow(false)
+        }
+        catch (err) {
+            console.log(err);
+            showAlert(err.response.data.error, "danger");
+        }
+
+    };
 
     const EditLoanCard = async (e) => {
         e.preventDefault();
@@ -278,171 +305,213 @@ const ItemDisplay = () => {
                                 </div>
                             </div>
                         )}
-                        <div className="row">
-                            <div className="col-lg-5 ">
-                                <img
-                                    src={(item.category === "furniture") ? furniture : ((item.category === "car") ? car : (item.category === "home") ? home : (item.category === "jewellery") ? jewellery : object)}
-                                    className="img-fluid rounded"
-                                    alt="..."
-                                    style={{ width: "30rem", objectFit: "contain" }}
-                                />
-                            </div>
-                            <div className="col-lg-7">
-                                <div className="row">
-                                    <h3 className="text-center pt-4 pt-lg-1 pb-1">Description</h3>
-                                    <p dangerouslySetInnerHTML={{ __html: item.description }}></p>
+                        <div class="card mb-3" style={{ "maxWidth": "1500" }}>
+                            <div class="row g-0 ">
+                                <div class="col-lg-6 ">
+                                    <img
+                                        src={(item.category === "furniture") ? furniture : ((item.category === "car") ? car : (item.category === "home") ? home : (item.category === "jewellery") ? jewellery : object)}
+                                        className="img-fluid rounded p-5"
+                                        alt="..."
+                                        style={{ width: "30rem", objectFit: "contain" }}
+                                    />
                                 </div>
-                                <div className="row">
-                                    <h4 className="text-center pb-1">Item Details</h4>
-                                    <p className="mb-1">
-                                        Item Name : {item.itemName}
-                                    </p>
-                                    <p className="mb-1">
-                                        Item Category : {item.category}
-                                    </p>
-                                    <p className="mb-1">
-                                        Item Make : {item.itemMake}
-                                    </p>
-                                    <p className="mb-1">
-                                        Item Valuation : {item.valuation}
-                                    </p>
-                                </div>
-                                <div className="row">
-                                    <h4 className="text-center pb-1">Available Loan Cards</h4>
-                                    <div className="text-center">
-                                        <div className="row">
-                                            {loans && loans.map((loan) => {
-                                                return (
-                                                    loan && <div className="col-md-6 mb-6" key={loan.id}>
-                                                        <div className="loancard-container d-flex justify-content-center container text-white mt-3">
-                                                            <NavLink className="card p-2 px-3 py-3" onClick={() => {
-                                                                if (selLoanCard === null) {
-                                                                    setSelLoanCard(loan.id);
-                                                                } else {
-                                                                    setSelLoanCard(null);
-                                                                }
-                                                            }} style={{ textDecoration: 'none' }}>
-                                                                <div className="d-flex justify-content-between align-items-center">
-                                                                    {(!edit)&&((loan.id === selLoanCard) ? <img src="https://i.imgur.com/8ANWXql.png" width="20" height="20" /> : null)}
-                                                                    <div>
-                                                                        {edit && <>
-                                                                            <NavLink
-                                                                                onClick={() => {
-                                                                                    setModalShow2(true);
-                                                                                    setEditLoan(loan);
-                                                                                }}
-                                                                                className="btn btn-primary btn-sm mx-2"
-                                                                            >
-                                                                                <i class="fas fa-edit"></i>
-                                                                            </NavLink>
-
-                                                                            <NavLink
-                                                                                className="btn btn-danger btn-sm mx-2"
-                                                                                onClick={() => {
-                                                                                    setModalShow3(true);
-                                                                                    setEditLoan(loan);
-                                                                                }}
-                                                                            >
-                                                                                <i class="fas fa-trash"></i>
-                                                                            </NavLink></>}
-                                                                    </div>
-                                                                    <img src={loanImg} width="40" /></div>
-                                                                <div className="d-flex justify-content-between card-details mt-1 mb-1 text-light">
-                                                                    <div className="d-flex flex-column">
-                                                                        <span className="light">Loan Tenure</span><span>{loan.duration} mon</span>
-                                                                    </div>
-                                                                    <div className="d-flex flex-row">
-                                                                        <div className="d-flex flex-column mr-3"><span className="light">EMI</span><span>{calcEmi(item.valuation, loan.duration)}/-</span></div>
-                                                                    </div>
-                                                                </div>
-                                                            </NavLink>
-                                                        </div>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
+                                <div class="col-lg-6 align-self-center">
+                                    <div class="card-body">
+                                        <h3 class="card-title mt-2 mb-3">{item.itemName}</h3>
+                                        <p className="font-monospace text-muted">
+                                            Category : {item.category}
+                                        </p>
+                                        <p className="font-monospace text-muted">
+                                            Make : {item.itemMake}
+                                        </p>
+                                        <h5 className="mb-4">
+                                            &#x20b9; {item.valuation}
+                                        </h5>
+                                        <p class=" font-monospace text-muted card-text" dangerouslySetInnerHTML={{ __html: item.description }}></p>
                                     </div>
                                 </div>
-                                <Modal
-                                    show={modalShow2}
-                                    onHide={() => setModalShow2(false)}
-                                    size="lg"
-                                    aria-labelledby="contained-modal-title-vcenter"
-                                    centered
-                                >
-                                    <Modal.Body className="text-center p-5">
-                                        <form
-                                            method="PUT"
-                                            onSubmit={EditLoanCard}
-                                            encType="multipart/form-data"
-                                        >
+                            </div>
+                        </div>
+                        <div>
+                            <div className="row">
+                                <h4 className="text-center pb-1">Available Loan Cards</h4>
+                                <div className="text-center">
+                                    <div className="row">
+                                        {loans && loans.map((loan) => {
+                                            return (
+                                                loan && <div className="col-md-3 mb-3" key={loan.id}>
+                                                    <div className="loancard-container d-flex justify-content-center container text-white mt-3">
+                                                        <NavLink className="card p-2 px-3 py-3" onClick={() => {
+                                                            setSelLoanCard(loan);
+                                                            setModalShow4(true);
+                                                        }} style={{ textDecoration: 'none' }}>
+                                                            <div className="d-flex justify-content-between align-items-center">
+                                                                {/* {(!edit) && ((loan.id === selLoanCard) ? <img src="https://i.imgur.com/8ANWXql.png" width="20" height="20" /> : null)} */}
+                                                                <div>
+                                                                    {edit && <>
+                                                                        <NavLink
+                                                                            onClick={() => {
+                                                                                setModalShow2(true);
+                                                                                setEditLoan(loan);
+                                                                            }}
+                                                                            className="btn btn-primary btn-sm mx-2"
+                                                                        >
+                                                                            <i class="fas fa-edit"></i>
+                                                                        </NavLink>
 
-                                            <div className="modal-body">
-                                                <h3 className="pb-4">Edit Loan Card</h3>
-                                                <div className="form-group mb-3 text-start">
-                                                    <div>
-                                                        <input
-                                                            type="text"
-                                                            name="duration"
-                                                            value={editLoan.duration}
-                                                            onChange={(e) => {
-                                                                setEditLoan({ ...editLoan, [e.target.name]: e.target.value });
-                                                            }}
-                                                            className="form-control"
-                                                            id="duration"
-                                                            aria-describedby="duration"
-                                                            placeholder="Loan Tenure (in months)"
-                                                            required
-                                                        />
+                                                                        <NavLink
+                                                                            className="btn btn-danger btn-sm mx-2"
+                                                                            onClick={() => {
+                                                                                setModalShow3(true);
+                                                                                setEditLoan(loan);
+                                                                            }}
+                                                                        >
+                                                                            <i class="fas fa-trash"></i>
+                                                                        </NavLink></>}
+                                                                </div>
+                                                                <img src={loanImg} width="40" /></div>
+                                                            <div className="d-flex justify-content-between card-details mt-1 mb-1 text-light">
+                                                                <div className="d-flex flex-column">
+                                                                    <span className="light">Loan Tenure</span><span>{loan.duration} mon</span>
+                                                                </div>
+                                                                <div className="d-flex flex-row">
+                                                                    <div className="d-flex flex-column mr-3"><span className="light">EMI</span><span>{calcEmi(item.valuation, loan.duration)}/-</span></div>
+                                                                </div>
+                                                            </div>
+                                                        </NavLink>
                                                     </div>
                                                 </div>
-                                                {
-                                                    add ?
-                                                        <button type="submit" name="submit" id="submit" className="btn btn-primary w-100 mb-4 py-2 px-4" disabled>
-                                                            Editing <i className="fa fa-spinner fa-spin"></i>
-                                                        </button>
-                                                        :
-                                                        <button type="submit" name="submit" id="submit" className="btn btn-primary w-100 mb-4 py-2 px-4" >
-                                                            Edit
-                                                        </button>
-                                                }
-                                            </div>
-
-                                        </form>
-                                    </Modal.Body>
-                                </Modal>
-                                <Modal
-                                    show={modalShow3}
-                                    onHide={() => setModalShow3(false)}
-                                    size="lg"
-                                    aria-labelledby="contained-modal-title-vcenter"
-                                    centered
-                                >
-                                    <Modal.Body className="text-center p-5">
-                                        <form
-                                            method="DELETE"
-                                            onSubmit={deleteLoanCard}
-                                            encType="multipart/form-data"
-                                        >
-
-                                            <div className="modal-body">
-                                                <h5 className="pb-4">Are you sure to delete Loan Card</h5>
-                                                {
-                                                    add ?
-                                                        <button type="submit" name="submit" id="submit" className="btn btn-primary w-100 mb-4 py-2 px-4" disabled>
-                                                            Deleting <i className="fa fa-spinner fa-spin"></i>
-                                                        </button>
-                                                        :
-                                                        <button type="submit" name="submit" id="submit" className="btn btn-primary w-100 mb-4 py-2 px-4" >
-                                                            Delete
-                                                        </button>
-                                                }
-                                            </div>
-
-                                        </form>
-                                    </Modal.Body>
-                                </Modal>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
                             </div>
+                            <Modal
+                                show={modalShow2}
+                                onHide={() => setModalShow2(false)}
+                                size="lg"
+                                aria-labelledby="contained-modal-title-vcenter"
+                                centered
+                            >
+                                <Modal.Body className="text-center p-5">
+                                    <form
+                                        method="PUT"
+                                        onSubmit={EditLoanCard}
+                                        encType="multipart/form-data"
+                                    >
+
+                                        <div className="modal-body">
+                                            <h3 className="pb-4">Edit Loan Card</h3>
+                                            <div className="form-group mb-3 text-start">
+                                                <div>
+                                                    <input
+                                                        type="text"
+                                                        name="duration"
+                                                        value={editLoan.duration}
+                                                        onChange={(e) => {
+                                                            setEditLoan({ ...editLoan, [e.target.name]: e.target.value });
+                                                        }}
+                                                        className="form-control"
+                                                        id="duration"
+                                                        aria-describedby="duration"
+                                                        placeholder="Loan Tenure (in months)"
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+                                            {
+                                                add ?
+                                                    <button type="submit" name="submit" id="submit" className="btn btn-primary w-100 mb-4 py-2 px-4" disabled>
+                                                        Editing <i className="fa fa-spinner fa-spin"></i>
+                                                    </button>
+                                                    :
+                                                    <button type="submit" name="submit" id="submit" className="btn btn-primary w-100 mb-4 py-2 px-4" >
+                                                        Edit
+                                                    </button>
+                                            }
+                                        </div>
+
+                                    </form>
+                                </Modal.Body>
+                            </Modal>
+                            <Modal
+                                show={modalShow3}
+                                onHide={() => setModalShow3(false)}
+                                size="lg"
+                                aria-labelledby="contained-modal-title-vcenter"
+                                centered
+                            >
+                                <Modal.Body className="text-center p-5">
+                                    <form
+                                        method="DELETE"
+                                        onSubmit={deleteLoanCard}
+                                        encType="multipart/form-data"
+                                    >
+
+                                        <div className="modal-body">
+                                            <h5 className="pb-4">Are you sure to delete Loan Card</h5>
+                                            {
+                                                add ?
+                                                    <button type="submit" name="submit" id="submit" className="btn btn-primary w-100 mb-4 py-2 px-4" disabled>
+                                                        Deleting <i className="fa fa-spinner fa-spin"></i>
+                                                    </button>
+                                                    :
+                                                    <button type="submit" name="submit" id="submit" className="btn btn-primary w-100 mb-4 py-2 px-4" >
+                                                        Delete
+                                                    </button>
+                                            }
+                                        </div>
+
+                                    </form>
+                                </Modal.Body>
+                            </Modal>
+                            <Modal
+                                show={modalShow4}
+                                onHide={() => setModalShow4(false)}
+                                size="lg"
+                                aria-labelledby="contained-modal-title-vcenter"
+                                centered
+                            >
+                                <Modal.Body className="text-center p-5">
+                                    <form
+                                        method="POST"
+                                        onSubmit={PostIssueCard}
+                                        encType="multipart/form-data"
+                                    >
+
+                                        <div className="modal-body">
+                                            <h5 className="pb-4">Apply for Loan</h5>
+                                            <h3 class="card-title mt-2 mb-3">{item.itemName}</h3>
+                                            <p className="font-monospace text-muted">
+                                                Category : {item.category}
+                                            </p>
+                                            <p className="font-monospace text-muted">
+                                                Make : {item.itemMake}
+                                            </p>
+                                            <p className="font-monospace text-muted">
+                                                Tenure : {selLoanCard.duration} months
+                                            </p>
+                                            <p className="font-monospace text-muted">
+                                                EMI : {calcEmi(item.valuation, selLoanCard.duration)}
+                                            </p>
+                                            <h5 className="mb-4">
+                                                &#x20b9; {item.valuation}
+                                            </h5>
+                                            {
+                                                add ?
+                                                    <button type="submit" name="submit" id="submit" className="btn btn-primary w-100 mb-4 py-2 px-4" disabled>
+                                                        Applying <i className="fa fa-spinner fa-spin"></i>
+                                                    </button>
+                                                    :
+                                                    <button type="submit" name="submit" id="submit" className="btn btn-primary w-100 mb-4 py-2 px-4" >
+                                                        Apply
+                                                    </button>
+                                            }
+                                        </div>
+
+                                    </form>
+                                </Modal.Body>
+                            </Modal>
                         </div>
                     </div>
                 </div >

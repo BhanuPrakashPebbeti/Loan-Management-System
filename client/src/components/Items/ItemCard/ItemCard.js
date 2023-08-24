@@ -22,7 +22,7 @@ const ItemCard = ({ item, logged_in }) => {
     };
 
     return (
-        <div className="my-3 itemcard-container">
+        <div className="itemCard my-3 itemcard-container">
             <div className="card text-center box-shadow">
                 <img
                     onError={addDefaultSrc}
@@ -39,16 +39,6 @@ const ItemCard = ({ item, logged_in }) => {
                             Item Make : {item.itemMake}
                         </small>
                     </p>
-                    {/* {logged_in ? <NavLink
-                        rel="noreferrer"
-                        to={`/items/${item.id}`}
-                        className="btn btn-sm btn-dark"
-                    >
-                        View More
-                    </NavLink> : <NavLink className="nav-link" variant="primary" onClick={() => setModalShow(true)}>
-                        View More
-                    </NavLink>}
-                    <Login show={modalShow} onHide={() => setModalShow(false)} /> */}
                     <NavLink
                         rel="noreferrer"
                         to={`/items/${item.id}`}

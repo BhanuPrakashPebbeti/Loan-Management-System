@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import { SERVER_URL } from "../../EditableStuff/Config";
 import { Context } from "../../Context/Context";
@@ -10,20 +11,15 @@ import "./NavBar.css";
 import { useCookies } from 'react-cookie';
 
 const NavBar = () => {
+  const navigate = useNavigate();
   const { user, logged_in } = useContext(Context);
   const [modalShow, setModalShow] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(['token', 'id'])
   const role = (user ? user.role[0].name == "ROLE_ADMIN" : false);
   const Logout = async () => {
-    // try {
-    //     const res = await axios.get(`${SERVER_URL}/logout`, {
-    //         withCredentials: true,
-    //     });
-    // } catch (err) {
-    //     console.log("Unable to logout..");
-    // }
     removeCookie("token");
     removeCookie("id");
+    navigate(`/`);
     window.location.reload();
   };
 
@@ -125,7 +121,7 @@ const NavBar = () => {
                       Hello {user.name}
                     </NavLink>
                     <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                      <NavLink className="dropdown-item" to={`/profile/${user.id}`} onClick={closeNavFunc} aria-current="page">
+                      <NavLink className="dropdown-item" to="/profile" onClick={closeNavFunc} aria-current="page">
                         My Profile
                       </NavLink>
                       <hr />
