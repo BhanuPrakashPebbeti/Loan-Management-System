@@ -10,6 +10,7 @@ import AddUser from './components/Users/AddUser/AddUser';
 import Users from './components/Users/Users';
 import About from './components/About';
 import EditUser from './components/Users/AddUser/EditUser';
+import LoanIssue from './components/Loans/LoanIssue';
 
 
 const Routing = () => {
@@ -31,6 +32,7 @@ const Routing = () => {
       <Route exact path='/addemployee' element={<AddUser />} />
       <Route exact path='/user/:id/edit' element={<EditUser />} />
       <Route exact path='/users' element={<Users />} />
+      <Route exact path='/loanissue' element={<LoanIssue />} />
       {/* <Route exact path='/users/:id' element={<UserDisplay />} /> */}
 
       {/* AboutUs */}
