@@ -1,5 +1,6 @@
 package com.wellsfargo.lms.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,10 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.wellsfargo.lms.models.EmployeeCardDetails;
+import com.wellsfargo.lms.models.EmployeeIssueDetails;
 import com.wellsfargo.lms.models.EmployeeMaster;
 import com.wellsfargo.lms.models.ItemMaster;
 import com.wellsfargo.lms.payloads.ItemPayload;
 import com.wellsfargo.lms.payloads.UserDetailsPayload;
+import com.wellsfargo.lms.repositories.EmployeeCardRepo;
+import com.wellsfargo.lms.repositories.EmployeeIssueRepo;
+import com.wellsfargo.lms.repositories.EmployeeMasterRepo;
 import com.wellsfargo.lms.repositories.ItemMasterRepo;
 
 @Service
@@ -20,6 +26,15 @@ public class ItemService {
 	@Autowired
 	private ItemMasterRepo itemMasterRepo;
 	
+	@Autowired
+	private EmployeeCardRepo employeeCardRepo;
+	
+	@Autowired
+	private EmployeeMasterRepo employeeMasterRepo;
+	
+	
+	@Autowired
+	private EmployeeIssueRepo employeeIssueRepo;
 	
 	public ResponseEntity<?> createItem(ItemPayload itemreq) {
 
@@ -50,6 +65,12 @@ public class ItemService {
 	public List<ItemMaster> getAllItems(){
 		return itemMasterRepo.findAll();
 	}
+	
+	
+	public List<ItemMaster> getAllUnissuedItems(){
+		return itemMasterRepo.findByIssueStatus(0);
+	}
+	
 	
 	public Optional<ItemMaster> getItemById(String id) {
 		return itemMasterRepo.findById(id);
@@ -98,6 +119,50 @@ public class ItemService {
 		this.itemMasterRepo.delete(item);
 
 		return ResponseEntity.ok("Entry deleted successfully!");
+		
+	}
+	
+	public ResponseEntity<?> getAppliedItems(String id) {
+		
+		Optional<EmployeeMaster> empOptional = employeeMasterRepo.findById(id);
+		
+		if(empOptional.isEmpty()) {
+			return ResponseEntity.badRequest().body("employee not found with id:"+id);
+		}
+		
+		EmployeeMaster employee = empOptional.get();
+		
+		List<EmployeeCardDetails> cards = employeeCardRepo.findByEmployee(employee);
+		
+		List<ItemMaster> items = new ArrayList<ItemMaster>();
+		
+		for(EmployeeCardDetails card: cards) {
+			items.add(card.getItem());
+		}
+		
+		return ResponseEntity.ok(items);
+		
+	}
+	
+public ResponseEntity<?> getIssuedItems(String id) {
+		
+		Optional<EmployeeMaster> empOptional = employeeMasterRepo.findById(id);
+		
+		if(empOptional.isEmpty()) {
+			return ResponseEntity.badRequest().body("employee not found with id:"+id);
+		}
+		
+		EmployeeMaster employee = empOptional.get();
+		
+		List<EmployeeIssueDetails> issues = employeeIssueRepo.findByEmployee(employee);
+		
+		List<ItemMaster> items = new ArrayList<ItemMaster>();
+		
+		for(EmployeeIssueDetails issue: issues) {
+			items.add(issue.getItem());
+		}
+		
+		return ResponseEntity.ok(items);
 		
 	}
 

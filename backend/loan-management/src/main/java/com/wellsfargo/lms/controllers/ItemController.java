@@ -45,8 +45,19 @@ public class ItemController {
 	
 	@PreAuthorize("permitAll()")
 	@GetMapping
+	public ResponseEntity<?> getAllItemsUnissued(){
+		return ResponseEntity.ok(itemService.getAllUnissuedItems());
+	}
+	
+	@GetMapping("/all")
 	public ResponseEntity<?> getAllItems(){
 		return ResponseEntity.ok(itemService.getAllItems());
+	}
+	
+	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+	@GetMapping("/myitems")
+	public ResponseEntity<?> getAllItemsApplied(@RequestParam(value = "id") String id){
+		return (itemService.getAppliedItems(id));
 	}
 	
 	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
