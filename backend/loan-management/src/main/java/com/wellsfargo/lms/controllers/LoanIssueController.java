@@ -32,9 +32,9 @@ public ResponseEntity<?> getCardByEmployee(@RequestParam(value = "eid") String e
 	
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("new")
-	public ResponseEntity<?> approveItem(@RequestBody @Valid IssuePayload reqPayload){
+	public ResponseEntity<?> approveItem(@RequestParam(value = "cardId") String cardId){
 		try {
-			return(employeeIssueService.approveLoan(reqPayload.getCardId()));
+			return(employeeIssueService.approveLoan(cardId));
 		}
 		catch(Exception e) {
 			return ResponseEntity.internalServerError().body("Some error");
@@ -43,9 +43,9 @@ public ResponseEntity<?> getCardByEmployee(@RequestParam(value = "eid") String e
 	
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("decline")
-	public ResponseEntity<?> declineItem(@RequestBody @Valid IssuePayload reqPayload){
+	public ResponseEntity<?> declineItem(@RequestParam(value = "cardId") String cardId){
 		try {
-			return(employeeIssueService.declineLoan(reqPayload.getCardId()));
+			return(employeeIssueService.declineLoan(cardId));
 		}
 		catch(Exception e) {
 			return ResponseEntity.internalServerError().body("Some error");
