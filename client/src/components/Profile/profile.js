@@ -1,30 +1,56 @@
-import "./profile.css"
 import React, { useContext, useState, useEffect } from "react";
+import "./profile.css";
 import { Context } from "../../Context/Context";
 import { useNavigate, useParams } from "react-router-dom";
 import { CLIENT_URL, SERVER_URL } from "../../EditableStuff/Config";
 import axios from "axios";
 import { alertContext } from "../../Context/Alert";
-// import Loading from "../../Loading";
-// import Error from "../../Error";
+import Loading from "../Loading";
+import Error from "../Error";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Cookies } from 'react-cookie';
+import { Cookies, useCookies } from 'react-cookie';
 
-const Profile = () => {
+
+const AddUser = () => {
     const navigate = useNavigate();
-    const [usr, setUsr] = useState();
+    const { user, logged_in } = useContext(Context);
+    const { showAlert } = useContext(alertContext);
+    const [add, setAdd] = useState(false);
     const cookies = new Cookies();
     const { id } = useParams();
+    const [edit, setEdit] = useState(false);
+    const [usr, setUsr] = useState();
     const [load, setLoad] = useState(0);
-    const { showAlert } = useContext(alertContext);
-    const { user, logged_in } = useContext(Context);
+    const [setCookie,removeCookie] = useCookies(['token', 'id']);
 
+    const Logout = async () => {
+        removeCookie("token");
+        removeCookie("id");
+        navigate("/");
+        window.location.reload();
+      };
 
+   
 
+    const handleInputs = (e) => {
+        setUsr({ ...usr, [e.target.name]: e.target.value });
+    };
+
+    const setDOB = (date) => {
+        setUsr({ ...usr, dob: date });
+    };
+
+    const setDOJ = (date) => {
+        setUsr({ ...usr, doj: date });
+    };
+
+    const subtractYears = (date, years) => {
+        date.setFullYear(date.getFullYear() - years);
+        return date;
+    }
 
     const getUser = async () => {
-        console.log(id);
         try {
             const data = await axios.get(`${SERVER_URL}/employees/id?id=${id}`, {
                 headers: {
@@ -37,16 +63,13 @@ const Profile = () => {
             setLoad(1);
         } catch (err) {
             setLoad(-1);
-            // showAlert(`${err.message}`, "danger");
-            // navigate('/error');
+            showAlert(`${err.message}`, "danger");
+            navigate('/error');
         }
     };
-
-
     useEffect(() => {
         if (logged_in === 1) {
             if (id) {
-                console.log(id);
                 getUser();
             }
             else {
@@ -59,34 +82,254 @@ const Profile = () => {
     }, [logged_in, id]);
 
 
-    return(
-        <div className="container rounded bg-white mt-5 mb-5">
-            <div className="row">
-                <div className="col-md- border-right">
-                    <div className="p-3 py-5">
-                        <div className="d-flex justify-content-between align-items-center mb-3">
-                            <h4 className="text-right">Profile</h4>
-                        </div>
-                        <div className="row mt-3">
-                            <div className="col-md-12"><label className="labels">Name</label><input type="text" className="form-control" placeholder="name" value="" /></div>
-                            <div className="col-md-12"><label className="labels">Department</label><input type="text" className="form-control" placeholder="name" value="" /></div>
-                            <div className="col-md-12"><label className="labels">Designation</label><input type="text" className="form-control" placeholder="name" value="" /></div>
-                            <div className="col-md-12"><label className="labels">Gender</label><input type="text" className="form-control" placeholder="name" value="" /></div>
-                            <div className="col-md-6"><label className="labels">DOJ</label><input type="text" className="form-control" placeholder="name" value="" /></div>
-                            <div className="col-md-6"><label className="labels">DOB</label><input type="text" className="form-control" placeholder="name" value="" /></div>
-                        </div>
+    const UpdateEmployee = async (e) => {
+        e.preventDefault();
+        try {
+            setEdit(true);
+            console.log("Final",usr);
+            const itemData = await axios.put(`${SERVER_URL}/employees`, usr, {
+                headers: {
+                    "Authorization": `Bearer ${cookies.get('token')}`,
+                    "Content-Type": "application/json",
+                },
+            });
+            console.log(usr);
+            showAlert("Profile Saved Successfully!", "success");
+            setEdit(false);
+
+        }
+        catch (err) {
+            console.log(err);
+            showAlert(err.response.data.error, "danger");
+        }
+
+    };
+ 
+
+    // const UpdatePassword = async (e) => {
+    //     e.preventDefault();
+    //     try {
+    //         setEdit(true);
+    //         console.log("Final",usr);
+    //         const itemData = await axios.put(`${SERVER_URL}/employees`, usr, {
+    //             headers: {
+    //                 "Authorization": `Bearer ${cookies.get('token')}`,
+    //                 "Content-Type": "application/json",
+    //             },
+    //         });
+    //         console.log(usr);
+    //         showAlert("Password Changed Successfully!", "success");
+    //         setEdit(false);
+    //         // Logout();
+    //     }
+    //     catch (err) {
+    //         console.log(err);
+    //         showAlert(err.response.data.error, "danger");
+    //     }
+
+    // };
+
+
+
+    return (
+        <>
+            {load === 0 ? (
+                <Loading />
+            ) : load === 1 ?
+                <div className="container addItem-container text-center">
+                    <div className="adjust">
+                        <h3 className="text-header m-4">Welcome {usr.name}</h3>
+                        <form
+                            method="POST"
+                            onSubmit={UpdateEmployee}
+                            encType="multipart/form-data"
+                        >
+                            <div className="form-group my-3 row align-items-center">
+                                <label htmlFor="itemName" className="col-sm-2 text-end">
+                                    Name :
+                                </label>
+                                <div className="col-sm-10">
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        value={usr.name}
+                                        onChange={handleInputs}
+                                        className="form-control"
+                                        id="name"
+                                        aria-describedby="name"
+                                        placeholder="Enter employee Name"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div className="form-group my-3 row align-items-center">
+                                <label htmlFor="email" className="col-sm-2 text-end">
+                                    Email :
+                                </label>
+                                <div className="col-sm-10">
+                                    <input
+                                        type="text"
+                                        name="email"
+                                        value={usr.email}
+                                        onChange={handleInputs}
+                                        className="form-control"
+                                        id="email"
+                                        aria-describedby="email"
+                                        placeholder="Enter employee email"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div className="form-group my-3 row align-items-center">
+                                <label htmlFor="designation" className="col-sm-2 text-end">
+                                    Designation :
+                                </label>
+                                <div className="col-sm-10">
+                                    <input
+                                        type="text"
+                                        name="designation"
+                                        value={usr.designation}
+                                        onChange={handleInputs}
+                                        className="form-control"
+                                        id="designation"
+                                        aria-describedby="designation"
+                                        placeholder="Enter employee designation"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div className="form-group align-items-center mt-3 row">
+                                <label htmlFor="gender" className="col-sm-2 mt-3 text-end">
+                                    Gender :
+                                </label>
+                                <div className="col col-9">
+                                    <select
+                                        name="gender"
+                                        value={usr.gender}
+                                        onChange={handleInputs}
+                                        className="form-select"
+                                        aria-label="gender"
+                                    >
+                                        <option value="">Select gender</option>
+                                        <option value="M">Male</option>
+                                        <option value="F">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="form-group align-items-center mt-3 row">
+                                <label htmlFor="department" className="col-sm-2 mt-3 text-end">
+                                    Department :
+                                </label>
+                                <div className="col col-9">
+                                    <select
+                                        name="department"
+                                        value={usr.department}
+                                        onChange={handleInputs}
+                                        className="form-select"
+                                        aria-label="department"
+                                    >
+                                        <option value="">Select department</option>
+                                        <option value="CT">CT</option>
+                                        <option value="CCIBT">CCIBT</option>
+                                        <option value="CTO">CTO</option>
+                                        <option value="COO">COO</option>
+                                        <option value="DTI">DTI</option>
+                                        <option value="IT">EFT</option>
+                                        <option value="EFT">EFT</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="form-group mt-3 row align-items-center">
+                                <label htmlFor="dob" className="col-sm-2 text-end">
+                                    DOB :
+                                </label>
+                                <div className="col-sm-10">
+                                    <DatePicker
+                                        name = "dob"
+                                        className="form-control"
+                                        selected={new Date(usr.dob)}
+                                        onChange={(date) => setDOB(date)}
+                                        minDate={subtractYears(new Date(), 70)}
+                                        dateFormat="MMMM d, yyyy"
+                                        peekNextMonth
+                                        showMonthDropdown
+                                        showYearDropdown
+                                        dropdownMode="select"
+                                    />
+                                </div>
+                            </div>
+                            <div className="form-group mt-3 row align-items-center">
+                                <label htmlFor="doj" className="col-sm-2 text-end">
+                                    DOJ :
+                                </label>
+                                <div className="col-sm-10">
+                                    <DatePicker
+                                        name  = "doj"
+                                        className="form-control"
+                                        selected={new Date(usr.doj)}
+                                        onChange={(date) => setDOJ(date)}
+                                        minDate={subtractYears(new Date(), 40)}
+                                        dateFormat="MMMM d, yyyy"
+                                        peekNextMonth
+                                        showMonthDropdown
+                                        showYearDropdown
+                                        dropdownMode="select"
+                                    />
+                                </div>
+                            </div>
+                            
+                            {
+                                add ?
+                                    <button type="submit" name="submit" id="submit" className="btn btn-primary" disabled>
+                                        Adding <i className="fa fa-spinner fa-spin"></i>
+                                    </button>
+                                    :
+                                    <button type="submit" name="submit" id="submit" className="btn btn-primary my-3">
+                                        Save Profile
+                                    </button>
+                            }
+                        </form>
+                        {/* <form
+                            method="POST"
+                            onSubmit={UpdatePassword}
+                            encType="multipart/form-data"
+                        >
+                            <div className="form-group row align-items-center">
+                                    <label htmlFor="password" className="col-sm-2 text-end">
+                                        Password :
+                                    </label>
+                                    <div className="col-sm-10">
+                                        <input type="name"
+                                            name="password"
+                                            value={usr.password}
+                                            onChange={handleInputs}
+                                            className="form-control"
+                                            id="password"
+                                            aria-describedby="password"
+                                            placeholder="Enter password"
+                                            required /></div>
+                            </div>
+                            {
+                                add ?
+                                    <button type="submit" name="submit" id="submit" className="btn btn-primary" disabled>
+                                        Adding <i className="fa fa-spinner fa-spin"></i>
+                                    </button>
+                                    :
+                                    <button type="submit" name="submit" id="submit" className="btn btn-primary my-3">
+                                        Change Password
+                                    </button>
+                            }
+                        </form> */}
                     </div>
                 </div>
-                {/* <div className="col-md-4">
-                    <div className="p-3 py-5">
-                        <div className="d-flex justify-content-between align-items-center experience"><span>Edit Experience</span><span className="border px-3 p-1 add-experience"><i className="fa fa-plus"></i>&nbsp;Experience</span></div><br/>
-                        <div className="col-md-12"><label className="labels">Experience in Designing</label><input type="text" className="form-control" placeholder="experience" value="" /></div> <br/>
-                        <div className="col-md-12"><label className="labels">Additional Details</label><input type="text" className="form-control" placeholder="additional details" value="" /></div>
-                    </div>
-                </div> */}
-            </div>
-        </div>
+                : (
+                    <Error />
+                )}
+
+        </>
     );
 }
 
-export default Profile;
+export default AddUser;
