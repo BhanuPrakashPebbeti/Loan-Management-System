@@ -56,8 +56,22 @@ public class ItemController {
 	
 	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
 	@GetMapping("/myitems")
-	public ResponseEntity<?> getAllItemsApplied(@RequestParam(value = "id") String id){
-		return (itemService.getAppliedItems(id));
+	public ResponseEntity<?> getAllItemsApplied(@RequestParam(value = "id") String id,
+			@RequestParam(value = "filter") String filter){
+		
+		if(filter.equalsIgnoreCase("applied")) {
+			
+			return (itemService.getAppliedItems(id));
+		}
+		
+		else if (filter.equalsIgnoreCase("approved")) {
+			return (itemService.getApprovedItems(id));
+		} else if (filter.equalsIgnoreCase("declined")){
+			return (itemService.getDeclinedItems(id));
+		} else{
+			return ResponseEntity.badRequest().body("Filter parameter should contain one of "
+					+ "['applied', 'approved', 'declined']");
+		}
 	}
 	
 	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")

@@ -144,7 +144,7 @@ public class ItemService {
 		
 	}
 	
-public ResponseEntity<?> getIssuedItems(String id) {
+public ResponseEntity<?> getPendingItems(String id) {
 		
 		Optional<EmployeeMaster> empOptional = employeeMasterRepo.findById(id);
 		
@@ -154,17 +154,69 @@ public ResponseEntity<?> getIssuedItems(String id) {
 		
 		EmployeeMaster employee = empOptional.get();
 		
-		List<EmployeeIssueDetails> issues = employeeIssueRepo.findByEmployee(employee);
+		List<EmployeeCardDetails> cards = employeeCardRepo.findByEmployee(employee);
 		
 		List<ItemMaster> items = new ArrayList<ItemMaster>();
 		
-		for(EmployeeIssueDetails issue: issues) {
-			items.add(issue.getItem());
+		for(EmployeeCardDetails card: cards) {
+			if(card.getApprovalStatus() == 0) {
+				items.add(card.getItem());
+			}
 		}
 		
 		return ResponseEntity.ok(items);
 		
 	}
+	
+	
+	
+public ResponseEntity<?> getApprovedItems(String id) {
+	
+	Optional<EmployeeMaster> empOptional = employeeMasterRepo.findById(id);
+	
+	if(empOptional.isEmpty()) {
+		return ResponseEntity.badRequest().body("employee not found with id:"+id);
+	}
+	
+	EmployeeMaster employee = empOptional.get();
+	
+	List<EmployeeCardDetails> cards = employeeCardRepo.findByEmployee(employee);
+	
+	List<ItemMaster> items = new ArrayList<ItemMaster>();
+	
+	for(EmployeeCardDetails card: cards) {
+		if(card.getApprovalStatus() == 1) {
+			items.add(card.getItem());
+		}
+	}
+	
+	return ResponseEntity.ok(items);
+	
+}
+
+public ResponseEntity<?> getDeclinedItems(String id) {
+	
+	Optional<EmployeeMaster> empOptional = employeeMasterRepo.findById(id);
+	
+	if(empOptional.isEmpty()) {
+		return ResponseEntity.badRequest().body("employee not found with id:"+id);
+	}
+	
+	EmployeeMaster employee = empOptional.get();
+	
+	List<EmployeeCardDetails> cards = employeeCardRepo.findByEmployee(employee);
+	
+	List<ItemMaster> items = new ArrayList<ItemMaster>();
+	
+	for(EmployeeCardDetails card: cards) {
+		if(card.getApprovalStatus() == 2) {
+			items.add(card.getItem());
+		}
+	}
+	
+	return ResponseEntity.ok(items);
+	
+}
 
 	
 }
