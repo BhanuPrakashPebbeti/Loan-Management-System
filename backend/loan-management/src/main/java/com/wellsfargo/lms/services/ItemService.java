@@ -10,11 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.wellsfargo.lms.models.EmployeeCardDetails;
+import com.wellsfargo.lms.models.EmployeeIssueDetails;
 import com.wellsfargo.lms.models.EmployeeMaster;
 import com.wellsfargo.lms.models.ItemMaster;
 import com.wellsfargo.lms.payloads.ItemPayload;
 import com.wellsfargo.lms.payloads.UserDetailsPayload;
 import com.wellsfargo.lms.repositories.EmployeeCardRepo;
+import com.wellsfargo.lms.repositories.EmployeeIssueRepo;
 import com.wellsfargo.lms.repositories.EmployeeMasterRepo;
 import com.wellsfargo.lms.repositories.ItemMasterRepo;
 
@@ -30,6 +32,9 @@ public class ItemService {
 	@Autowired
 	private EmployeeMasterRepo employeeMasterRepo;
 	
+	
+	@Autowired
+	private EmployeeIssueRepo employeeIssueRepo;
 	
 	public ResponseEntity<?> createItem(ItemPayload itemreq) {
 
@@ -133,6 +138,28 @@ public class ItemService {
 		
 		for(EmployeeCardDetails card: cards) {
 			items.add(card.getItem());
+		}
+		
+		return ResponseEntity.ok(items);
+		
+	}
+	
+public ResponseEntity<?> getIssuedItems(String id) {
+		
+		Optional<EmployeeMaster> empOptional = employeeMasterRepo.findById(id);
+		
+		if(empOptional.isEmpty()) {
+			return ResponseEntity.badRequest().body("employee not found with id:"+id);
+		}
+		
+		EmployeeMaster employee = empOptional.get();
+		
+		List<EmployeeIssueDetails> issues = employeeIssueRepo.findByEmployee(employee);
+		
+		List<ItemMaster> items = new ArrayList<ItemMaster>();
+		
+		for(EmployeeIssueDetails issue: issues) {
+			items.add(issue.getItem());
 		}
 		
 		return ResponseEntity.ok(items);
