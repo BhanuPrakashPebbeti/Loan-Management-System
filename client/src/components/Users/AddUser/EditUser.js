@@ -24,6 +24,7 @@ const AddUser = () => {
 
     const [employee, setEmployee] = useState({
         name: "",
+        email: "",
         designation: "",
         gender: "",
         department: "",
@@ -136,6 +137,24 @@ const AddUser = () => {
                                         id="name"
                                         aria-describedby="name"
                                         placeholder="Enter employee Name"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div className="form-group my-3 row align-items-center">
+                                <label htmlFor="email" className="col-sm-2 text-end">
+                                    Email :
+                                </label>
+                                <div className="col-sm-10">
+                                    <input
+                                        type="text"
+                                        name="email"
+                                        value={usr.email}
+                                        onChange={handleInputs}
+                                        className="form-control"
+                                        id="email"
+                                        aria-describedby="email"
+                                        placeholder="Enter employee email"
                                         required
                                     />
                                 </div>

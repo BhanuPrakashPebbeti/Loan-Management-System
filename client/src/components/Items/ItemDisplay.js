@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -15,17 +15,18 @@ import jewellery from "../../EditableStuff/jewellery.jpg";
 import object from "../../EditableStuff/object.jpeg";
 import LoanCard from "./LoanCard/LoanCard";
 import { Cookies } from 'react-cookie';
+import Modal from "react-bootstrap/Modal";
 
-const ItemDisplay = () => {
+const ItemDisplay2 = () => {
     const params = new useParams(LoanCard);
     const id = params.id;
-    const modalRef = useRef(null);
     const { user, logged_in } = useContext(Context);
     const { showAlert } = useContext(alertContext);
     const [item, setItem] = useState(null);
     const [loans, setLoans] = useState(null);
     const [edit, setedit] = useState(1);
     const [load, setLoad] = useState(0);
+    const [modalShow, setModalShow] = useState(false);
     const [add, setAdd] = useState(false);
     const [duration, setDuration] = useState(0);
     const navigate = useNavigate();
@@ -105,11 +106,7 @@ const ItemDisplay = () => {
             showAlert("Loan Created Successfully!", "success");
             getLoans(item);
             setAdd(false);
-            if (modalRef.current) {
-                const modal = modalRef.current;
-                modal.classList.remove('show');
-                modal.style.display = 'none';
-            }
+            setModalShow(false)
         }
         catch (err) {
             console.log(err);
@@ -133,7 +130,7 @@ const ItemDisplay = () => {
                     <div className="header align-center">
                         {edit && (
                             <div className="text-center fs-6 pb-3">
-                                <NavLink type="button" className="btn btn-success btn-sm mx-2" data-bs-toggle="modal" data-bs-target="#loanCardModal">
+                                <NavLink type="button" className="btn btn-success btn-sm mx-2" onClick={() => setModalShow(true)}>
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         width="20"
@@ -147,55 +144,51 @@ const ItemDisplay = () => {
                                     Add Loan Card
                                 </NavLink>
 
-                                <div className="modal fade" id="loanCardModal" tabIndex="-1" aria-labelledby="loanCardModalLabel" aria-hidden="true" ref={modalRef}>
-                                    <div className="modal-dialog">
-                                        <div className="modal-content">
-                                            <form
-                                                method="POST"
-                                                onSubmit={PostLoanCard}
-                                                encType="multipart/form-data"
-                                            >
-                                                <div className="modal-header">
-                                                    <h1 className="modal-title fs-5" id="loanCardModalLabel">Add Loan Card</h1>
-                                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div className="modal-body">
+                                <Modal
+                                    show={modalShow}
+                                    onHide={() => setModalShow(false)}
+                                    size="lg"
+                                    aria-labelledby="contained-modal-title-vcenter"
+                                    centered
+                                >
+                                    <Modal.Body className="text-center p-5">
+                                        <form
+                                            method="POST"
+                                            onSubmit={PostLoanCard}
+                                            encType="multipart/form-data"
+                                        >
 
-                                                    <div className="form-group my-3 row align-items-center">
-                                                        <label htmlFor="valuation" className="col-sm-6 text-end">
-                                                            Loan Tenure (in months) :
-                                                        </label>
-                                                        <div className="col-sm-6">
-                                                            <input
-                                                                type="text"
-                                                                name="duration"
-                                                                value={duration}
-                                                                onChange={(e) => { setDuration(e.target.value) }}
-                                                                className="form-control"
-                                                                id="duration"
-                                                                aria-describedby="duration"
-                                                                placeholder="Enter Loan Duration"
-                                                                required
-                                                            />
-                                                        </div>
+                                            <div className="modal-body">
+                                                <h3 className="pb-4">Add Loan Card</h3>
+                                                <div className="form-group mb-3 text-start">
+                                                    <div>
+                                                        <input
+                                                            type="text"
+                                                            name="duration"
+                                                            onChange={(e) => { setDuration(e.target.value) }}
+                                                            className="form-control"
+                                                            id="duration"
+                                                            aria-describedby="duration"
+                                                            placeholder="Loan Tenure (in months)"
+                                                            required
+                                                        />
                                                     </div>
                                                 </div>
-                                                <div className="modal-footer">
-                                                    {
-                                                        add ?
-                                                            <button type="submit" name="submit" id="submit" className="btn btn-primary" disabled>
-                                                                Adding <i className="fa fa-spinner fa-spin"></i>
-                                                            </button>
-                                                            :
-                                                            <button type="submit" name="submit" id="submit" className="btn btn-primary" >
-                                                                Add
-                                                            </button>
-                                                    }
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+                                                {
+                                                    add ?
+                                                        <button type="submit" name="submit" id="submit" className="btn btn-primary w-100 mb-4 py-2 px-4" disabled>
+                                                            Adding <i className="fa fa-spinner fa-spin"></i>
+                                                        </button>
+                                                        :
+                                                        <button type="submit" name="submit" id="submit" className="btn btn-primary w-100 mb-4 py-2 px-4" >
+                                                            Add
+                                                        </button>
+                                                }
+                                            </div>
+
+                                        </form>
+                                    </Modal.Body>
+                                </Modal>
                                 <NavLink
                                     to={`/items/${id}/edit`}
                                     className="btn btn-primary btn-sm mx-2"
@@ -285,4 +278,4 @@ const ItemDisplay = () => {
     );
 };
 
-export default ItemDisplay;
+export default ItemDisplay2;

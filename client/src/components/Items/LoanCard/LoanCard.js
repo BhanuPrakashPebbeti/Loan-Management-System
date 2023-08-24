@@ -9,12 +9,12 @@ const LoanCard = ({ item, loan }) => {
         return emi.toFixed(2)
     }
     return (
-        <div className="loancard-container d-flex justify-content-center container text-white mt-5">
+        <div className="loancard-container d-flex justify-content-center container text-white mt-3">
             <div className="card p-2 px-3 py-3">
                 <div className="d-flex justify-content-between align-items-center">
                     <img src="https://i.imgur.com/8ANWXql.png" width="20" height="20" />
                     <img src={loanImg} width="40" /></div>
-                <div className="d-flex justify-content-between card-details mt-3 mb-3 text-light">
+                <div className="d-flex justify-content-between card-details mt-1 mb-1 text-light">
                     <div className="d-flex flex-column">
                         <span className="light">Loan Tenure</span><span>{loan.duration} mon</span>
                     </div>
