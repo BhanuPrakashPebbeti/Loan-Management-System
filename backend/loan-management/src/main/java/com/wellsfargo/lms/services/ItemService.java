@@ -86,6 +86,10 @@ public class ItemService {
 		
 		ItemMaster item = itemopt.get();
 
+		if(item.getIssueStatus()!=0) {
+			return ResponseEntity.badRequest().body("Cannot edit issued item");
+		}
+		
 		if(itemDetails.getCategory()!= null) {
 			item.setCategory(itemDetails.getCategory());
 		}
@@ -116,6 +120,10 @@ public class ItemService {
 		
 		ItemMaster item = itemopt.get();
 				
+		if(item.getIssueStatus()!=0) {
+			return ResponseEntity.badRequest().body("Cannot edit issued item");
+		}
+		
 		this.itemMasterRepo.delete(item);
 
 		return ResponseEntity.ok("Entry deleted successfully!");
