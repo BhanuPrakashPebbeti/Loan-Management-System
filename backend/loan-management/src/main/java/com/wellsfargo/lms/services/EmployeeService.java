@@ -12,11 +12,14 @@ import org.springframework.stereotype.Service;
 import com.wellsfargo.lms.models.EmployeeCardDetails;
 import com.wellsfargo.lms.models.EmployeeIssueDetails;
 import com.wellsfargo.lms.models.EmployeeMaster;
+import com.wellsfargo.lms.models.ItemMaster;
 import com.wellsfargo.lms.models.LoanCardMaster;
 import com.wellsfargo.lms.payloads.UserDetailsPayload;
 import com.wellsfargo.lms.repositories.EmployeeCardRepo;
 import com.wellsfargo.lms.repositories.EmployeeIssueRepo;
 import com.wellsfargo.lms.repositories.EmployeeMasterRepo;
+import com.wellsfargo.lms.repositories.ItemMasterRepo;
+import com.wellsfargo.lms.repositories.RoleRepository;
 
 @Service
 public class EmployeeService {
@@ -29,6 +32,12 @@ public class EmployeeService {
 	
 	@Autowired
 	private EmployeeIssueRepo employeeIssueRepo;
+	
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	@Autowired
+	private ItemMasterRepo itemMasterRepo;
 
 	public ResponseEntity<?> createPerson(EmployeeMaster employee) {
 
@@ -120,9 +129,19 @@ public class EmployeeService {
 		
 		EmployeeMaster employee = employeeopt.get();
 		
+		List<EmployeeIssueDetails> issues = employeeIssueRepo.findByEmployee(employee);
 		
-				
-		this.employeeRepo.hardDelete(employee.getId());
+		
+		// TODO: delete orphan items
+		/*
+		 * for (EmployeeIssueDetails issue : issues) { ItemMaster item =
+		 * issue.getItem(); itemMasterRepo.delete(item); }
+		 */
+		
+		this.employeeIssueRepo.hardDeleteEmployee(employee.getId());
+		this.employeeCardRepo.hardDeleteEmployee(employee.getId());
+		this.roleRepository.hardDeleteEmployee(employee.getId());
+		this.employeeRepo.delete(employee);
 
 		return ResponseEntity.ok("Entry deleted successfully!");
 		

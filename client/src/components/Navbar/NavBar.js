@@ -44,6 +44,11 @@ const NavBar = () => {
       name: "Users",
     },
     {
+      show  : true && role,
+      link: "/loanissue",
+      name: "Approvals",
+    },
+    {
       show: true,
       link: "/about",
       name: "About",
