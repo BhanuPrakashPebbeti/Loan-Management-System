@@ -50,7 +50,7 @@ const LoanIssue = () => {
         console.log(cardId);
         if (status) {
             try {
-                const res = await axios.post(`${SERVER_URL}/approval/decline/?id=${cardId}`, {
+                const res = await axios.post(`${SERVER_URL}/approval/decline?cardId=${cardId}`,null, {
                     headers: {
                         "Authorization": `Bearer ${cookies.get('token')}`,
                         "Content-Type": "application/json"
@@ -70,7 +70,7 @@ const LoanIssue = () => {
         console.log(cardId);
         if (status) {
             try {
-                const res = await axios.post(`${SERVER_URL}/approval/new/?id=${cardId}`, {
+                const res = await axios.post(`${SERVER_URL}/approval/new?cardId=${cardId}`,null, {
                     headers: {
                         "Authorization": `Bearer ${cookies.get('token')}`,
                         "Content-Type": "application/json"
