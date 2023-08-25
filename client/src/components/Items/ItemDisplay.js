@@ -62,7 +62,7 @@ const ItemDisplay = () => {
     }
     const getLoans = async (obj) => {
         try {
-            const data = await axios.get(`${SERVER_URL}/loans/?type=${obj.category}`, {
+            const data = await axios.get(`${SERVER_URL}/loans/type?type=${obj.category}`, {
                 headers: {
                     "Authorization": `Bearer ${cookies.get('token')}`,
                     "Content-Type": "application/json"
@@ -139,7 +139,7 @@ const ItemDisplay = () => {
             showAlert("Loan Application Submitted Successfully!", "success");
             getLoans(item);
             setAdd(false);
-            setModalShow(false)
+            setModalShow4(false)
         }
         catch (err) {
             console.log(err);
@@ -175,7 +175,7 @@ const ItemDisplay = () => {
     const deleteLoanCard = async () => {
         try {
             setAdd(true);
-            const res = await axios.delete(`${SERVER_URL}/loans/?id=${editLoan.id}`, {
+            const res = await axios.delete(`${SERVER_URL}/loans?id=${editLoan.id}`, {
                 headers: {
                     "Authorization": `Bearer ${cookies.get('token')}`,
                     "Content-Type": "application/json"
@@ -334,7 +334,7 @@ const ItemDisplay = () => {
                         </div>
                         <div>
                             <div className="row">
-                                <h4 className="text-center pb-1">Available Loan Cards</h4>
+                                {loans && <h4 className="text-center pb-1">Available Loan Cards</h4>}
                                 <div className="text-center">
                                     <div className="row">
                                         {loans && loans.map((loan) => {
@@ -342,8 +342,10 @@ const ItemDisplay = () => {
                                                 loan && <div className="col-md-3 mb-3" key={loan.id}>
                                                     <div className="loancard-container d-flex justify-content-center container text-white mt-3">
                                                         <NavLink className="card p-2 px-3 py-3" onClick={() => {
-                                                            setSelLoanCard(loan);
-                                                            setModalShow4(true);
+                                                            if (!edit) {
+                                                                setSelLoanCard(loan);
+                                                                setModalShow4(true);
+                                                            }
                                                         }} style={{ textDecoration: 'none' }}>
                                                             <div className="d-flex justify-content-between align-items-center">
                                                                 {/* {(!edit) && ((loan.id === selLoanCard) ? <img src="https://i.imgur.com/8ANWXql.png" width="20" height="20" /> : null)} */}

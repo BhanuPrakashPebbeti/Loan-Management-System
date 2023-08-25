@@ -12,6 +12,9 @@ import About from './components/About';
 import EditUser from './components/Users/AddUser/EditUser';
 import LoanIssue from './components/Loans/LoanIssue';
 import Profile from './components/Profile/profile';
+import MyitemsPending from './components/Items/MyitemsPending';
+import MyitemsApproved from './components/Items/MyitemsApproved';
+import MyitemsDeclined from './components/Items/MyitemsDeclined';
 
 
 const Routing = () => {
@@ -24,6 +27,9 @@ const Routing = () => {
 
       {/* Items */}
       <Route exact path='/items' element={<Items />} />
+      <Route exact path='/myitemsPending' element={<MyitemsPending />} />
+      <Route exact path='/myitemsApproved' element={<MyitemsApproved />} />
+      <Route exact path='/myitemsDeclined' element={<MyitemsDeclined />} />
       <Route exact path='/additem' element={<AddItem />} />
       <Route exact path='/items/:id' element={<ItemDisplay />} />
       <Route exact path='/items/:id/edit' element={<EditItem />} /> 

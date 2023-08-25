@@ -54,7 +54,11 @@ const LoanIssue = () => {
         console.log(cardId);
         if (status) {
             try {
+<<<<<<< HEAD
                 const res = await axios.post(`${SERVER_URL}/approval/decline?cardId=${cardId}`, {
+=======
+                const res = await axios.post(`${SERVER_URL}/approval/decline?cardId=${cardId}`,null, {
+>>>>>>> a4052f9ee1bf14eb197a293ee6b523519ac95aca
                     headers: {
                         "authorization": `Bearer ${cookies.get('token')}`,
                         "content-Type": "application/json"
@@ -75,8 +79,12 @@ const LoanIssue = () => {
         console.log(cookies.get('token'));
         if (status) {
             try {
+<<<<<<< HEAD
                 console.log(SERVER_URL);
                 const res = await axios.post(`${SERVER_URL}/approval/new?cardId=${cardId}`, {
+=======
+                const res = await axios.post(`${SERVER_URL}/approval/new?cardId=${cardId}`,null, {
+>>>>>>> a4052f9ee1bf14eb197a293ee6b523519ac95aca
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${cookies.get('token')}`
