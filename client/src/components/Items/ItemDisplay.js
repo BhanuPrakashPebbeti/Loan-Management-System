@@ -25,6 +25,7 @@ const ItemDisplay = () => {
     const { showAlert } = useContext(alertContext);
     const [item, setItem] = useState(null);
     const [loans, setLoans] = useState(null);
+    const [approvedLoans, setApprovedLoans] = useState(null);
     const [edit, setEdit] = useState(1);
     const [load, setLoad] = useState(0);
     const [modalShow, setModalShow] = useState(false);
@@ -47,6 +48,19 @@ const ItemDisplay = () => {
                 }
             });
             setItem(data.data);
+            try {
+                const data1 = await axios.get(`${SERVER_URL}/getcard/empitem?eid=${user.id}&itemId=${id}`, {
+                    headers: {
+                        "Authorization": `Bearer ${cookies.get('token')}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+                setApprovedLoans(data1.data);
+                console.log("issuecard", data1.data);
+            } catch (err) {
+                setLoad(-1);
+                navigate('/error');
+            }
             getLoans(data.data);
             setLoad(1);
             if (user && (user.role[0].name === "ROLE_ADMIN")) {
@@ -333,6 +347,35 @@ const ItemDisplay = () => {
                             </div>
                         </div>
                         <div>
+                            {approvedLoans && <div className="row">
+                                {approvedLoans && <h4 className="text-center pb-1"> Loan Requests</h4>}
+                                <div className="text-center">
+                                    <div className="row">
+                                        {approvedLoans && approvedLoans.map((apploan) => {
+                                            return (
+                                                apploan && <div className="col-md-3 mb-3" key={apploan.loan.id}>
+                                                    <div className="loancard-container d-flex justify-content-center container text-white mt-3">
+                                                        <NavLink className="card p-2 px-3 py-3" style={{ textDecoration: 'none' }}>
+                                                            <div className="d-flex justify-content-between align-items-center">
+                                                                {/* {(!edit) && ((loan.id === selLoanCard) ? <img src="https://i.imgur.com/8ANWXql.png" width="20" height="20" /> : null)} */}
+                                                                <img src={loanImg} width="40" />
+                                                            </div>
+                                                            <div className="d-flex justify-content-between card-details mt-1 mb-1 text-light">
+                                                                <div className="d-flex flex-column">
+                                                                    <span className="light">Loan Tenure</span><span>{apploan.loan.duration} mon</span>
+                                                                </div>
+                                                                <div className="d-flex flex-row">
+                                                                    <div className="d-flex flex-column mr-3"><span className="light">EMI</span><span>{calcEmi(item.valuation, apploan.loan.duration)}/-</span></div>
+                                                                </div>
+                                                            </div>
+                                                        </NavLink>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            </div>}
                             <div className="row">
                                 {loans && <h4 className="text-center pb-1">Available Loan Cards</h4>}
                                 <div className="text-center">
