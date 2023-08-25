@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.wellsfargo.lms.models.EmployeeCardDetails;
 import com.wellsfargo.lms.models.ItemMaster;
 import com.wellsfargo.lms.models.LoanCardMaster;
 import com.wellsfargo.lms.payloads.LoanPayload;
+import com.wellsfargo.lms.repositories.EmployeeCardRepo;
 import com.wellsfargo.lms.repositories.LoanCardRepo;
 
 @Service
@@ -19,9 +21,16 @@ public class LoanServices {
 	@Autowired
 	private LoanCardRepo loanCardRepo;
 	
+	@Autowired
+	private EmployeeCardRepo employeeCardRepo;
+	
 	
 	public ResponseEntity<?> createLoan(LoanPayload loanreq) {
 
+		if(loanreq.getDuration() == 0) {
+			return ResponseEntity.badRequest().body("Duration cannot be zero.");
+		}
+		
 		LoanCardMaster loan = new LoanCardMaster(loanreq.getLoanType(),loanreq.getDuration());
 		
 		try {
@@ -67,6 +76,12 @@ public class LoanServices {
 		
 		LoanCardMaster loan= loanopt.get();
 
+		List<EmployeeCardDetails> cards = employeeCardRepo.findByLoan(loan);
+		
+		if(!cards.isEmpty()) {
+			return ResponseEntity.badRequest().body("Cannot edit. Loan already applied");
+		}
+		
 		if(loanDetails.getDuration()!= 0) {
 			loan.setDuration(loanDetails.getDuration());
 		}
@@ -87,6 +102,12 @@ public class LoanServices {
 		}
 		
 		LoanCardMaster loan = loanopt.get();
+		
+		List<EmployeeCardDetails> cards = employeeCardRepo.findByLoan(loan);
+		
+		if(!cards.isEmpty()) {
+			return ResponseEntity.badRequest().body("Cannot delete. Loan already applied");
+		}
 				
 		this.loanCardRepo.delete(loan);
 
