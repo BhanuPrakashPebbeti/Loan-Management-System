@@ -84,7 +84,14 @@ public class EmployeeIssueService {
 		try {
 			
 			EmployeeIssueDetails resp = employeeIssueRepo.save(issueDetails);
+			List<EmployeeCardDetails> cards = employeeCardRepo.findByItem(item);
+			for(EmployeeCardDetails card : cards) {
+				if(!card.equals(cardDetails)) {
+					card.setApprovalStatus(2);
+				}
+			}
 			cardDetails.setApprovalStatus(1);
+			
 			employeeCardRepo.save(cardDetails);
 			item.setIssueStatus(1);
 			itemMasterRepo.save(item);

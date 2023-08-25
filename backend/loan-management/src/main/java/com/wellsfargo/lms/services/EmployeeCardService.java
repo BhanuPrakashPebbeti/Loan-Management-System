@@ -95,5 +95,13 @@ public class EmployeeCardService {
 		}
 		return ResponseEntity.ok(employeeCardRepo.findByEmployee(employee.get())) ;
 	}
+public ResponseEntity<?> getCardByItemAndEmp(String item_id,String employee_id) {
+		
+		List<EmployeeCardDetails> cards = employeeCardRepo.findByItemAndEmp(item_id, employee_id);
+		if(cards.isEmpty()) {
+			return ResponseEntity.badRequest().body("Card is not found");
+		}
+		return ResponseEntity.ok(employeeCardRepo.findByItemAndEmp(item_id, employee_id)) ;
+	}
 	
 }
