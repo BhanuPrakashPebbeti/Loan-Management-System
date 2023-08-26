@@ -25,8 +25,8 @@ function Login(props) {
           password: password,
         },
       ).then((res) => {
-        setCookie('token',  res.data.token);
-        setCookie('id',  res.data.id);
+        setCookie('token', res.data.token);
+        setCookie('id', res.data.id);
         window.location.reload(true);
       }).catch((err) => {
         console.log(err);
@@ -38,25 +38,22 @@ function Login(props) {
   const ResetPassword = async (e) => {
     e.preventDefault();
     setShowSpinner(true);
-    setMsg("Sending Reset Password Link...");
+    setMsg("Sending OTP...");
     try {
-      await axios
-        .post(`${SERVER_URL}/forgot-password`, {
-          email: email,
-        })
-        .then((res) => {
-          if (res.status === 401) {
-            setMsg("User Not Found");
-          } else if (res.status === 200) {
-            setMsg("Reset Link sent your Mail (please also check the spam folder)");
-          }
-          setShowSpinner(false);
-        });
+      await axios.post(`${SERVER_URL}/auth/forgot?email=${email}`, {},).then((res) => {
+        console.log(res);
+        if (res.status === 400) {
+          setMsg("Employee does not exist with this email");
+        } else if (res.status === 200) {
+          setMsg("OTP sent to your Mail");
+        }
+        setShowSpinner(false);
+      });
     } catch (err) {
       setMsg(err.response.data.err);
     }
   };
-  // console.log(reset);
+
   return (
     <Modal
       {...props}
