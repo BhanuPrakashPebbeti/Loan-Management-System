@@ -48,6 +48,7 @@ const ItemDisplay = () => {
                 }
             });
             setItem(data.data);
+            console.log("item", data.data);
             try {
                 const data1 = await axios.get(`${SERVER_URL}/getcard/empitem?eid=${user.id}&itemId=${id}`, {
                     headers: {
@@ -59,7 +60,6 @@ const ItemDisplay = () => {
                 console.log("issuecard", data1.data);
             } catch (err) {
                 setLoad(-1);
-                navigate('/error');
             }
             getLoans(data.data);
             setLoad(1);
@@ -166,7 +166,6 @@ const ItemDisplay = () => {
         e.preventDefault();
         try {
             setAdd(true);
-            console.log(editLoan);
             const itemData = await axios.put(`${SERVER_URL}/loans`, editLoan, {
                 headers: {
                     "Authorization": `Bearer ${cookies.get('token')}`,
@@ -181,7 +180,10 @@ const ItemDisplay = () => {
         }
         catch (err) {
             console.log(err);
-            showAlert(err.response.data.error, "danger");
+            setAdd(false);
+            setModalShow2(false);
+            showAlert(err.response.data, "danger");
+            navigate(`/items/${id}`);
         }
 
     };
@@ -201,8 +203,9 @@ const ItemDisplay = () => {
             setModalShow3(false);
             navigate(`/items/${id}`);
         } catch (error) {
-            console.log(error);
-            showAlert("Loan Card Deletion failed", "danger");
+            setAdd(false);
+            setModalShow3(false);
+            showAlert(error.response.data, "danger");
         }
     };
 
@@ -319,9 +322,9 @@ const ItemDisplay = () => {
                                 </div>
                             </div>
                         )}
-                        <div class="card mb-3" style={{ "maxWidth": "1500" }}>
-                            <div class="row g-0 ">
-                                <div class="col-lg-6 ">
+                        <div className="card mb-3" style={{ "maxWidth": "1500" }}>
+                            <div className="row g-0 ">
+                                <div className="col-lg-6 ">
                                     <img
                                         src={(item.category === "furniture") ? furniture : ((item.category === "car") ? car : (item.category === "home") ? home : (item.category === "jewellery") ? jewellery : object)}
                                         className="img-fluid rounded p-5"
@@ -329,9 +332,9 @@ const ItemDisplay = () => {
                                         style={{ width: "30rem", objectFit: "contain" }}
                                     />
                                 </div>
-                                <div class="col-lg-6 align-self-center">
-                                    <div class="card-body">
-                                        <h3 class="card-title mt-2 mb-3">{item.itemName}</h3>
+                                <div className="col-lg-6 align-self-center">
+                                    <div className="card-body">
+                                        <h3 className="card-title mt-2 mb-3">{item.itemName}</h3>
                                         <p className="font-monospace text-muted">
                                             Category : {item.category}
                                         </p>
@@ -341,7 +344,7 @@ const ItemDisplay = () => {
                                         <h5 className="mb-4">
                                             &#x20b9; {item.valuation}
                                         </h5>
-                                        <p class=" font-monospace text-muted card-text" dangerouslySetInnerHTML={{ __html: item.description }}></p>
+                                        <p className=" font-monospace text-muted card-text" dangerouslySetInnerHTML={{ __html: item.description }}></p>
                                     </div>
                                 </div>
                             </div>
@@ -354,13 +357,13 @@ const ItemDisplay = () => {
                                         {approvedLoans && approvedLoans.map((apploan) => {
                                             return (
                                                 apploan && <div className="col-md-3 mb-3" key={apploan.loan.id}>
-                                                    <div className="loancard-container d-flex justify-content-center container text-white mt-3">
+                                                    <div className="loancard-container d-flex justify-content-center container mt-3">
                                                         <NavLink className="card p-2 px-3 py-3" style={{ textDecoration: 'none' }}>
                                                             <div className="d-flex justify-content-between align-items-center">
-                                                                {/* {(!edit) && ((loan.id === selLoanCard) ? <img src="https://i.imgur.com/8ANWXql.png" width="20" height="20" /> : null)} */}
+                                                                {(apploan.approvalStatus==0)?<span className="badge text-bg-warning">pending</span>:(apploan.approvalStatus==1)?<span className="badge text-bg-success">approved</span>:<span className="badge text-bg-danger">declined</span>}
                                                                 <img src={loanImg} width="40" />
                                                             </div>
-                                                            <div className="d-flex justify-content-between card-details mt-1 mb-1 text-light">
+                                                            <div className="d-flex justify-content-between card-details mt-1 mb-1 text-light text-white ">
                                                                 <div className="d-flex flex-column">
                                                                     <span className="light">Loan Tenure</span><span>{apploan.loan.duration} mon</span>
                                                                 </div>
@@ -401,7 +404,7 @@ const ItemDisplay = () => {
                                                                             }}
                                                                             className="btn btn-primary btn-sm mx-2"
                                                                         >
-                                                                            <i class="fas fa-edit"></i>
+                                                                            <i className="fas fa-edit"></i>
                                                                         </NavLink>
 
                                                                         <NavLink
@@ -411,7 +414,7 @@ const ItemDisplay = () => {
                                                                                 setEditLoan(loan);
                                                                             }}
                                                                         >
-                                                                            <i class="fas fa-trash"></i>
+                                                                            <i className="fas fa-trash"></i>
                                                                         </NavLink></>}
                                                                 </div>
                                                                 <img src={loanImg} width="40" /></div>
@@ -526,7 +529,7 @@ const ItemDisplay = () => {
 
                                         <div className="modal-body">
                                             <h5 className="pb-4">Apply for Loan</h5>
-                                            <h3 class="card-title mt-2 mb-3">{item.itemName}</h3>
+                                            <h3 className="card-title mt-2 mb-3">{item.itemName}</h3>
                                             <p className="font-monospace text-muted">
                                                 Category : {item.category}
                                             </p>
