@@ -34,4 +34,9 @@ public class StatsController {
 	public ResponseEntity<?> issueStats(){
 		return ResponseEntity.ok(statServices.IssueStats());
 	}
+	
+	@GetMapping("/cardtype")
+	public ResponseEntity<?> cardTypeStats(){
+		return ResponseEntity.ok(statServices.CardByTypeStats());
+	}
 }

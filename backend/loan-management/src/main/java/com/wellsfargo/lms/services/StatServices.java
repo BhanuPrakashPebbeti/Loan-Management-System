@@ -97,4 +97,36 @@ public class StatServices {
 		
 	}
 	
+	public HashMap<String, Integer> CardByTypeStats(){
+		
+		List<EmployeeCardDetails> furniture = employeeCardRepo.findByLoanType("Furniture");
+		
+		List<EmployeeCardDetails> home = employeeCardRepo.findByLoanType("Home");
+		
+		List<EmployeeCardDetails> vehicle = employeeCardRepo.findByLoanType("Vehicle");
+		
+		List<EmployeeCardDetails> jewellery = employeeCardRepo.findByLoanType("Jewellery");
+		
+		List<EmployeeCardDetails> property = employeeCardRepo.findByLoanType("Property");
+		
+		List<EmployeeCardDetails> other = employeeCardRepo.findByLoanType("Other");
+		
+		HashMap<String, Integer> stats = new HashMap<>();
+		
+		stats.put("Furniture", furniture.size());
+		
+		stats.put("Home", home.size());
+		
+		stats.put("Vehicle", vehicle.size());
+		
+		stats.put("Jewellery", jewellery.size());
+		
+		stats.put("Property", property.size());
+		
+		stats.put("Others", other.size());
+		
+		return stats;
+		
+	}
+	
 }

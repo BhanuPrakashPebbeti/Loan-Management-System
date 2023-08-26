@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.wellsfargo.lms.models.*;
@@ -27,5 +28,8 @@ public interface EmployeeCardRepo extends JpaRepository<EmployeeCardDetails, Str
 	void hardDeleteEmployee(String eId);
 	
 	List<EmployeeCardDetails> findByApprovalStatus(int approvalStatus);
+	
+	@Query(value="SELECT cd.* FROM employee_card_details cd JOIN loan_card_master lc ON cd.loan_id = lc.loan_id WHERE lc.loan_type = :loanType",nativeQuery = true)
+	List<EmployeeCardDetails> findByLoanType(@Param("loanType") String loanType);
 	
 }
