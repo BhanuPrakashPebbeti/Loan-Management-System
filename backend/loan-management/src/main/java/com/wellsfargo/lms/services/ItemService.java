@@ -90,6 +90,12 @@ public class ItemService {
 			return ResponseEntity.badRequest().body("Cannot edit issued item");
 		}
 		
+		List<EmployeeCardDetails> cards = employeeCardRepo.findByItem(item);
+		
+		if(!cards.isEmpty()) {
+			return ResponseEntity.badRequest().body("Item has already been applied by someone.");
+		}
+		
 		if(itemDetails.getCategory()!= null) {
 			item.setCategory(itemDetails.getCategory());
 		}
@@ -122,6 +128,12 @@ public class ItemService {
 				
 		if(item.getIssueStatus()!=0) {
 			return ResponseEntity.badRequest().body("Cannot edit issued item");
+		}
+		
+		List<EmployeeCardDetails> cards = employeeCardRepo.findByItem(item);
+		
+		if(!cards.isEmpty()) {
+			return ResponseEntity.badRequest().body("Item has already been applied by someone.");
 		}
 		
 		this.itemMasterRepo.delete(item);
