@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wellsfargo.lms.models.EmployeeCardDetails;
+import com.wellsfargo.lms.models.EmployeeIssueDetails;
+import com.wellsfargo.lms.models.EmployeeMaster;
 import com.wellsfargo.lms.models.ItemMaster;
 import com.wellsfargo.lms.repositories.EmployeeCardRepo;
 import com.wellsfargo.lms.repositories.EmployeeIssueRepo;
@@ -67,6 +69,32 @@ public class StatServices {
 		
 	}
 	
+	public HashMap<String, Integer> UserStats(){
+		
+		List<EmployeeMaster> users = employeeMasterRepo.findByRoleName("ROLE_EMPLOYEE");
+		
+		List<EmployeeMaster> admins = employeeMasterRepo.findByRoleName("ROLE_ADMIN");
+		
+		HashMap<String, Integer> stats = new HashMap<>();
+		
+		stats.put("Users", users.size());
+		
+		stats.put("Admins", admins.size());
+		
+		return stats;
+		
+	}
 	
+	public HashMap<String, Integer> IssueStats(){
+		
+		List<EmployeeIssueDetails> issuesDetails = employeeIssueRepo.findAll();
+		
+		HashMap<String, Integer> stats = new HashMap<>();
+		
+		stats.put("Total issues", issuesDetails.size());
+		
+		return stats;
+		
+	}
 	
 }

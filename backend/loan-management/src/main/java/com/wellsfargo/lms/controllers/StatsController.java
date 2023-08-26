@@ -25,4 +25,13 @@ public class StatsController {
 		return ResponseEntity.ok(statServices.ItemStats());
 	}
 	
+	@GetMapping("/users")
+	public ResponseEntity<?> userStats(){
+		return ResponseEntity.ok(statServices.UserStats());
+	}
+	
+	@GetMapping("/issues")
+	public ResponseEntity<?> issueStats(){
+		return ResponseEntity.ok(statServices.IssueStats());
+	}
 }
