@@ -104,7 +104,8 @@ const ItemDisplay = () => {
                 navigate("/items");
             } catch (error) {
                 console.log(error);
-                showAlert("Item Deletion failed", "danger");
+                showAlert(error.response.data, "danger");
+                navigate(`/items/${id}`);
             }
         }
     };
@@ -130,7 +131,10 @@ const ItemDisplay = () => {
         }
         catch (err) {
             console.log(err);
-            showAlert(err.response.data.error, "danger");
+            setAdd(false);
+            setModalShow(false);
+            showAlert(err.response.data, "danger");
+            navigate(`/items/${id}`);
         }
 
     };
@@ -360,7 +364,7 @@ const ItemDisplay = () => {
                                                     <div className="loancard-container d-flex justify-content-center container mt-3">
                                                         <NavLink className="card p-2 px-3 py-3" style={{ textDecoration: 'none' }}>
                                                             <div className="d-flex justify-content-between align-items-center">
-                                                                {(apploan.approvalStatus==0)?<span className="badge text-bg-warning">pending</span>:(apploan.approvalStatus==1)?<span className="badge text-bg-success">approved</span>:<span className="badge text-bg-danger">declined</span>}
+                                                                {(apploan.approvalStatus == 0) ? <span className="badge text-bg-warning">pending</span> : (apploan.approvalStatus == 1) ? <span className="badge text-bg-success">approved</span> : <span className="badge text-bg-danger">declined</span>}
                                                                 <img src={loanImg} width="40" />
                                                             </div>
                                                             <div className="d-flex justify-content-between card-details mt-1 mb-1 text-light text-white ">

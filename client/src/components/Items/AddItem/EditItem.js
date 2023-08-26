@@ -69,7 +69,9 @@ const EditItem = () => {
         }
         catch (err) {
             console.log(err);
-            showAlert(err.response.data.error, "danger");
+            setEdit(false);
+            showAlert(err.response.data, "danger");
+            navigate(`/items/${id}`);
         }
 
     };
