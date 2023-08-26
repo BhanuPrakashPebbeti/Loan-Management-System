@@ -20,7 +20,7 @@ const Users = () => {
 
     const ddmmyy = (date) => {
         const d = new Date(date);
-        return d.getDate() + "/" + String(parseInt(d.getMonth()) + 1) + "/" + d.getFullYear();
+        return d.toLocaleString('en-us',{day:'numeric', month:'short', year:'numeric'})
     }
     const deleteUser = async (status, id) => {
         if (status) {
@@ -105,7 +105,7 @@ const Users = () => {
                     </div>
                     <MDBTable align='middle' >
                         <MDBTableHead>
-                            <tr>
+                            <tr className='table-dark'>
                                 <th scope='col'>Name</th>
                                 <th scope='col'>Title</th>
                                 <th scope='col'>Gender</th>
@@ -118,7 +118,7 @@ const Users = () => {
                             {
                                 tableData.map((userDetails, index) => {
                                     return (
-                                        <tr>
+                                        <tr className={index%2==0?'table-secondary':''}>
                                             <td>
                                                 <div className='d-flex align-items-center'>
                                                     <img

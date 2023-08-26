@@ -10,11 +10,11 @@ import AddUser from './components/Users/AddUser/AddUser';
 import Users from './components/Users/Users';
 import About from './components/About';
 import EditUser from './components/Users/AddUser/EditUser';
-import LoanIssue from './components/Loans/LoanIssue';
-import Profile from './components/Profile/profile';
+import LoanIssue from './components/Loans/LoanIssue'
 import MyitemsPending from './components/Items/MyitemsPending';
 import MyitemsApproved from './components/Items/MyitemsApproved';
 import MyitemsDeclined from './components/Items/MyitemsDeclined';
+import Profile from './components/Profile/Profile';
 
 
 const Routing = () => {

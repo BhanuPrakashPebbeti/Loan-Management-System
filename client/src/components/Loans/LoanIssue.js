@@ -25,23 +25,23 @@ const LoanIssue = () => {
         return d.getDate() + "/" + String(parseInt(d.getMonth()) + 1) + "/" + d.getFullYear();
     }
 
-    function ShowStatus (props) {
+    function ShowStatus(props) {
         console.log(props.userDetails);
-        if(props.userDetails.approvalStatus === 0) {
+        if (props.userDetails.approvalStatus === 0) {
             return (
                 <div>
-                    <button type="button" class="btn btn-success" onClick={()=>approveLoan(true, props.userDetails.cardId)}>Accept</button>
+                    <button type="button" class="btn btn-success" onClick={() => approveLoan(true, props.userDetails.cardId)}>Accept</button>
                     <button type="button" class="btn btn-danger" onClick={() => declineLoan(true, props.userDetails.cardId)}>Decline</button>
                 </div>
             )
-        } else if(props.userDetails.approvalStatus === 1) {
+        } else if (props.userDetails.approvalStatus === 1) {
             return (
                 <div>
                     <button type="button" class="btn btn-success">Loan Approved</button>
                 </div>
             )
         }
-        else  {
+        else {
             return (
                 <div>
                     <button type="button" class="btn btn-danger">Loan Declined</button>
@@ -50,12 +50,12 @@ const LoanIssue = () => {
         }
     }
 
-    const declineLoan = async (status,cardId) => {
+    const declineLoan = async (status, cardId) => {
         console.log(cardId);
         if (status) {
             try {
 
-                const res = await axios.post(`${SERVER_URL}/approval/decline?cardId=${cardId}`,null, {
+                const res = await axios.post(`${SERVER_URL}/approval/decline?cardId=${cardId}`, null, {
                     headers: {
                         "authorization": `Bearer ${cookies.get('token')}`,
                         "content-Type": "application/json"
@@ -71,16 +71,16 @@ const LoanIssue = () => {
         }
     };
 
-    const approveLoan = async (status,cardId) => {
+    const approveLoan = async (status, cardId) => {
         console.log(cardId);
         console.log(cookies.get('token'));
         if (status) {
             try {
-                const res = await axios.post(`${SERVER_URL}/approval/new?cardId=${cardId}`,null, {
+                const res = await axios.post(`${SERVER_URL}/approval/new?cardId=${cardId}`, null, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${cookies.get('token')}`
-                        
+
                     },
                 });
                 getLoans();
@@ -95,7 +95,7 @@ const LoanIssue = () => {
 
     const getLoans = async () => {
         const cookies = new Cookies();
-        
+
         try {
             const data = await axios.get(`${SERVER_URL}/getcard`, {
                 headers: {
@@ -120,66 +120,68 @@ const LoanIssue = () => {
         else {
             setLoad(-1)
         }
-    }, logged_in);
+    }, [logged_in]);
+
+
     return (
         <>
-        {load === 0 ? (
-            <Loading />
-        ) : load === 1 ?
-        <div className='table-container adjust'>
-        <MDBTable align='middle' >
-            <MDBTableHead>
-                <tr>
-                    <th scope='col'>User Name</th>
-                    <th scope='col'>Loan ID</th>
-                    <th scope='col'>Card ID</th>
-                    <th scope='col'>Loan Type</th>
-                    <th scope='col'>Duration</th>
-                    {/* <th scope='col'>DOJ</th> */}
-                    <th scope='col'>ACTIONS</th>
-                </tr>
-            </MDBTableHead>
-            <MDBTableBody>
-                {
-                    tableData.map((userDetails, index) => {
-                        return (
-                            <tr>
-                                <td>
-                                    <div className='d-flex align-items-center'>
-                                        <img
-                                            src='https://th.bing.com/th/id/OIP.-34wq4QQPS80r1PpZTU6ywHaHE?w=187&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7'
-                                            alt=''
-                                            style={{ width: '45px', height: '45px' }}
-                                            className='rounded-circle'
-                                        />
-                                        <div className='ms-3'>
-                                            <p className='fw-bold mb-1'>{userDetails.employee.name.toUpperCase()}</p>
-                                            {/* <p className='text-muted mb-0'>john.doe@gmail.com</p> */}
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <p className='fw-normal mb-1'>{userDetails.loan.id}</p>
-                                    {/* <p className='text-muted mb-0'>{userDetails.department}</p> */}
-                                </td>
-                                <td>
-                                    <p className='fw-normal mb-1'>{userDetails.cardId}</p>
-                                    {/* <p className='text-muted mb-0'>{userDetails.department}</p> */}
-                                </td>
-                                <td>
-                                    {/* <MDBBadge color={`${userDetails.gender === "M" ? "success" : userDetails.gender === "F" ? "primary" : "danger"}`} pill>
+            {load === 0 ? (
+                <Loading />
+            ) : load === 1 ?
+                <div className='table-container adjust pt-5'>
+                    <MDBTable align='middle' >
+                        <MDBTableHead>
+                            <tr className='table-dark'>
+                                <th scope='col'>User Name</th>
+                                <th scope='col'>Loan ID</th>
+                                <th scope='col'>Card ID</th>
+                                <th scope='col'>Loan Type</th>
+                                <th scope='col'>Duration</th>
+                                {/* <th scope='col'>DOJ</th> */}
+                                <th scope='col'>ACTIONS</th>
+                            </tr>
+                        </MDBTableHead>
+                        <MDBTableBody>
+                            {
+                                tableData.map((userDetails, index) => {
+                                    return (
+                                        <tr className={index%2==0?'table-secondary':''}>
+                                            <td>
+                                                <div className='d-flex align-items-center'>
+                                                    <img
+                                                        src='https://th.bing.com/th/id/OIP.-34wq4QQPS80r1PpZTU6ywHaHE?w=187&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7'
+                                                        alt=''
+                                                        style={{ width: '45px', height: '45px' }}
+                                                        className='rounded-circle'
+                                                    />
+                                                    <div className='ms-3'>
+                                                        <p className='fw-bold mb-1'>{userDetails.employee.name.toUpperCase()}</p>
+                                                        {/* <p className='text-muted mb-0'>john.doe@gmail.com</p> */}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <p className='fw-normal mb-1'>{userDetails.loan.id}</p>
+                                                {/* <p className='text-muted mb-0'>{userDetails.department}</p> */}
+                                            </td>
+                                            <td>
+                                                <p className='fw-normal mb-1'>{userDetails.cardId}</p>
+                                                {/* <p className='text-muted mb-0'>{userDetails.department}</p> */}
+                                            </td>
+                                            <td>
+                                                {/* <MDBBadge color={`${userDetails.gender === "M" ? "success" : userDetails.gender === "F" ? "primary" : "danger"}`} pill>
                                         {userDetails.gender}
                                     </MDBBadge> */}
-                                    <p className='fw-normal mb-1'>{userDetails.loan.loanType}</p>
-                                </td>
-                                {/* <td>{ddmmyy(userDetails.dob)}</td>
+                                                <p className='fw-normal mb-1'>{userDetails.loan.loanType}</p>
+                                            </td>
+                                            {/* <td>{ddmmyy(userDetails.dob)}</td>
                                 <td>{ddmmyy(userDetails.doj)}</td> */}
-                                <td><p className='fw-normal mb-1'>{userDetails.loan.duration}</p></td>
-                                <td>
-                                {/* <button type="button" class="btn btn-success">Accept</button>
+                                            <td><p className='fw-normal mb-1'>{userDetails.loan.duration}</p></td>
+                                            <td>
+                                                {/* <button type="button" class="btn btn-success">Accept</button>
                                 <button type="button" class="btn btn-danger">Decline</button> */}
-                                <ShowStatus userDetails={userDetails} />
-                                {/*
+                                                <ShowStatus userDetails={userDetails} />
+                                                {/*
                                     <NavLink
                                         to={`/user/${userDetails.id}/edit`}
                                         className="btn btn-primary btn-sm mx-2"
@@ -211,25 +213,25 @@ const LoanIssue = () => {
                                             </div>
                                         </div>
                             </div> */}
-                                </td> 
-                            </tr>
-                        )
-                    })
-                }
+                                            </td>
+                                        </tr>
+                                    )
+                                })
+                            }
 
 
-            </MDBTableBody>
-        </MDBTable>
-    </div>
-            : (
-                <Error />
-            )}
+                        </MDBTableBody>
+                    </MDBTable>
+                </div>
+                : (
+                    <Error />
+                )}
 
-    </>
+        </>
 
-            
-    
-        
+
+
+
     );
 }
 
