@@ -90,7 +90,7 @@ public class UserController {
 
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping
-	public ResponseEntity<?> updateEmployee(@RequestBody UserDetailsPayload empDetails) {
+	public ResponseEntity<?> updateEmployee(@RequestBody EmployeeMaster empDetails) {
 		return employeeService.updateEmployee(empDetails);
 	}
 	
