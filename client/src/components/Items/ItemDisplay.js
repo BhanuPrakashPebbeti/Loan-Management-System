@@ -156,6 +156,7 @@ const ItemDisplay = () => {
             });
             showAlert("Loan Application Submitted Successfully!", "success");
             getLoans(item);
+            getItem(id);
             setAdd(false);
             setModalShow4(false)
         }
