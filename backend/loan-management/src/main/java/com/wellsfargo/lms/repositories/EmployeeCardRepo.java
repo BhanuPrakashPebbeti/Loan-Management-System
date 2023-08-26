@@ -26,4 +26,6 @@ public interface EmployeeCardRepo extends JpaRepository<EmployeeCardDetails, Str
 	@Query(value="DELETE FROM employee_card_details WHERE employee_id = :eId",nativeQuery = true)
 	void hardDeleteEmployee(String eId);
 	
+	List<EmployeeCardDetails> findByApprovalStatus(int approvalStatus);
+	
 }
