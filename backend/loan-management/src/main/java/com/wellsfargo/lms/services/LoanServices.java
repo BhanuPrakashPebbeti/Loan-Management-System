@@ -31,6 +31,12 @@ public class LoanServices {
 			return ResponseEntity.badRequest().body("Duration cannot be zero.");
 		}
 		
+		List<LoanCardMaster> duploans = loanCardRepo.findByTypeAndDuration(loanreq.getLoanType(), loanreq.getDuration());
+		
+		if(!duploans.isEmpty()) {
+			return ResponseEntity.badRequest().body("Duplicate loan card exists");
+		}
+		
 		LoanCardMaster loan = new LoanCardMaster(loanreq.getLoanType(),loanreq.getDuration());
 		
 		try {
@@ -114,5 +120,7 @@ public class LoanServices {
 		return ResponseEntity.ok("Entry deleted successfully!");
 		
 	}
+	
+	
 	
 }
