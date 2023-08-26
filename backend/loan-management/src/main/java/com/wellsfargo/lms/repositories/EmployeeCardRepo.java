@@ -32,4 +32,7 @@ public interface EmployeeCardRepo extends JpaRepository<EmployeeCardDetails, Str
 	@Query(value="SELECT cd.* FROM employee_card_details cd JOIN loan_card_master lc ON cd.loan_id = lc.loan_id WHERE lc.loan_type = :loanType",nativeQuery = true)
 	List<EmployeeCardDetails> findByLoanType(@Param("loanType") String loanType);
 	
+	@Query(value="SELECT * FROM employee_card_details WHERE item_id = :itemId AND employee_id = :eId AND loan_id = :loanId", nativeQuery = true)
+	List<EmployeeCardDetails> findByItemAndEmpAndLoan(String itemId, String eId, String loanId);
+	
 }

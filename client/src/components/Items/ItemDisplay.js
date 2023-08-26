@@ -153,12 +153,18 @@ const ItemDisplay = () => {
                     "Authorization": `Bearer ${cookies.get('token')}`,
                     "Content-Type": "application/json",
                 },
-            });
-            showAlert("Loan Application Submitted Successfully!", "success");
+            }).then((res)=>{
+                showAlert("Loan Application Submitted Successfully!", "success");
             getLoans(item);
             getItem(id);
             setAdd(false);
             setModalShow4(false)
+            }).catch((err)=>{
+                showAlert(err.response.data, "danger")
+                setAdd(false);
+                setModalShow4(false)
+            });
+            
         }
         catch (err) {
             console.log(err);
