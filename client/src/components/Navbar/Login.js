@@ -48,6 +48,14 @@ function Login(props) {
           setMsg("OTP sent to your Mail");
         }
         setShowSpinner(false);
+      }).catch((err)=>{
+        if (err.response.status === 400) {
+          setMsg("Employee does not exist with this email");
+        }
+        else{
+          setMsg("Weird error.");
+        }
+        setShowSpinner(false);
       });
     } catch (err) {
       setMsg(err.response.data.err);
