@@ -63,14 +63,16 @@ public class ItemController {
 			
 			return (itemService.getAppliedItems(id));
 		}
-		
+		else if (filter.equalsIgnoreCase("pending")) {
+			return (itemService.getPendingItems(id));
+		}
 		else if (filter.equalsIgnoreCase("approved")) {
 			return (itemService.getApprovedItems(id));
 		} else if (filter.equalsIgnoreCase("declined")){
 			return (itemService.getDeclinedItems(id));
 		} else{
 			return ResponseEntity.badRequest().body("Filter parameter should contain one of "
-					+ "['applied', 'approved', 'declined']");
+					+ "['applied','pending', 'approved', 'declined']");
 		}
 	}
 	
