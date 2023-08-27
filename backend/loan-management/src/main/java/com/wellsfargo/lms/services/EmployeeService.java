@@ -15,6 +15,7 @@ import com.wellsfargo.lms.models.EmployeeIssueDetails;
 import com.wellsfargo.lms.models.EmployeeMaster;
 import com.wellsfargo.lms.models.ItemMaster;
 import com.wellsfargo.lms.models.LoanCardMaster;
+import com.wellsfargo.lms.payloads.ChangePasswordPayload;
 import com.wellsfargo.lms.payloads.UserDetailsPayload;
 import com.wellsfargo.lms.repositories.EmployeeCardRepo;
 import com.wellsfargo.lms.repositories.EmployeeIssueRepo;
@@ -122,6 +123,29 @@ public class EmployeeService {
 
 		return ResponseEntity.ok(this.employeeRepo.save(employee));
 	}
+	
+	
+	public ResponseEntity<?> changePassword(ChangePasswordPayload payload) {
+		Optional<EmployeeMaster> employeeopt = employeeRepo.findById(payload.getId());
+
+		if (employeeopt.isEmpty()) {
+			return ResponseEntity.badRequest().body("employee not found with id:" + payload.getId());
+		}
+		
+		EmployeeMaster employee = employeeopt.get();
+		
+		if(!encoder.matches(payload.getPassword(),employee.getPassword())) {
+			return ResponseEntity.badRequest().body("The old password is wrong");
+		}
+		
+		employee.setPassword(encoder.encode(payload.getNewPassword()));
+		
+		employeeRepo.save(employee);
+		
+		return ResponseEntity.ok("Password changed successfully!");
+		
+	}
+	
 
 	public ResponseEntity<?> deleteEmployee(String eId) {
 		Optional<EmployeeMaster> employeeopt = employeeRepo.findById(eId);

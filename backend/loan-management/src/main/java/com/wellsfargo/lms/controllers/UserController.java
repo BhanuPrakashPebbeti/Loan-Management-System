@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wellsfargo.lms.models.EmployeeMaster;
+import com.wellsfargo.lms.payloads.ChangePasswordPayload;
 import com.wellsfargo.lms.payloads.UserDetailsPayload;
 import com.wellsfargo.lms.services.EmployeeService;
 
@@ -99,6 +100,10 @@ public class UserController {
 		return employeeService.deleteEmployee(eId);
 	}
 	
+	@PutMapping("/changePassword")
+	public ResponseEntity<?> changePassword(@RequestBody ChangePasswordPayload payload) {
+		return employeeService.changePassword(payload);
+	}
 	
 	
 }

@@ -32,21 +32,33 @@ const Profile = () => {
             setMsg("Fill All Details");
             return;
         }
+
+        if (cPassword != newPassword) {
+            setMsg("Password and confirm password does not match");
+            return;
+        }
+
         setMsg("");
         setChange(true);
         try {
-            axios.put(`${SERVER_URL}/changePassword/${editUserCopy.id}`,
+            axios.put(`${SERVER_URL}/employees/changePassword`,
                 {
+                    id: editUserCopy.id,
                     password: password,
                     newPassword: newPassword,
-                    cPassword: cPassword
                 },
                 {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true
+                    headers: {
+                        "Authorization": `Bearer ${cookies.get('token')}`,
+                        "Content-Type": "application/json",
+                    }
                 }).then(res => {
+                    console.log(res);
                     document.getElementById("modalClose").click();
-                    showAlert(`${res.data.msg}!`, "success");
+                    showAlert(`${res.data}!`, "success");
+                    setChange(false);
+                }).catch((err)=>{
+                    showAlert(`${err.response.data}!`, "danger");
                     setChange(false);
                 })
         } catch (err) {
