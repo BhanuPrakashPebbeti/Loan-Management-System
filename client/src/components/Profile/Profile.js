@@ -35,7 +35,7 @@ const Profile = () => {
         setMsg("");
         setChange(true);
         try {
-            axios.put(`${SERVER_URL}/changePassword/${editUserCopy._id}`,
+            axios.put(`${SERVER_URL}/changePassword/${editUserCopy.id}`,
                 {
                     password: password,
                     newPassword: newPassword,
@@ -60,15 +60,23 @@ const Profile = () => {
         e.preventDefault();
         try {
             setChange(true);
-            const itemData = await axios.put(`${SERVER_URL}/employees`, editUserCopy, {
+            const itemData = await axios.put(`${SERVER_URL}/employees`, JSON.stringify(editUserCopy), {
                 headers: {
                     "Authorization": `Bearer ${cookies.get('token')}`,
                     "Content-Type": "application/json",
                 },
+            }).then((res)=>{
+                showAlert("Profile Saved Successfully!", "success");
+                setChange(false);
+                setEditMode(false);
+            })
+            .catch((err)=>{
+                console.log(err);
+                showAlert("Some error!", "danger");
+                setChange(false);
+                setEditMode(false);
             });
-            showAlert("Profile Saved Successfully!", "success");
-            setChange(false);
-            setEditMode(false);
+            
         }
         catch (err) {
             console.log(err);

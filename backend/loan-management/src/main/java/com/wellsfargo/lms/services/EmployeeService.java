@@ -114,9 +114,9 @@ public class EmployeeService {
 		if (EmpDetails.getEmail() != null) {
 			employee.setEmail(EmpDetails.getEmail());
 		}
-		if (EmpDetails.getPassword() != null) {
-			employee.setPassword(encoder.encode(EmpDetails.getPassword()));
-		}
+//		if (EmpDetails.getPassword() != null) {
+//			employee.setPassword(encoder.encode(EmpDetails.getPassword()));
+//		}
 		
 		
 
