@@ -23,9 +23,23 @@ const Dashboard = () => {
     const [itemCount, setItemCount] = useState(0);
     const [adminCount, setAdminCount] = useState(0);
     const [userCount, setUserCount] = useState(0);
+    const [loanValuation, setLoanValuation] = useState(0);
     const [applicationStats, setApplicationStats] = useState(null);
     const [load, setLoad] = useState(0);
     const cookies = new Cookies();
+
+    const formatCurrency = (amount) => {
+        amount = amount * 0.012;
+        const units = ["", "K", "M", "B", "T"];
+        let unitIndex = 0;
+    
+        while (amount >= 1000 && unitIndex < units.length - 1) {
+            amount /= 1000;
+            unitIndex++;
+        }
+    
+        return `${amount.toFixed(2)} ${units[unitIndex]} USD`;
+    }
 
     const getStats = async () => {
         try {
@@ -63,8 +77,16 @@ const Dashboard = () => {
                     "Content-Type": "application/json"
                 }
             });
-            console.log(cardtype.data);
             setApplicationStats(cardtype.data);
+
+            const issue = await axios.get(`${SERVER_URL}/stats/issues`, {
+                headers: {
+                    "Authorization": `Bearer ${cookies.get('token')}`,
+                    "Content-Type": "application/json"
+                }
+            });
+            setLoanValuation(issue.data["Total Valuation"]);
+
             setLoad(1);
 
         } catch (err) {
@@ -96,7 +118,7 @@ const Dashboard = () => {
                     </div>
                     <div class="row">
                     <div class="col-md-4">
-                            <DashboardCard number={loanCount} field={"Total Loans valuation"} img={creditDashboard} />
+                            <DashboardCard number={formatCurrency(loanValuation)} field={"Total Loans valuation"} img={creditDashboard} />
                         </div>
                         <div class="col-md-4">
                             <DashboardCard number={loanCount} field={"Loans Applications"} img={loanDashboard} />
