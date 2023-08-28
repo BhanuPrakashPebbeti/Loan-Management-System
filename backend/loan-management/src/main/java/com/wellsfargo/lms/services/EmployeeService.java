@@ -1,5 +1,6 @@
 package com.wellsfargo.lms.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -37,6 +38,9 @@ public class EmployeeService {
 
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private ItemMasterRepo itemMasterRepo;
 
 	@Autowired
 	PasswordEncoder encoder;
@@ -156,17 +160,19 @@ public class EmployeeService {
 
 		EmployeeMaster employee = employeeopt.get();
 
-		// TODO: delete orphan items
-//		List<EmployeeIssueDetails> issues = employeeIssueRepo.findByEmployee(employee);
-//
-//		
-//		  for (EmployeeIssueDetails issue : issues) { 
-//			  ItemMaster item = issue.getItem(); itemMasterRepo.delete(item); 
-//		  }
+		List<ItemMaster> orphanItems = new ArrayList<>();
+		List<EmployeeIssueDetails> issues = employeeIssueRepo.findByEmployee(employee);
+
+		
+		  for (EmployeeIssueDetails issue : issues) { 
+			  ItemMaster item = issue.getItem(); 
+			  orphanItems.add(item); 
+		  }
 		 
 
 		this.employeeIssueRepo.hardDeleteEmployee(employee.getId());
 		this.employeeCardRepo.hardDeleteEmployee(employee.getId());
+		this.itemMasterRepo.deleteAll(orphanItems);
 		this.roleRepository.hardDeleteEmployee(employee.getId());
 		this.employeeRepo.delete(employee);
 
