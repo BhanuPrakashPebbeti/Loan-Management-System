@@ -1,0 +1,17 @@
+.dashboardcard-container .card {
+    position: relative;
+    display: flex;
+    width: 395px;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-image: linear-gradient(to right top, #222222, #2b2a2a, #303131, #413f40, #535253);
+    background-clip: border-box;
+    border: 1px solid #23406f;
+    border-radius: 7px;
+  }
+  
+  .light {
+    color: #c0bcbc;
+    font-size: 11px;
+  }
