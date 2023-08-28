@@ -8,7 +8,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.wellsfargo.lms.models.*;
+import com.wellsfargo.lms.models.EmployeeCardDetails;
+import com.wellsfargo.lms.models.EmployeeMaster;
+import com.wellsfargo.lms.models.ItemMaster;
+import com.wellsfargo.lms.models.LoanCardMaster;
 
 @Repository
 public interface EmployeeCardRepo extends JpaRepository<EmployeeCardDetails, String>	 {

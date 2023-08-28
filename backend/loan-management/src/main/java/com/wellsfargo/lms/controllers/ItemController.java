@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wellsfargo.lms.models.ItemMaster;
 import com.wellsfargo.lms.payloads.ItemPayload;
-import com.wellsfargo.lms.payloads.UserDetailsPayload;
 import com.wellsfargo.lms.services.ItemService;
 
 

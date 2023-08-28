@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.wellsfargo.lms.models.EmployeeCardDetails;
-import com.wellsfargo.lms.models.ItemMaster;
 import com.wellsfargo.lms.models.LoanCardMaster;
 import com.wellsfargo.lms.payloads.LoanPayload;
 import com.wellsfargo.lms.repositories.EmployeeCardRepo;

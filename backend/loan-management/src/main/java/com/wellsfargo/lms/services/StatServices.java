@@ -19,9 +19,6 @@ import com.wellsfargo.lms.repositories.LoanCardRepo;
 
 @Service
 public class StatServices {
-
-	@Autowired
-	private LoanCardRepo loanCardRepo;
 	
 	@Autowired
 	private EmployeeCardRepo employeeCardRepo;

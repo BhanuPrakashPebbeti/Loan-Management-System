@@ -2,7 +2,6 @@ package com.wellsfargo.lms.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.hibernate.exception.ConstraintViolationException;
@@ -11,13 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.wellsfargo.lms.models.EmployeeCardDetails;
 import com.wellsfargo.lms.models.EmployeeIssueDetails;
 import com.wellsfargo.lms.models.EmployeeMaster;
 import com.wellsfargo.lms.models.ItemMaster;
-import com.wellsfargo.lms.models.LoanCardMaster;
 import com.wellsfargo.lms.payloads.ChangePasswordPayload;
-import com.wellsfargo.lms.payloads.UserDetailsPayload;
 import com.wellsfargo.lms.repositories.EmployeeCardRepo;
 import com.wellsfargo.lms.repositories.EmployeeIssueRepo;
 import com.wellsfargo.lms.repositories.EmployeeMasterRepo;
