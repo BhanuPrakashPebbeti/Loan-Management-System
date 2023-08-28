@@ -337,7 +337,7 @@ const ItemDisplay = () => {
                             <div className="row g-0 ">
                                 <div className="col-lg-6 ">
                                     <img
-                                        src={(item.category === "furniture") ? furniture : ((item.category === "car") ? car : (item.category === "home") ? home : (item.category === "jewellery") ? jewellery : object)}
+                                        src={(item.category === "Furniture") ? furniture : ((item.category === "Vehicle") ? car : (item.category === "Home") ? home : (item.category === "Jewellery") ? jewellery : object)}
                                         className="img-fluid rounded p-5"
                                         alt="..."
                                         style={{ width: "30rem", objectFit: "contain" }}
