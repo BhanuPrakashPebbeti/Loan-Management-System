@@ -10,7 +10,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.swing.JOptionPane;
 
-import org.springframework.http.StreamingHttpOutputMessage.Body;
 import org.springframework.stereotype.Service;
 
 @Service

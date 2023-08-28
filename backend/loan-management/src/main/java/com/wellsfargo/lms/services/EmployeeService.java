@@ -168,7 +168,9 @@ public class EmployeeService {
 
 		this.employeeIssueRepo.hardDeleteEmployee(employee.getId());
 		this.employeeCardRepo.hardDeleteEmployee(employee.getId());
-		this.itemMasterRepo.deleteAll(orphanItems);
+		for(ItemMaster item : orphanItems) {
+			this.itemMasterRepo.hardDeleteItem(item.getId());
+		}
 		this.roleRepository.hardDeleteEmployee(employee.getId());
 		this.employeeRepo.delete(employee);
 
