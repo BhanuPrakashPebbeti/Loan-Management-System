@@ -27,7 +27,7 @@ const AddUser = () => {
         doj: new Date(),
         password: "",
         isadmin: 0,
-        role: ["employee"]
+        role: [""]
     });
     const [load, setLoad] = useState(0);
 
@@ -49,6 +49,10 @@ const AddUser = () => {
         setEmployee({ ...employee, [e.target.name]: e.target.value });
     };
 
+    const handleRole = (e) => {
+        setEmployee({ ...employee, [e.target.name]: [e.target.value] });
+    };
+
     const setDOB = (date) => {
         setEmployee({ ...employee, dob: date });
     };
@@ -61,7 +65,7 @@ const AddUser = () => {
         date.setFullYear(date.getFullYear() - years);
         return date;
     }
-    
+
 
     const PostEmployee = async (e) => {
         e.preventDefault();
@@ -76,7 +80,7 @@ const AddUser = () => {
             showAlert("Employee Created Successfully!", "success");
             setAdd(false);
             // navigate(`/users/${employeeData.data.id}`);
-            
+
             navigate(`/users`);
         }
         catch (err) {
@@ -93,7 +97,7 @@ const AddUser = () => {
             ) : load === 1 ?
                 <div className="container addItem-container text-center">
                     <div className="adjust">
-                        <h3 className="text-header m-4">Add Employee</h3>
+                        <h3 className="text-header m-4">Add User</h3>
                         <form
                             method="POST"
                             onSubmit={PostEmployee}
@@ -192,6 +196,24 @@ const AddUser = () => {
                                         <option value="DTI">DTI</option>
                                         <option value="EFT">EFT</option>
                                         <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="form-group align-items-center mt-3 row">
+                                <label htmlFor="department" className="col-sm-2 mt-3 text-end">
+                                    Role :
+                                </label>
+                                <div className="col col-9">
+                                    <select
+                                        name="role"
+                                        value={employee.role[0]}
+                                        onChange={handleRole}
+                                        className="form-select"
+                                        aria-label="department"
+                                    >
+                                        <option value="">Select Role</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="employee">Employee</option>
                                     </select>
                                 </div>
                             </div>
