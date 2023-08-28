@@ -11,6 +11,8 @@ import creditDashboard from './../../EditableStuff/creditDashboard.png';
 import loanDashboard from './../../EditableStuff/loanDashboard.png';
 import items from './../../EditableStuff/items.png';
 import userCountDashboard from './../../EditableStuff/userCountDashboard.png';
+import adminCountDashboard from './../../EditableStuff/adminCountDashboard.png';
+import PieChart from "./PieChart";
 
 const Dashboard = () => {
     const { user, logged_in } = useContext(Context);
@@ -21,6 +23,7 @@ const Dashboard = () => {
     const [itemCount, setItemCount] = useState(0);
     const [adminCount, setAdminCount] = useState(0);
     const [userCount, setUserCount] = useState(0);
+    const [applicationStats, setApplicationStats] = useState(null);
     const [load, setLoad] = useState(0);
     const cookies = new Cookies();
 
@@ -53,6 +56,15 @@ const Dashboard = () => {
             });
             setAdminCount(users.data.Admins);
             setUserCount(users.data.Users);
+
+            const cardtype = await axios.get(`${SERVER_URL}/stats/cardtype`, {
+                headers: {
+                    "Authorization": `Bearer ${cookies.get('token')}`,
+                    "Content-Type": "application/json"
+                }
+            });
+            console.log(cardtype.data);
+            setApplicationStats(cardtype.data);
             setLoad(1);
 
         } catch (err) {
@@ -82,15 +94,36 @@ const Dashboard = () => {
                         </div>
                         <p className='text-muted text-info-emphasis'>Welcome to your dashboard</p>
                     </div>
-                    <div className="d-flex">
-                        <DashboardCard number={loanCount} field={"Loans Applications"} img={loanDashboard} />
-                        <DashboardCard number={itemCount} field={"Items in Market"} img={items} />
-                        <DashboardCard number={userCount} field={"User Count"} img={userCountDashboard} />
+                    <div class="row">
+                    <div class="col-md-4">
+                            <DashboardCard number={loanCount} field={"Total Loans valuation"} img={creditDashboard} />
+                        </div>
+                        <div class="col-md-4">
+                            <DashboardCard number={loanCount} field={"Loans Applications"} img={loanDashboard} />
+                        </div>
+                        <div class="col-md-4">
+                            <DashboardCard number={itemCount} field={"Items in Market"} img={items} />
+                        </div>
                     </div>
-                    <div className="d-flex">
-                        <DashboardCard number={approvedCount} field={"Loans Approved"} img={loanApprovedDashboard} />
-                        <DashboardCard number={declinedCount} field={"Loans Declined"} img={loanDeclinedDashboard} />
-                        <DashboardCard number={pendingCount} field={"Loans Pending"} img={loanPendingDashboard} />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <DashboardCard number={approvedCount} field={"Loans Approved"} img={loanApprovedDashboard} />
+                        </div>
+                        <div class="col-md-4">
+                            <DashboardCard number={declinedCount} field={"Loans Declined"} img={loanDeclinedDashboard} />
+                        </div>
+                        <div class="col-md-4">
+                            <DashboardCard number={pendingCount} field={"Loans Pending"} img={loanPendingDashboard} />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <PieChart data={applicationStats} />
+                        </div>
+                        <div class="col-md-4">
+                            <DashboardCard number={adminCount} field={"Admin Count"} img={adminCountDashboard} />
+                            <DashboardCard number={userCount} field={"User Count"} img={userCountDashboard} />
+                        </div>
                     </div>
                 </div>) : (
                 null
