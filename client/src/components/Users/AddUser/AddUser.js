@@ -69,25 +69,29 @@ const AddUser = () => {
 
     const PostEmployee = async (e) => {
         e.preventDefault();
-        try {
-            setAdd(true);
-            const employeeData = await axios.post(`${SERVER_URL}/auth/signup`, employee, {
-                headers: {
-                    "Authorization": `Bearer ${cookies.get('token')}`,
-                    "Content-Type": "application/json"
-                }
-            });
-            showAlert("Employee Created Successfully!", "success");
-            setAdd(false);
-            // navigate(`/users/${employeeData.data.id}`);
-
-            navigate(`/users`);
+        if (employee.dob > employee.doj) {
+            showAlert("DOB cannot be greater than DOJ", "danger");
         }
-        catch (err) {
-            console.log(err);
-            showAlert(err.response.data.error, "danger");
-        }
+        else {
+            try {
+                setAdd(true);
+                const employeeData = await axios.post(`${SERVER_URL}/auth/signup`, employee, {
+                    headers: {
+                        "Authorization": `Bearer ${cookies.get('token')}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+                showAlert("Employee Created Successfully!", "success");
+                setAdd(false);
+                // navigate(`/users/${employeeData.data.id}`);
 
+                navigate(`/users`);
+            }
+            catch (err) {
+                console.log(err);
+                showAlert(err.response.data.error, "danger");
+            }
+        }
     };
 
     return (
