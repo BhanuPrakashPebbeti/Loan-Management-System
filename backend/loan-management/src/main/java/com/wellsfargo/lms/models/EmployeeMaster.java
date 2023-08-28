@@ -26,13 +26,7 @@ import lombok.ToString;
 public class EmployeeMaster {
 	
 	@Id
-	/*
-	 * @GeneratedValue(generator = "uuid")
-	 * 
-	 * @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
-	 */
 	@Column(name = "employee_id")
-//	@OneToMany(cascade = CascadeType.ALL)
 	private String id;
 
 	@Column(name = "employee_name")
