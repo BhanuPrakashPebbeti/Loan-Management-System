@@ -49,12 +49,12 @@ const NavBar = () => {
       name: "Approvals",
     },
     {
-      show: true,
+      show: true && (!role),
       link: "/about",
       name: "About",
     },
     {
-      show: true,
+      show: true && (!role),
       link: "/contactus",
       name: "Contact us",
     },

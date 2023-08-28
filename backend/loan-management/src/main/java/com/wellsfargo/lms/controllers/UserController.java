@@ -11,7 +11,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wellsfargo.lms.models.EmployeeMaster;
+import com.wellsfargo.lms.payloads.ChangePasswordPayload;
 import com.wellsfargo.lms.payloads.UserDetailsPayload;
 import com.wellsfargo.lms.services.EmployeeService;
 
@@ -88,9 +88,8 @@ public class UserController {
 	}
 	
 
-	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping
-	public ResponseEntity<?> updateEmployee(@RequestBody UserDetailsPayload empDetails) {
+	public ResponseEntity<?> updateEmployee(@RequestBody EmployeeMaster empDetails) {
 		return employeeService.updateEmployee(empDetails);
 	}
 	
@@ -100,6 +99,10 @@ public class UserController {
 		return employeeService.deleteEmployee(eId);
 	}
 	
+	@PutMapping("/changePassword")
+	public ResponseEntity<?> changePassword(@RequestBody ChangePasswordPayload payload) {
+		return employeeService.changePassword(payload);
+	}
 	
 	
 }

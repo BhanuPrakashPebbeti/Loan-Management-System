@@ -127,10 +127,6 @@ public ResponseEntity<?> declineLoan(String cardId){
 		}
 		EmployeeCardDetails cardDetails = employeeCardDetails.get();
 		
-		EmployeeMaster employee = cardDetails.getEmployee();
-		
-		LoanCardMaster loanCardMaster = cardDetails.getLoan();
-		
 		ItemMaster item = cardDetails.getItem();
 		
 		if(item.getIssueStatus() != 0) {

@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.wellsfargo.lms.models.EmployeeCardDetails;
-import com.wellsfargo.lms.models.ItemMaster;
 import com.wellsfargo.lms.models.LoanCardMaster;
 import com.wellsfargo.lms.payloads.LoanPayload;
 import com.wellsfargo.lms.repositories.EmployeeCardRepo;
@@ -29,6 +28,12 @@ public class LoanServices {
 
 		if(loanreq.getDuration() == 0) {
 			return ResponseEntity.badRequest().body("Duration cannot be zero.");
+		}
+		
+		List<LoanCardMaster> duploans = loanCardRepo.findByTypeAndDuration(loanreq.getLoanType(), loanreq.getDuration());
+		
+		if(!duploans.isEmpty()) {
+			return ResponseEntity.badRequest().body("Duplicate loan card exists");
 		}
 		
 		LoanCardMaster loan = new LoanCardMaster(loanreq.getLoanType(),loanreq.getDuration());
@@ -114,5 +119,7 @@ public class LoanServices {
 		return ResponseEntity.ok("Entry deleted successfully!");
 		
 	}
+	
+	
 	
 }

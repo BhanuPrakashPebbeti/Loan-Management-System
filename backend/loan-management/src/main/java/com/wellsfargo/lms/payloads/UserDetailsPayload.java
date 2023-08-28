@@ -22,6 +22,7 @@ public class UserDetailsPayload {
 	String gender;
 	String dob;
 	String doj;
+	String email;
 	int isAdmin;
 	Set<Roles> role;
 	
@@ -35,5 +36,6 @@ public class UserDetailsPayload {
 		this.doj = employee.getDoj();
 		this.isAdmin = employee.getIsAdmin();
 		this.role = employee.getRoles();
+		this.email = employee.getEmail();
 	}
 }

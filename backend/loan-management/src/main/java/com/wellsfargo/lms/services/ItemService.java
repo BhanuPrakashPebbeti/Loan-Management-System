@@ -10,13 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.wellsfargo.lms.models.EmployeeCardDetails;
-import com.wellsfargo.lms.models.EmployeeIssueDetails;
 import com.wellsfargo.lms.models.EmployeeMaster;
 import com.wellsfargo.lms.models.ItemMaster;
 import com.wellsfargo.lms.payloads.ItemPayload;
-import com.wellsfargo.lms.payloads.UserDetailsPayload;
 import com.wellsfargo.lms.repositories.EmployeeCardRepo;
-import com.wellsfargo.lms.repositories.EmployeeIssueRepo;
 import com.wellsfargo.lms.repositories.EmployeeMasterRepo;
 import com.wellsfargo.lms.repositories.ItemMasterRepo;
 
@@ -31,10 +28,6 @@ public class ItemService {
 	
 	@Autowired
 	private EmployeeMasterRepo employeeMasterRepo;
-	
-	
-	@Autowired
-	private EmployeeIssueRepo employeeIssueRepo;
 	
 	public ResponseEntity<?> createItem(ItemPayload itemreq) {
 
@@ -90,6 +83,12 @@ public class ItemService {
 			return ResponseEntity.badRequest().body("Cannot edit issued item");
 		}
 		
+		List<EmployeeCardDetails> cards = employeeCardRepo.findByItem(item);
+		
+		if(!cards.isEmpty()) {
+			return ResponseEntity.badRequest().body("Item has already been applied by someone.");
+		}
+		
 		if(itemDetails.getCategory()!= null) {
 			item.setCategory(itemDetails.getCategory());
 		}
@@ -122,6 +121,12 @@ public class ItemService {
 				
 		if(item.getIssueStatus()!=0) {
 			return ResponseEntity.badRequest().body("Cannot edit issued item");
+		}
+		
+		List<EmployeeCardDetails> cards = employeeCardRepo.findByItem(item);
+		
+		if(!cards.isEmpty()) {
+			return ResponseEntity.badRequest().body("Item has already been applied by someone.");
 		}
 		
 		this.itemMasterRepo.delete(item);

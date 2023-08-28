@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wellsfargo.lms.models.ItemMaster;
 import com.wellsfargo.lms.payloads.ItemPayload;
-import com.wellsfargo.lms.payloads.UserDetailsPayload;
 import com.wellsfargo.lms.services.ItemService;
 
 
@@ -63,14 +62,16 @@ public class ItemController {
 			
 			return (itemService.getAppliedItems(id));
 		}
-		
+		else if (filter.equalsIgnoreCase("pending")) {
+			return (itemService.getPendingItems(id));
+		}
 		else if (filter.equalsIgnoreCase("approved")) {
 			return (itemService.getApprovedItems(id));
 		} else if (filter.equalsIgnoreCase("declined")){
 			return (itemService.getDeclinedItems(id));
 		} else{
 			return ResponseEntity.badRequest().body("Filter parameter should contain one of "
-					+ "['applied', 'approved', 'declined']");
+					+ "['applied','pending', 'approved', 'declined']");
 		}
 	}
 	

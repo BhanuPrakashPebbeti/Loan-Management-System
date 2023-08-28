@@ -55,6 +55,12 @@ public class EmployeeCardService {
 			return ResponseEntity.badRequest().body("The loan is not available for this item.");
 		}
 		
+		List<EmployeeCardDetails> dupeCards = employeeCardRepo.findByItemAndEmpAndLoan(item_id, employee_id, loan_id);
+		
+		if(!dupeCards.isEmpty()) {
+			return ResponseEntity.badRequest().body("Already applied for this loan");
+		}
+		
 		EmployeeCardDetails employeeCardDetails = new EmployeeCardDetails(employee.get(), loan.get(), item.get());
 		try {
 			EmployeeCardDetails resp = employeeCardRepo.save(employeeCardDetails);

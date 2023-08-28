@@ -10,11 +10,12 @@ import AddUser from './components/Users/AddUser/AddUser';
 import Users from './components/Users/Users';
 import About from './components/About';
 import EditUser from './components/Users/AddUser/EditUser';
-import LoanIssue from './components/Loans/LoanIssue';
-import Profile from './components/Profile/profile';
+import LoanIssue from './components/Loans/LoanIssue'
 import MyitemsPending from './components/Items/MyitemsPending';
 import MyitemsApproved from './components/Items/MyitemsApproved';
 import MyitemsDeclined from './components/Items/MyitemsDeclined';
+import Profile from './components/Profile/Profile';
+import Dashboard from './components/Dashboard/Dashboard';
 
 
 const Routing = () => {
@@ -24,6 +25,7 @@ const Routing = () => {
       {/* Home */}
       <Route exact path='/' element={<Home />} />
       <Route exact path='/home' element={<Home />} />
+      <Route exact path='/dashboard' element={<Dashboard />} />
 
       {/* Items */}
       <Route exact path='/items' element={<Items />} />
@@ -35,13 +37,11 @@ const Routing = () => {
       <Route exact path='/items/:id/edit' element={<EditItem />} /> 
 
       {/* Users */}
-      {/* <Route exact path='/users' element={<Users />} /> */}
       <Route exact path='/addemployee' element={<AddUser />} />
       <Route exact path='/user/:id/edit' element={<EditUser />} />
       <Route exact path='/users' element={<Users />} />
       <Route exact path='/loanissue' element={<LoanIssue />} />
       <Route exact path='/profile/:id' element={<Profile />} />
-      {/* <Route exact path='/users/:id' element={<UserDisplay />} /> */}
 
       {/* AboutUs */}
       <Route path='/about' element={<About />} />

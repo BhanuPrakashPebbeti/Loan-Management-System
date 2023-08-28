@@ -2,3 +2,8 @@
     background-color: #b6b9b8b0;
     border: var(--bs-border-width) solid #c3c8cd;
 }
+
+.profile .gradient-custom{
+    background: linear-gradient(to right bottom, rgb(116, 114, 114), rgb(15, 15, 15))
+    /* background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1)) */
+    }
