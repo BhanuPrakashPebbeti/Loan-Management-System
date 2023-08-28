@@ -14,7 +14,6 @@ import com.wellsfargo.lms.repositories.EmployeeCardRepo;
 import com.wellsfargo.lms.repositories.EmployeeIssueRepo;
 import com.wellsfargo.lms.repositories.EmployeeMasterRepo;
 import com.wellsfargo.lms.repositories.ItemMasterRepo;
-import com.wellsfargo.lms.repositories.LoanCardRepo;
 
 
 @Service
