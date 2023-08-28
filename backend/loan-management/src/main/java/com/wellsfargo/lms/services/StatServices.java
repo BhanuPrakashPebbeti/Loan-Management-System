@@ -85,9 +85,17 @@ public class StatServices {
 		
 		List<EmployeeIssueDetails> issuesDetails = employeeIssueRepo.findAll();
 		
+		int totalValuation = 0;
+		
+		for(EmployeeIssueDetails issue : issuesDetails) {
+			totalValuation += issue.getItem().getValuation();
+		}
+		
 		HashMap<String, Integer> stats = new HashMap<>();
 		
 		stats.put("Total issues", issuesDetails.size());
+		
+		stats.put("Total Valuation", totalValuation);
 		
 		return stats;
 		
