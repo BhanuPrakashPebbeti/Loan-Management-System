@@ -57,7 +57,7 @@ const Profile = () => {
                     document.getElementById("modalClose").click();
                     showAlert(`${res.data}!`, "success");
                     setChange(false);
-                }).catch((err)=>{
+                }).catch((err) => {
                     showAlert(`${err.response.data}!`, "danger");
                     setChange(false);
                 })
@@ -70,36 +70,41 @@ const Profile = () => {
 
     const UpdateTeam = async (e) => {
         e.preventDefault();
-        try {
-            setChange(true);
-            const itemData = await axios.put(`${SERVER_URL}/employees`, JSON.stringify(editUserCopy), {
-                headers: {
-                    "Authorization": `Bearer ${cookies.get('token')}`,
-                    "Content-Type": "application/json",
-                },
-            }).then((res)=>{
-                showAlert("Profile Saved Successfully!", "success");
-                setChange(false);
-                setEditMode(false);
-            })
-            .catch((err)=>{
-                console.log(err);
-                showAlert("Some error!", "danger");
-                setChange(false);
-                setEditMode(false);
-            });
-            
+        if (editUserCopy.dob > editUserCopy.doj) {
+            showAlert("DOB cannot be greater than DOJ", "danger");
         }
-        catch (err) {
-            console.log(err);
-            showAlert(err.response.data.error, "danger");
+        else {
+            try {
+                setChange(true);
+                const itemData = await axios.put(`${SERVER_URL}/employees`, JSON.stringify(editUserCopy), {
+                    headers: {
+                        "Authorization": `Bearer ${cookies.get('token')}`,
+                        "Content-Type": "application/json",
+                    },
+                }).then((res) => {
+                    showAlert("Profile Saved Successfully!", "success");
+                    setChange(false);
+                    setEditMode(false);
+                })
+                    .catch((err) => {
+                        console.log(err);
+                        showAlert("Some error!", "danger");
+                        setChange(false);
+                        setEditMode(false);
+                    });
+
+            }
+            catch (err) {
+                console.log(err);
+                showAlert(err.response.data.error, "danger");
+            }
         }
 
     };
 
     const ddmmyy = (date) => {
         const d = new Date(date);
-        return d.toLocaleString('en-us',{day:'numeric', month:'short', year:'numeric'})
+        return d.toLocaleString('en-us', { day: 'numeric', month: 'short', year: 'numeric' })
     }
 
     const handleInputs = (e) => {

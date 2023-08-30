@@ -21,7 +21,7 @@ const AddUser = () => {
     const [edit, setEdit] = useState(false);
     const [usr, setUsr] = useState();
     const [load, setLoad] = useState(0);
-   
+
 
     const handleInputs = (e) => {
         setUsr({ ...usr, [e.target.name]: e.target.value });
@@ -74,27 +74,30 @@ const AddUser = () => {
 
     const UpdateEmployee = async (e) => {
         e.preventDefault();
-        try {
-            setEdit(true);
-            console.log("Final",usr);
-            const itemData = await axios.put(`${SERVER_URL}/employees`, usr, {
-                headers: {
-                    "Authorization": `Bearer ${cookies.get('token')}`,
-                    "Content-Type": "application/json",
-                },
-            });
-            console.log(usr);
-            showAlert("User edited Successfully!", "success");
-            setEdit(false);
-            navigate(`/users`);
+        if (usr.dob > usr.doj) {
+            showAlert("DOB cannot be greater than DOJ", "danger");
         }
-        catch (err) {
-            console.log(err);
-            showAlert(err.response.data.error, "danger");
+        else {
+            try {
+                setEdit(true);
+                const itemData = await axios.put(`${SERVER_URL}/employees`, usr, {
+                    headers: {
+                        "Authorization": `Bearer ${cookies.get('token')}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+                showAlert("User edited Successfully!", "success");
+                setEdit(false);
+                navigate(`/users`);
+            }
+            catch (err) {
+                console.log(err);
+                showAlert(err.response.data.error, "danger");
+            }
         }
 
     };
- 
+
 
     return (
         <>
@@ -212,7 +215,7 @@ const AddUser = () => {
                                 </label>
                                 <div className="col-sm-10">
                                     <DatePicker
-                                        name = "dob"
+                                        name="dob"
                                         className="form-control"
                                         selected={new Date(usr.dob)}
                                         onChange={(date) => setDOB(date)}
@@ -231,7 +234,7 @@ const AddUser = () => {
                                 </label>
                                 <div className="col-sm-10">
                                     <DatePicker
-                                        name  = "doj"
+                                        name="doj"
                                         className="form-control"
                                         selected={new Date(usr.doj)}
                                         onChange={(date) => setDOJ(date)}
